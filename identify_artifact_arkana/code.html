@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ARKANA - Visual Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#5f5e5e",
+                        "tertiary-fixed-dim": "#aac7ff",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e4e2de",
+                        "on-surface-variant": "#4e4637",
+                        "on-secondary-container": "#636262",
+                        "primary": "#6f5100",
+                        "surface-bright": "#fbf9f5",
+                        "tertiary": "#34568c",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f5f3ef",
+                        "on-primary-fixed-variant": "#5c4300",
+                        "primary-fixed-dim": "#ecc165",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-container": "#eff2ff",
+                        "surface-dim": "#dbdad6",
+                        "outline-variant": "#d1c5b2",
+                        "on-surface": "#1b1c1a",
+                        "outline": "#807665",
+                        "on-error-container": "#93000a",
+                        "background": "#fbf9f5",
+                        "surface-container-highest": "#e4e2de",
+                        "on-tertiary-fixed": "#001b3e",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-primary-fixed": "#261a00",
+                        "on-tertiary-fixed-variant": "#23477b",
+                        "secondary-container": "#e2dfde",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#efeeea",
+                        "tertiary-container": "#4e6fa6",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1b1c1a",
+                        "inverse-surface": "#30312e",
+                        "tertiary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#e5e2e1",
+                        "primary-container": "#8b6914",
+                        "on-primary-container": "#fff0da",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#ffdfa0",
+                        "surface-tint": "#795900",
+                        "surface": "#fbf9f5",
+                        "surface-container-high": "#eae8e4",
+                        "inverse-primary": "#ecc165",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f2f0ed",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "desktop_padding": "80px",
+                        "section_v_spacing": "120px",
+                        "max_width": "1280px",
+                        "mobile_padding": "20px",
+                        "tablet_padding": "40px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "section-label": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "section-label": ["14px", { "lineHeight": "1", "letterSpacing": "0.12em", "fontWeight": "500" }],
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 800ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .sliding-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .sliding-underline::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .sliding-underline:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col pt-20">
+<!-- TopNavBar -->
+<nav class="bg-surface/90 dark:bg-surface-dim/90 backdrop-blur-md fixed top-0 w-full z-50 border-b border-outline-variant/30 hidden md:flex">
+<div class="flex justify-between items-center px-desktop_padding h-20 w-full max-w-max_width mx-auto">
+<a class="font-section-label text-headline-md italic text-on-surface dark:text-on-surface-variant scale-95 duration-200 transition-transform" href="#">ARKANA.</a>
+<div class="flex gap-8">
+<a class="text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70 font-body-md text-body-md" href="#">Explore</a>
+<a class="text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70 font-body-md text-body-md" href="#">Cultures</a>
+<a class="text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70 font-body-md text-body-md" href="#">Browse</a>
+<a class="text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary pb-1 transition-all duration-300 hover:opacity-70 font-body-md text-body-md" href="#">Identify</a>
+<a class="text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70 font-body-md text-body-md" href="#">Ask Arkana</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-primary dark:text-primary-fixed-dim scale-95 duration-200 transition-transform transition-all duration-300 hover:opacity-70">
+<span class="material-symbols-outlined">search</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant/30">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A small, circular avatar portrait of an individual in a minimalist, soft-lit setting. Gallery-clean aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRNyuJ0fPbGmIa_83M-20nD9mIJKyp8TKUHYk6BimnlTFF1fcnhOsESkN4Ph2Z9uKL_G20cps9j7j3aDohRMZsBr1_iNdy_z7OPLg9A44NP9hZVaqyciJ8TOYmq0ui9rhHiS4xg7PNvymn7R5sO2tJHfiUZRq3Mo0ey6DdJTvcvt5-7EHXn_1QPozbOP2lEXJZ6xLt0J8_r1Rst_ba9znMezpaSszTI8Ox5MbFfpAWqbCHuJVhMzfFpZ7Sf7WG3bocdJa6ty6VjQ"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-max_width mx-auto px-mobile_padding md:px-desktop_padding py-16 md:py-section_v_spacing">
+<!-- Header Section -->
+<header class="mb-24 reveal text-center max-w-3xl mx-auto">
+<div class="flex items-center justify-center gap-4 mb-8">
+<div class="h-[1px] bg-outline-variant w-12"></div>
+<span class="font-section-label text-section-label uppercase tracking-widest text-on-surface-variant">IDENTIFY</span>
+<div class="h-[1px] bg-outline-variant w-12"></div>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-6">Upload an artifact to discover its story</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Our visual intelligence system analyzes physical characteristics, patterns, and materials to connect fragments of history to their broader cultural narrative.</p>
+</header>
+<!-- Upload Zone -->
+<section class="mb-32 reveal flex justify-center">
+<div class="w-full max-w-[480px] aspect-[4/3] border border-dashed border-outline-variant bg-surface-container-lowest flex flex-col items-center justify-center p-8 hover:border-primary transition-colors duration-300 cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-4 group-hover:text-primary transition-colors duration-300" style="font-variation-settings: 'FILL' 0;">photo_camera</span>
+<p class="font-body-lg text-body-lg text-on-surface">Drag an image here</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-2">or click to browse from your device</p>
+<button class="mt-6 px-6 py-3 border border-[#1A1A1A] rounded font-body-md text-body-md font-semibold text-on-surface hover:bg-[#1A1A1A] hover:text-[#FAF8F4] transition-all duration-300">
+                    Select Artifact
+                </button>
+</div>
+</section>
+<!-- Results Section (Example State) -->
+<section class="mb-32 reveal">
+<div class="flex flex-col md:flex-row gap-gutter">
+<!-- Left: Uploaded Image -->
+<div class="w-full md:w-5/12">
+<div class="bg-surface-container-lowest rounded border border-outline-variant p-2 shadow-sm">
+<img alt="Uploaded Artifact" class="w-full h-auto object-cover rounded-sm" data-alt="A high-resolution, stark photograph of a piece of Warli art on a textured mud or canvas background. The art features stick-figure-like depictions of humans and animals in white pigment against an earthy reddish-brown background. Minimalist gallery lighting, sharp focus on the textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCa0bQsVMb3c8k7JaLCWbMSrisQEvW2a804GQzSmy0F727je-dthytTEPeCsdghJT3m08vfu3WW8AUWgkikSphZ_cV9iAcUxpUTO413C_-N6KEcsJahj-XVfqsEG2SdhvvZkr4G3iYGZg6ELNDe80n6IFNcKx4EKmuL6BAPsxNT6nl_J4ugDe2QJSVv6V553yd1n0AWgsDgoCRzkyCSYI6iwZQlLTnbeDGOlCYJAy792K48UASx3PticROPkgCeCOd3crvTcmSXyA"/>
+</div>
+</div>
+<!-- Right: Identification Details -->
+<div class="w-full md:w-7/12 flex flex-col justify-center px-4 md:px-8">
+<div class="flex items-center gap-4 mb-6">
+<span class="font-section-label text-section-label uppercase tracking-widest text-primary-container">IDENTIFIED AS</span>
+<div class="h-[1px] bg-outline-variant flex-grow"></div>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Warli Art</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">
+                        Characterized by rudimentary graphic vocabulary: a circle, a triangle and a square. These paintings are predominantly created by tribal women to depict daily life, nature, and social events.
+                    </p>
+<!-- Confidence Meter -->
+<div class="mb-8">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wide">Analysis Confidence</span>
+<span class="font-body-md text-body-md font-semibold text-primary-container">87%</span>
+</div>
+<div class="h-1 w-full bg-surface-variant overflow-hidden">
+<div class="h-full bg-primary-container w-[87%] transition-all duration-1000 ease-out"></div>
+</div>
+</div>
+<!-- Tags -->
+<div class="flex flex-wrap gap-3 mb-10">
+<span class="px-4 py-1.5 border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface-variant">Maharashtra</span>
+<span class="px-4 py-1.5 border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface-variant">Tribal</span>
+<span class="px-4 py-1.5 border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface-variant">Geometric</span>
+<span class="px-4 py-1.5 border border-outline-variant rounded-full font-label-sm text-label-sm text-on-surface-variant">Pigment on Mud</span>
+</div>
+<div>
+<a class="text-primary-container font-body-md text-body-md font-medium sliding-underline group inline-flex items-center gap-2" href="#">
+                            Explore Warli on Map
+                            <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Similar Artifacts Section -->
+<section class="mb-32 reveal">
+<div class="flex items-center gap-4 mb-12">
+<span class="font-section-label text-section-label uppercase tracking-widest text-on-surface">SIMILAR ARTIFACTS</span>
+<div class="h-[1px] bg-outline-variant flex-grow"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Card 1 -->
+<article class="bg-surface-container-lowest rounded border border-outline-variant shadow-sm overflow-hidden group hover:scale-[1.01] transition-transform duration-300">
+<div class="aspect-square relative overflow-hidden bg-surface">
+<img alt="Similar Artifact 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" data-alt="A close-up photograph of a traditional Indian tribal painting, featuring stark geometric forms in white pigment on a dark earthy background. High editorial contrast, museum archival lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOKpwCYP8Sk9rqCplkUmD97Ay_-KFI0qDlAqQD7W0fveUbial-P8XOX0wJWmgPyFJxw5bhLcAU1RRx482y5D8xQ7gijWm96nKxs4YAgMo3_W0egVTHOIUXjsjutWWpXelsrSPMcQ6R7L_rBiGhZWuO2KSGs3mFf_42Ggv522JDKfUnkt7FYVkZGqB896BEdaeUsqY_-D9BUZURD-b7pZT5qg-zaAV6JWLm3iROBbJhN4459ePCig2XyRO4ZQL83jY35Iv4OIHnxA"/>
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-2 py-1 rounded border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-primary-container font-semibold">92% Match</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Tarpa Dance Depiction</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Palghar District</p>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container-lowest rounded border border-outline-variant shadow-sm overflow-hidden group hover:scale-[1.01] transition-transform duration-300">
+<div class="aspect-square relative overflow-hidden bg-surface">
+<img alt="Similar Artifact 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" data-alt="A section of a Warli painting showing agricultural motifs. White rice paste lines forming stylized human figures farming, set against a rich, reddish ochre surface. Clean, well-lit archival photo." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeXDgRyhM64_xdnxfENAGOtmzaItHIXl7V41zV0KyPvYoFUbGHaid5ixFMNJcScHSu3h49tn6w9SKM-P9AQEpe0TpcsOomLqQ5BsU-qSYSK02pexi-RSXa1EhwEFGoqpkG6gCF58isSzVaio-jBwAM84AhCC8fUzCd17DG_tKa58_lzCf52HTAdd77cfbst6XVsGO9mJkr8vZLhaqH6kLchpkBBb8eaaxHQgReP74nnPQyjQ-ghRUrwd6r9Qp07XRhEN9aa4ZRhA"/>
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-2 py-1 rounded border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-primary-container font-semibold">85% Match</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Harvest Festival Motif</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Thane Region</p>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-surface-container-lowest rounded border border-outline-variant shadow-sm overflow-hidden group hover:scale-[1.01] transition-transform duration-300">
+<div class="aspect-square relative overflow-hidden bg-surface">
+<img alt="Similar Artifact 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" data-alt="A fragment of a Saura painting, visually similar to Warli but with distinct characteristics. Detailed line work in natural pigments on a rustic wall texture. Neutral, flat gallery lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZ-CpqqNGKDTTC4mz2ko-ZrvP_HlscNUMnl0iBj3pUaxzc7oIP0BUMdE2MLjK39HejA1DJD0zeclXs9xRx1wJvBvd_kVELVtEEubHGItsStXqXOEFQXs6YhiKENmDeXX3oSLXcm90v47SXYxgFfiC4ZttEWfGP6xCx9TL4SOiEiy7xu8qzqkN4Fojrikm6VqTj_2-6wgCejMNXLvOrCJAsOsCWQcuBjgpjVSpMIKcMsgsQdxAZcSzou5fBaClNIqrZoKq3oRI0sw"/>
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-2 py-1 rounded border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-primary-container font-semibold">78% Match</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Saura Art Comparison</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Odisha Pattern Match</p>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-surface-container-lowest rounded border border-outline-variant shadow-sm overflow-hidden group hover:scale-[1.01] transition-transform duration-300">
+<div class="aspect-square relative overflow-hidden bg-surface">
+<img alt="Similar Artifact 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out" data-alt="Contemporary adaptation of Warli art on modern canvas. Thicker white lines on a darker brown background, showing a bustling village scene. Evenly lit, minimalist presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxOi2j8oxeGuAnGmdjOmkPZHU28dWcA6i_Ir8Chn0QhbKMU-ViS-DhaatlfFZsFpgOvHgcgLp1u8K9h43CY7YDTjnVg61WQOia3UMvIfRZ1EQlNOk4PCn6ZXOysxttF3ESIGgVQxSwj0n35cXEDlXQQKxWa1-vRJAU7aznNA7UAiB4WQ5HZvaZwisMQ98ui6NH6DXC8pdVuvl90D1nOvv_DdZajEldz959ukHp1gAhksYBLf5Emwoi0gzSiuuXmmeeVVlNv2osYg"/>
+<div class="absolute top-3 right-3 bg-surface/90 backdrop-blur-sm px-2 py-1 rounded border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-primary-container font-semibold">71% Match</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="font-body-md text-body-md font-semibold text-on-surface mb-1">Modern Village Scene</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Contemporary Archive</p>
+</div>
+</article>
+</div>
+</section>
+<!-- Cultural Context Section -->
+<section class="mb-16 reveal">
+<div class="flex items-center gap-4 mb-12">
+<span class="font-section-label text-section-label uppercase tracking-widest text-on-surface">CULTURAL CONTEXT</span>
+<div class="h-[1px] bg-outline-variant flex-grow"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-8 bg-surface-container-low p-8 md:p-12 border border-outline-variant/50">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">The Language of Shapes</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-6">
+                        Unlike other Indian folk art forms, Warli painting does not depict mythological characters or images of deities. Instead, it relies on a strict geometric vocabulary to depict social life. The circle represents the sun and the moon, while the triangle is derived from mountains and pointed trees.
+                    </p>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                        The ritualistic paintings are usually created on the inside walls of village huts. The walls are made of a mixture of branches, earth, and red brick that make a red ochre background for the paintings. The white pigment is made from a mixture of rice paste and water, with gum as a binder. They use a bamboo stick chewed at the end to give it the texture of a paintbrush.
+                    </p>
+</div>
+<div class="md:col-span-4 flex flex-col justify-center items-start p-8">
+<div class="w-16 h-16 rounded-full bg-surface-variant flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl text-on-surface-variant" style="font-variation-settings: 'FILL' 0;">auto_awesome</span>
+</div>
+<h4 class="font-body-md text-body-md font-semibold text-on-surface mb-2">Automated Analysis</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-8">Our vision model is trained on over 50,000 verified archival images across 200 distinct Indian cultural regions.</p>
+<a class="text-primary-container font-body-md text-body-md font-medium sliding-underline group inline-flex items-center gap-2" href="#">
+                        View Methodology
+                        <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-dim w-full py-section_v_spacing border-t border-outline-variant mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-desktop_padding max-w-max_width mx-auto">
+<span class="font-section-label text-headline-md italic text-on-surface dark:text-on-surface-variant mb-6 md:mb-0 opacity-80 hover:opacity-100 transition-opacity">ARKANA.</span>
+<div class="flex flex-col md:flex-row gap-6 md:gap-12 items-center mb-8 md:mb-0">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">About</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Contact</a>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-center md:text-right">
+                © 2024 ARKANA. Preserving India's Cultural Legacy.
+            </p>
+</div>
+</footer>
+<script>
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        };
+        
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        
+        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+        
+        revealElements.forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body></html>

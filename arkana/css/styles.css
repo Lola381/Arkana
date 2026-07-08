@@ -1,0 +1,352 @@
+/* ============================
+   ARKANA — Global Styles
+   Extracted from monolithic index.html
+   ============================ */
+
+/* ---- Material Icons ---- */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ============================
+   Heritage Link — Sliding Underline
+   ============================ */
+.heritage-link {
+  position: relative;
+  display: inline-block;
+}
+.heritage-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.heritage-link:hover::after {
+  width: 100%;
+}
+
+/* ============================
+   Scroll Reveal Animation
+   ============================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================
+   Image Hover Effects
+   ============================ */
+.artifact-image-container {
+  overflow: hidden;
+}
+.artifact-image-container img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.artifact-image-container:hover img {
+  transform: scale(1.03);
+}
+
+.img-hover-scale {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group:hover .img-hover-scale {
+  transform: scale(1.03);
+}
+
+/* ============================
+   Floating Parallax Elements
+   ============================ */
+.floating-element {
+  will-change: transform;
+}
+
+/* ============================
+   Utility: Hide Scrollbar
+   ============================ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================
+   TRANSITION: Geometric Wipe
+   (trans.txt #4 — Multi-part horizontal strips)
+   Used between page navigations
+   ============================ */
+#transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wipe-piece {
+  position: absolute;
+  background: #fbf9f5;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 300ms cubic-bezier(0.77, 0, 0.175, 1);
+  width: 100%;
+}
+.wipe-piece:nth-child(1) { top: 0;    height: 25vh; transition-delay: 0ms; }
+.wipe-piece:nth-child(2) { top: 25vh; height: 25vh; transition-delay: 50ms; }
+.wipe-piece:nth-child(3) { top: 50vh; height: 25vh; transition-delay: 100ms; }
+.wipe-piece:nth-child(4) { top: 75vh; height: 25vh; transition-delay: 150ms; }
+
+#transition-overlay.wipe-in .wipe-piece {
+  transform: scaleX(1);
+}
+#transition-overlay.wipe-out .wipe-piece {
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 300ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+#transition-overlay.wipe-out .wipe-piece:nth-child(1) { transition-delay: 0ms; }
+#transition-overlay.wipe-out .wipe-piece:nth-child(2) { transition-delay: 50ms; }
+#transition-overlay.wipe-out .wipe-piece:nth-child(3) { transition-delay: 100ms; }
+#transition-overlay.wipe-out .wipe-piece:nth-child(4) { transition-delay: 150ms; }
+
+/* ============================
+   TRANSITION: Expanding Card
+   (trans.txt #2 — card expands to fill viewport)
+   ============================ */
+#card-cover {
+  position: fixed;
+  z-index: 9998;
+  background: #fbf9f5;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#card-cover.expanding {
+  opacity: 1;
+  border-radius: 0;
+}
+
+/* ============================
+   Page System
+   ============================ */
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+}
+
+/* ============================
+   Navbar
+   ============================ */
+#navbar {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+#navbar.scrolled {
+  background-color: rgba(251, 249, 245, 0.95) !important;
+  border-bottom-color: #d1c5b2 !important;
+}
+
+/* ============================
+   Form Inputs
+   ============================ */
+.input-field {
+  transition: border-color 0.3s ease;
+}
+.input-field:focus {
+  outline: none;
+  border-color: #8b6914;
+  box-shadow: none;
+}
+
+/* ============================
+   Timeline Range Slider
+   ============================ */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: #d1c5b2;
+  border-radius: 2px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #8b6914;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* ============================
+   Chat Panel
+   ============================ */
+#chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+#chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#chat-messages::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 2px;
+}
+
+/* ============================
+   Confidence Bar (Identify Page)
+   ============================ */
+.confidence-fill {
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.confidence-fill.animate {
+  width: 87%;
+}
+
+/* ============================
+   Browse: Filter Chips
+   ============================ */
+.chip-active {
+  background-color: #1b1c1a !important;
+  color: #fbf9f5 !important;
+  border-color: #1b1c1a !important;
+}
+
+/* ============================
+   Browse: Accordion Filters
+   ============================ */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.accordion-content.open {
+  max-height: 300px;
+}
+.accordion-icon {
+  transition: transform 0.3s ease;
+}
+.accordion-icon.open {
+  transform: rotate(180deg);
+}
+
+/* ============================
+   Auth Page: Fade In
+   ============================ */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 800ms cubic-bezier(0.16, 1, 0.3, 1) 100ms forwards;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================
+   Mobile Menu
+   ============================ */
+#mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: #fbf9f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#mobile-menu.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ============================
+   CARD ANIMATION A: "Lift & Glow"
+   Cards lift, gain shadow depth, and get
+   a subtle gold highlight on hover.
+   Apply class "card-anim-a" to a card.
+   ============================ */
+.card-anim-a {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-anim-a:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 12px 32px rgba(139, 105, 20, 0.10),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.card-anim-a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid transparent;
+  transition: border-color 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.card-anim-a:hover::before {
+  border-color: rgba(139, 105, 20, 0.3);
+}
+
+/* ============================
+   CARD ANIMATION B: "Tilt Reveal"
+   Cards tilt slightly in 3D toward the
+   cursor and reveal a gradient overlay.
+   Apply class "card-anim-b" to a card.
+   ============================ */
+.card-anim-b {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+.card-anim-b:hover {
+  transform: rotateX(-2deg) rotateY(3deg) scale(1.02);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04);
+}
+.card-anim-b::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(236, 193, 101, 0.0) 0%,
+    rgba(236, 193, 101, 0.08) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+.card-anim-b:hover::after {
+  opacity: 1;
+}
