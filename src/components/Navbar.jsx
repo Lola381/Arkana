@@ -4,12 +4,30 @@ import { TransitionLink, TransitionNavLink } from './TransitionContext';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', onScroll, { passive: true });
+
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error('Failed to parse user', e);
+      }
+    }
+
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+    window.location.href = '/';
+  };
 
   const linkBase = "text-[#4e4637] hover:text-[#6f5100] transition-colors duration-300 font-['Inter'] text-[16px]";
 
@@ -60,11 +78,41 @@ export default function Navbar() {
             <button aria-label="Search" className="hover:opacity-70 transition-opacity">
               <span className="material-symbols-outlined">search</span>
             </button>
-            <TransitionLink to="/login" className="hidden md:block">
-              <div className="w-8 h-8 rounded-full bg-[#efeeea] border border-[#d1c5b2] flex items-center justify-center hover:border-[#8b6914] transition-colors">
-                <span className="material-symbols-outlined text-[18px] text-[#4e4637]">person</span>
+            {user ? (
+              <div className="relative group hidden md:block">
+                <button
+                  aria-label="User menu"
+                  className="flex items-center gap-2 hover:opacity-80 transition-opacity py-2 focus:outline-none"
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#efeeea] border border-[#8b6914] flex items-center justify-center">
+                    <span className="material-symbols-outlined text-[18px] text-[#8b6914]">person</span>
+                  </div>
+                  <span className="text-sm font-medium text-[#4e4637]">{user.name}</span>
+                </button>
+                {/* Artsy hover dropdown */}
+                <div className="absolute right-0 mt-1 w-48 bg-[#fbf9f5] border border-[#d1c5b2] rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-1">
+                  <div className="px-4 py-2 border-b border-[#d1c5b2] text-[10px] text-[#807665] uppercase tracking-[0.15em] font-semibold">
+                    Account Detail
+                  </div>
+                  <div className="px-4 py-2 text-sm text-[#1b1c1a] font-medium truncate">
+                    {user.name}
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2.5 text-sm text-red-700 hover:bg-[#efeeea] transition-colors flex items-center gap-2 font-medium"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">logout</span>
+                    Sign Out
+                  </button>
+                </div>
               </div>
-            </TransitionLink>
+            ) : (
+              <TransitionLink to="/login" className="hidden md:block">
+                <div className="w-8 h-8 rounded-full bg-[#efeeea] border border-[#d1c5b2] flex items-center justify-center hover:border-[#8b6914] transition-colors">
+                  <span className="material-symbols-outlined text-[18px] text-[#4e4637]">person</span>
+                </div>
+              </TransitionLink>
+            )}
             <button
               className="md:hidden text-[#1b1c1a] hover:text-[#8b6914] transition-colors"
               onClick={() => setMenuOpen(true)}
@@ -91,20 +139,47 @@ export default function Navbar() {
         >
           <span className="material-symbols-outlined text-3xl">close</span>
         </button>
+        
+        {/* Render user greeting on mobile if logged in */}
+        {user && (
+          <div className="text-center -mb-4">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[#807665]">Logged in as</span>
+            <div className="font-['Playfair_Display'] text-[24px] font-semibold text-[#1b1c1a]">{user.name}</div>
+          </div>
+        )}
+
         {[
           { to: '/', label: 'Home' },
           ...navItems.slice(0, 4),
-          { to: '/login', label: 'Sign In' },
-        ].map(({ to, label }) => (
-          <TransitionLink
-            key={label}
-            to={to}
-            className="font-['Playfair_Display'] text-[32px] font-medium text-[#1b1c1a] hover:text-[#8b6914] transition-colors"
-            onClick={() => setMenuOpen(false)}
-          >
-            {label}
-          </TransitionLink>
-        ))}
+          user 
+            ? { label: 'Sign Out', onClick: handleLogout }
+            : { to: '/login', label: 'Sign In' }
+        ].map((item) => {
+          if (item.onClick) {
+            return (
+              <button
+                key={item.label}
+                onClick={() => {
+                  setMenuOpen(false);
+                  item.onClick();
+                }}
+                className="font-['Playfair_Display'] text-[32px] font-medium text-red-700 hover:text-red-800 transition-colors"
+              >
+                {item.label}
+              </button>
+            );
+          }
+          return (
+            <TransitionLink
+              key={item.label}
+              to={item.to}
+              className="font-['Playfair_Display'] text-[32px] font-medium text-[#1b1c1a] hover:text-[#8b6914] transition-colors"
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.label}
+            </TransitionLink>
+          );
+        })}
       </div>
     </>
   );

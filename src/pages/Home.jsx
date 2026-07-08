@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { TransitionLink } from '../components/TransitionContext';
 import ScrollReveal from '../components/ScrollReveal';
 import ArtifactCard from '../components/ArtifactCard';
+import LiquidImage from '../components/LiquidImage';
 import { COLLECTION_ARTIFACTS, HERO_IMAGES } from '../data/artifacts';
 
 export default function Home() {
@@ -100,8 +101,7 @@ export default function Home() {
                 </TransitionLink>
               </div>
               <div className="md:col-span-7 md:col-start-6 h-[500px] md:h-[600px] artifact-image-container border border-[#d1c5b2]">
-                <img
-                  className="w-full h-full object-cover"
+                <LiquidImage
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuApO_jE8us-Xp_A0aTWB7s_sR-3c64OlEY6wG1rL0t4cTQOv_fZDedEVEmf7tUurs8Dq-leO9N_u3J-vRkhL3AdlR8xJZE_vA_oGS0asCoxz2XfIx3zisdsND5_Iq6t7rpckdbOiUGO5a6RlPwMpxYvlAzroVVbh5qnx_kSiLV76kZek1Hp9aW0YvqB-urGwKDtktHX-8l5vi39kVZfqpUY9u7khLvvk7NTgC-S3P93ALnQVmJB5xb8lt92AqP4WhAZEDtqG1Ryhw"
                   alt="Warli Art"
                 />
@@ -113,8 +113,7 @@ export default function Home() {
           <ScrollReveal>
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
               <div className="md:col-span-7 md:col-start-1 h-[500px] md:h-[600px] artifact-image-container border border-[#d1c5b2] order-2 md:order-1">
-                <img
-                  className="w-full h-full object-cover"
+                <LiquidImage
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTRmBqC2GrfspdfLryjH_PLTJLh95wMYWbj5QR4cCTGqgUoM5JE3g5peTEhyvowfm3nV_u5Z-KB6xUdzjbs3Z8oRApPw7q2RQDglGj2LAMwcSkLATEJYrnHHhM41IoOrAUeudaJXnB2Tvf3EhpOUKVqgfzClY8mw0OpAe1OrQGcAT11X_bRudrzovndhJEp4iX4vll5NQfKK5CUxqIUZHaCzmbtQQNU8G7UJYpvwq1i841Mz-sbBRt09nTxYo1KjCnK7rVZbcW1w"
                   alt="Mughal Miniature"
                 />
@@ -146,8 +145,7 @@ export default function Home() {
                 </TransitionLink>
               </div>
               <div className="md:col-span-7 md:col-start-6 h-[500px] md:h-[600px] artifact-image-container border border-[#d1c5b2]">
-                <img
-                  className="w-full h-full object-cover"
+                <LiquidImage
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZmxSyF4QvpXPPvzKmgDFipy8AJs9OI4Q5KSxtMT0bTS00wjPoCDX63jYWAZ4OV8osK8PyrJ0lzwzVdh2yvy9XruQlaGGDX3XjyB9zh9pyev2fBAwj3YatVmI8DzS9nDpbveoWOtGSCdmBaGCnwunX3iMk2wqAUbGetmcAXzd2NgQOthwvXJS1sUPrmXBnvA4FeeH-zFal3uhwgnlB-pcG6Q0zG_JlbSX1z8Xa714805gzsoGeWi4S-KtcWGYvHvfXhK6Y1sw20A"
                   alt="Chola Nataraja Bronze"
                 />

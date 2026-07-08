@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TransitionLink } from '../components/TransitionContext';
 import kailasaBg from '../assets/kailasa_bg.png';
-
-import { useNavigate } from 'react-router-dom';
 
 /* ─── Reusable clip-reveal line ────────────────────────────────────────── */
 function RevealLine({ children, delay = 0, revealed, tag: Tag = 'span', className = '', style: extraStyle = {} }) {
   return (
-    /* overflow:hidden clips the child so it's invisible until revealed */
     <div className="overflow-hidden leading-normal">
       <Tag
         className={className}
@@ -57,15 +55,17 @@ function LineInput({ id, label, type = 'text', value, onChange, autoComplete }) 
   );
 }
 
-/* ─── Login Page ────────────────────────────────────────────────────────── */
-export default function Login() {
+/* ─── Register Page ─────────────────────────────────────────────────────── */
+export default function Register() {
   const navigate = useNavigate();
   const [revealed, setRevealed] = useState(false);
   const [formRevealed, setFormRevealed] = useState(false);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPass, setShowPass] = useState(false);
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -86,28 +86,43 @@ export default function Login() {
     e.preventDefault();
     setError('');
     setSuccess('');
+
+    if (!name.trim() || !email.trim() || !password.trim()) {
+      setError('Please fill in all required fields.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || 'Login failed. Please check your credentials.');
+        throw new Error(data.message || 'Account registration failed.');
       }
 
-      setSuccess('Logged in successfully! Redirecting...');
+      setSuccess('Account created successfully! Redirecting...');
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      // Trigger standard refresh or redirect
       setTimeout(() => {
         window.location.href = '/';
       }, 1000);
@@ -117,6 +132,7 @@ export default function Login() {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen flex overflow-hidden" style={{ fontFamily: 'Inter, sans-serif' }}>
@@ -177,7 +193,7 @@ export default function Login() {
               tag="h1"
               className="font-['Playfair_Display'] font-bold text-white leading-[1.1] tracking-[-0.02em] text-[clamp(56px,7vw,88px)]"
             >
-              RETURN
+              JOIN
             </RevealLine>
             <RevealLine
               delay={110}
@@ -185,7 +201,7 @@ export default function Login() {
               tag="span"
               className="font-['Playfair_Display'] font-bold text-white leading-[1.1] tracking-[-0.02em] text-[clamp(56px,7vw,88px)]"
             >
-              TO THE
+              THE
             </RevealLine>
             <RevealLine
               delay={220}
@@ -193,7 +209,7 @@ export default function Login() {
               tag="span"
               className="font-['Playfair_Display'] font-bold leading-[1.1] tracking-[-0.02em] text-[#c9a227] text-[clamp(56px,7vw,88px)]"
             >
-              ARCHIVE
+              LEGACY
             </RevealLine>
 
             {/* Subtext */}
@@ -206,7 +222,7 @@ export default function Login() {
                   transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1) 380ms, opacity 0.8s ease 380ms',
                 }}
               >
-                Three thousand years of art, craft, and cultural memory — waiting for you.
+                Create an account to start curating and saving your favorite artifacts.
               </p>
             </div>
           </div>
@@ -227,7 +243,7 @@ export default function Login() {
       </div>
 
       {/* ══════════════════════════════════════════
-          RIGHT PANEL — Sign-in form
+          RIGHT PANEL — Sign-up form
           ══════════════════════════════════════════ */}
       <div className="flex-1 flex flex-col justify-center items-center px-8 bg-[#fbf9f5] relative min-h-screen">
 
@@ -253,17 +269,17 @@ export default function Login() {
           />
         </div>
 
-        <div className="w-full max-w-[380px]">
+        <div className="w-full max-w-[380px] py-12">
 
           {/* Heading */}
-          <div className="mb-10">
+          <div className="mb-8">
             <RevealLine
               delay={0}
               revealed={formRevealed}
               tag="h2"
               className="font-['Playfair_Display'] text-[36px] font-semibold text-[#1b1c1a] leading-tight mb-3"
             >
-              Welcome back
+              Create account
             </RevealLine>
             <div className="overflow-hidden">
               <p
@@ -274,14 +290,14 @@ export default function Login() {
                   transition: 'transform 0.7s cubic-bezier(0.16,1,0.3,1) 140ms, opacity 0.7s ease 140ms',
                 }}
               >
-                Sign in to your personal collection and archive.
+                Join the platform and start saving cultural exhibits.
               </p>
             </div>
           </div>
 
           {/* Form */}
           <form
-            className="flex flex-col gap-7"
+            className="flex flex-col gap-6"
             onSubmit={handleSubmit}
             style={{
               opacity: formRevealed ? 1 : 0,
@@ -301,7 +317,16 @@ export default function Login() {
             )}
 
             <LineInput
-              id="login-email"
+              id="register-name"
+              label="Full Name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoComplete="name"
+            />
+
+            <LineInput
+              id="register-email"
               label="Email address"
               type="email"
               value={email}
@@ -309,37 +334,42 @@ export default function Login() {
               autoComplete="email"
             />
 
-            <div>
-              <LineInput
-                id="login-password"
-                label="Password"
-                type={showPass ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-              <div className="flex justify-between items-center mt-3">
-                <button
-                  type="button"
-                  onClick={() => setShowPass((p) => !p)}
-                  className="text-[12px] text-[#807665] hover:text-[#1b1c1a] transition-colors"
-                >
-                  {showPass ? 'Hide password' : 'Show password'}
-                </button>
-                <a href="#" className="text-[12px] text-[#8b6914] hover:underline transition-colors">
-                  Forgot password?
-                </a>
-              </div>
+            <LineInput
+              id="register-password"
+              label="Password"
+              type={showPass ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+            />
+
+            <LineInput
+              id="register-confirm-password"
+              label="Confirm Password"
+              type={showPass ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
+            />
+
+            <div className="flex justify-between items-center">
+              <button
+                type="button"
+                onClick={() => setShowPass((p) => !p)}
+                className="text-[12px] text-[#807665] hover:text-[#1b1c1a] transition-colors"
+              >
+                {showPass ? 'Hide passwords' : 'Show passwords'}
+              </button>
             </div>
 
             {/* Primary CTA */}
             <button
               type="submit"
-              id="login-submit-btn"
+              id="register-submit-btn"
               disabled={loading}
               className="w-full py-4 bg-[#1b1c1a] text-[#fbf9f5] text-[13px] font-semibold uppercase tracking-[0.14em] rounded hover:bg-[#2d2f2c] active:bg-[#0f0e0d] transition-all duration-200 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? 'Signing In...' : 'Sign In'}
+              {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
 
             {/* Divider */}
@@ -352,7 +382,7 @@ export default function Login() {
             {/* Google sign-in */}
             <button
               type="button"
-              id="login-google-btn"
+              id="register-google-btn"
               className="w-full py-3.5 border border-[#d1c5b2] rounded bg-white text-[13px] font-medium text-[#1b1c1a] tracking-wide hover:border-[#1b1c1a] hover:shadow-sm transition-all duration-200 flex items-center justify-center gap-3"
             >
               {/* Google SVG icon */}
@@ -366,7 +396,7 @@ export default function Login() {
             </button>
           </form>
 
-          {/* Create account link */}
+          {/* Switch back to sign-in */}
           <div
             className="mt-8 text-center"
             style={{
@@ -374,12 +404,12 @@ export default function Login() {
               transition: 'opacity 0.7s ease 500ms',
             }}
           >
-            <span className="text-[13px] text-[#807665]">New to ARKANA? </span>
+            <span className="text-[13px] text-[#807665]">Already have an account? </span>
             <TransitionLink
-              to="/register"
+              to="/login"
               className="text-[13px] font-semibold text-[#1b1c1a] hover:text-[#8b6914] transition-colors underline underline-offset-2"
             >
-              Create an account
+              Sign In
             </TransitionLink>
           </div>
         </div>

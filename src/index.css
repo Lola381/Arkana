@@ -99,6 +99,41 @@ body {
   transition: transform 0.15s ease-out;
 }
 
+/* ─── LiquidImage — WebGL Liquid Scroll Effect ─────────────────────────── */
+.liquid-image-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* The <img> sits underneath, providing natural sizing and a clean fallback */
+.liquid-image-fallback {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  visibility: hidden;   /* hidden — canvas renders on top; shown if WebGL fails */
+}
+
+/* The <canvas> overlays the img exactly, rendering the distorted texture */
+.liquid-image-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Graceful degradation: show img if canvas is not supported */
+@supports not (display: grid) {
+  .liquid-image-fallback { visibility: visible; }
+  .liquid-image-canvas   { display: none; }
+}
+
+
+
 /* ---- Scrollbar hiding ---- */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }

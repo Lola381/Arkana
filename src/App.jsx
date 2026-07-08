@@ -12,6 +12,7 @@ import Culture from './pages/Culture';
 import ArtifactDetail from './pages/ArtifactDetail';
 import Identify from './pages/Identify';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/artifact" element={<ArtifactDetail />} />
           <Route path="/identify" element={<Identify />}       />
           <Route path="/login"    element={<Login />}          />
+          <Route path="/register" element={<Register />}       />
         </Routes>
         <TransitionOverlay />
         {/* Card expand modal — Photography Page Transition */}
