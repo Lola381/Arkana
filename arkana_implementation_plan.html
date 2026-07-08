@@ -1,0 +1,373 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:Arial,sans-serif;background:var(--color-background-primary);color:var(--color-text-primary)}
+  .tabs{display:flex;gap:6px;margin-bottom:1.2rem;flex-wrap:wrap}
+  .tab{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--color-border-secondary);background:var(--color-background-secondary);color:var(--color-text-secondary);transition:all .2s}
+  .tab.active{background:#2C1F5E;color:#fff;border-color:#2C1F5E}
+  .panel{display:none}.panel.active{display:block}
+  .week{margin-bottom:1.1rem}
+  .week-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .week-label{font-size:11px;font-weight:600;color:var(--color-text-tertiary);letter-spacing:.06em;white-space:nowrap}
+  .week-date{font-size:11px;color:var(--color-text-tertiary)}
+  .week-line{flex:1;height:0.5px;background:var(--color-border-tertiary)}
+  .task{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:10px 14px;margin-bottom:6px;border-left:3px solid #ccc}
+  .task-title{font-size:13px;font-weight:500;color:var(--color-text-primary);margin-bottom:3px}
+  .task-detail{font-size:12px;color:var(--color-text-secondary);line-height:1.6}
+  .tag{display:inline-block;font-size:10px;padding:2px 7px;border-radius:4px;margin-right:4px;margin-top:4px;font-weight:500}
+  .del{background:#E1F5EE;color:#085041}
+  .col{background:#EEEDFE;color:#3C3489}
+  .hard{background:#FCEBEB;color:#791F1F}
+  /* per-member colours */
+  .tm1{border-left-color:#534AB7}
+  .tm2{border-left-color:#0A6E56}
+  .tm3{border-left-color:#B84A1A}
+  .all{border-left-color:#2C1F5E}
+  /* summary cards */
+  .summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.4rem}
+  .s-card{border-radius:8px;padding:12px 14px;border:0.5px solid var(--color-border-tertiary)}
+  .s-card.c1{background:#EEEDFE;border-left:3px solid #534AB7}
+  .s-card.c2{background:#E1F5EE;border-left:3px solid #0A6E56}
+  .s-card.c3{background:#FEF3EC;border-left:3px solid #B84A1A}
+  .s-name{font-size:12px;font-weight:600;color:var(--color-text-primary);margin-bottom:2px}
+  .s-role{font-size:11px;color:var(--color-text-tertiary);margin-bottom:8px}
+  .s-owns{font-size:11px;color:var(--color-text-secondary);line-height:1.7}
+  .milestone{background:var(--color-background-secondary);border-radius:6px;padding:8px 12px;margin:10px 0;font-size:12px;color:var(--color-text-secondary);border-left:3px solid #2C1F5E}
+  .milestone strong{color:var(--color-text-primary);font-weight:600}
+  .phase-label{font-size:11px;font-weight:600;background:#2C1F5E;color:#fff;padding:4px 12px;border-radius:4px;display:inline-block;margin-bottom:10px}
+</style>
+
+<div class="summary">
+  <div class="s-card c1">
+    <div class="s-name">TM1 — UI/UX</div>
+    <div class="s-role">Interface Design & Frontend</div>
+    <div class="s-owns">
+      ▸ Design system & wireframes<br>
+      ▸ Leaflet map + territory layers<br>
+      ▸ Split-screen layout<br>
+      ▸ Chat panel + SSE renderer<br>
+      ▸ Insight cards + citations<br>
+      ▸ Culture profile pages<br>
+      ▸ Observability dashboard UI<br>
+      ▸ Accessibility review
+    </div>
+  </div>
+  <div class="s-card c2">
+    <div class="s-name">TM2 — AI/ML</div>
+    <div class="s-role">RAG Pipeline & Intelligence</div>
+    <div class="s-owns">
+      ▸ Semantic chunking<br>
+      ▸ Embedding + Qdrant indexing<br>
+      ▸ Hybrid retrieval + RRF fusion<br>
+      ▸ Cross-encoder reranking<br>
+      ▸ Prompt engineering + refusal<br>
+      ▸ NER for map sync<br>
+      ▸ CLIP visual intelligence<br>
+      ▸ Evaluation + LLM-as-judge
+    </div>
+  </div>
+  <div class="s-card c3">
+    <div class="s-name">TM3 — Full Stack</div>
+    <div class="s-role">Backend, Data Engineering & Infra</div>
+    <div class="s-owns">
+      ▸ Docker orchestration<br>
+      ▸ PostgreSQL schema + APIs<br>
+      ▸ Ingestion pipeline (all sources)<br>
+      ▸ Celery + Redis workers<br>
+      ▸ SSE streaming server<br>
+      ▸ Auth (JWT + OAuth)<br>
+      ▸ Image upload + storage<br>
+      ▸ Query logging + metrics
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="show('all')">Full Timeline</div>
+  <div class="tab" onclick="show('tm1')">TM1 — UI/UX</div>
+  <div class="tab" onclick="show('tm2')">TM2 — AI/ML</div>
+  <div class="tab" onclick="show('tm3')">TM3 — Full Stack</div>
+</div>
+
+<!-- FULL TIMELINE -->
+<div class="panel active" id="all">
+
+  <div class="phase-label">Phase 1 — Setup (Week 1)</div>
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEK 1</span><span class="week-date">22 Jun – 5 Jul</span><div class="week-line"></div></div>
+    <div class="task all">
+      <div class="task-title">Project scoping, repo setup, Docker Compose skeleton</div>
+      <div class="task-detail">All three members. Finalise feature list, agree on API contracts between frontend and backend, create GitHub repo with branch strategy, set up Docker Compose with placeholder services.</div>
+      <span class="tag del">Deliverable: running docker-compose up with all 6 services</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Design system: colour tokens, typography, component library</div>
+      <div class="task-detail">TM1. Establish the earthy colour palette, font choices, spacing system in Tailwind config. Build reusable base components: Button, Card, Badge, CitationChip.</div>
+      <span class="tag del">Deliverable: Figma design system + Tailwind theme config</span>
+    </div>
+    <div class="task tm2">
+      <div class="task-title">Corpus audit and source prioritisation</div>
+      <div class="task-detail">TM2. Survey all six data sources, assess text quality and chunk-ability, identify which sources produce the cleanest semantic chunks. Define the golden test set structure (50 Q&A pairs to be filled progressively).</div>
+      <span class="tag del">Deliverable: source quality report + test set schema</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">PostgreSQL schema, Qdrant collections, environment config</div>
+      <div class="task-detail">TM3. Write and apply all database migrations (tribes, artifacts, documents, chunks, users, sessions tables). Create Qdrant collection with correct vector dimensions and payload schema. Set up .env structure.</div>
+      <span class="tag del">Deliverable: DB schema applied, Qdrant collection live</span>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 2 — Data & Core Pipeline (Weeks 2–5)</div>
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEKS 2–3</span><span class="week-date">6 Jul – 19 Jul</span><div class="week-line"></div></div>
+    <div class="task tm3">
+      <div class="task-title">Data ingestion pipeline — all sources</div>
+      <div class="task-detail">TM3. Build scrapers/API clients for MAP Academy, IGNCA PDF downloader, Museums of India API, Internet Archive bulk download, ASI (indianheritage.gov.in), Europeana API. Output: raw text files + metadata JSON per document. Rate limit handling, caching layer in Redis.</div>
+      <span class="tag del">Deliverable: 300+ raw documents ingested and stored</span>
+      <span class="tag hard">Critical path</span>
+    </div>
+    <div class="task tm2">
+      <div class="task-title">Semantic chunking pipeline</div>
+      <div class="task-detail">TM2. Implement sentence-level cosine similarity boundary detection. Tune threshold against the corpus — test on MAP Academy (clean prose) vs IGNCA PDFs (noisier). Enforce 150–512 token bounds with 50-token overlap. Attach metadata payload to each chunk.</div>
+      <span class="tag del">Deliverable: chunking script producing clean semantic chunks with metadata</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Wireframes — all screens</div>
+      <div class="task-detail">TM1. Produce mid-fidelity wireframes for: split-screen home (map + chat), culture profile page, artifact detail modal, admin ingestion dashboard, observability dashboard. Get team sign-off before moving to implementation.</div>
+      <span class="tag del">Deliverable: Figma wireframes for all 5 screens</span>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEKS 3–4</span><span class="week-date">20 Jul – 2 Aug</span><div class="week-line"></div></div>
+    <div class="task tm2">
+      <div class="task-title">Embedding pipeline + Qdrant indexing</div>
+      <div class="task-detail">TM2. Batch-embed all chunks using sentence-transformers/all-mpnet-base-v2. Push vectors + metadata payloads to Qdrant. Build a BM25 index in PostgreSQL using full-text search on chunk_text. Verify index with test queries.</div>
+      <span class="tag del">Deliverable: full corpus indexed in Qdrant + PostgreSQL FTS</span>
+    </div>
+    <div class="task tm2">
+      <div class="task-title">Hybrid retrieval + RRF fusion</div>
+      <div class="task-detail">TM2. Implement dual retrieval: Qdrant cosine search (top-20) + PostgreSQL BM25 (top-20). Apply Reciprocal Rank Fusion to merge both ranked lists. Expose as internal retrieve(query, filters) function.</div>
+      <span class="tag del">Deliverable: hybrid retriever returning fused top-20 candidates</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">FastAPI backend — core routes</div>
+      <div class="task-detail">TM3. Implement: POST /chat/query (SSE), GET /map/tribes, GET /map/artifacts, GET /artifacts/{id}, GET /tribes/{id}, POST /auth/register, POST /auth/login. Wire up JWT middleware. Write OpenAPI docs.</div>
+      <span class="tag del">Deliverable: all core API endpoints returning mock data</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Leaflet map — territory layers + artifact pins</div>
+      <div class="task-detail">TM1. Integrate Leaflet.js. Load Native Land Digital GeoJSON for Indian territories. Render territory polygons with hover states and click handlers. Add artifact pin markers with clustering. Connect to /map/tribes and /map/artifacts APIs.</div>
+      <span class="tag del">Deliverable: interactive map with clickable territories and pins</span>
+    </div>
+  </div>
+
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEKS 4–5</span><span class="week-date">27 Jul – 9 Aug</span><div class="week-line"></div></div>
+    <div class="task tm2">
+      <div class="task-title">Cross-encoder reranking + prompt engineering</div>
+      <div class="task-detail">TM2. Integrate cross-encoder/ms-marco-MiniLM-L-6-v2 to score top-20 candidates and select top 3–4. Build prompt template: system instruction (refusal clause + citation requirement) + chunks + conversation history + query. Test refusal behaviour on out-of-corpus queries.</div>
+      <span class="tag del">Deliverable: full RAG query function — retrieve → rerank → generate</span>
+      <span class="tag hard">Core AI deliverable</span>
+    </div>
+    <div class="task tm2">
+      <div class="task-title">NER for map synchronisation</div>
+      <div class="task-detail">TM2. Run spaCy NER + tribe name lookup table on every generated response. Emit structured events: MAP_HIGHLIGHT(tribe_id), MAP_PAN(lat, lng), TIMELINE_SEEK(year). These events are injected into the SSE stream as JSON event objects alongside text tokens.</div>
+      <span class="tag del">Deliverable: NER emitting map events correctly for test queries</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">SSE streaming server + Celery ingestion workers</div>
+      <div class="task-detail">TM3. Implement SSE endpoint that streams token events, insight_card events, map events, and citation events as the LLM generates. Set up Celery Beat for scheduled source re-ingestion. Implement ingestion task with retry logic (3 retries, exponential backoff).</div>
+      <span class="tag del">Deliverable: SSE stream delivering all event types to a test client</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Split-screen layout + chat panel + SSE consumer</div>
+      <div class="task-detail">TM1. Build the split-screen SplitLayout component. Implement useSSEChat hook consuming the SSE stream — rendering text tokens as they arrive, triggering insight cards on insight_card events, forwarding map events to the event bus. Build the chat input + message thread UI.</div>
+      <span class="tag del">Deliverable: split-screen with working chat streaming from backend</span>
+    </div>
+  </div>
+
+  <div class="milestone"><strong>Milestone 1 (End Week 5):</strong> End-to-end RAG query working — user types a question, response streams into chat panel, map highlights a tribe, insight card appears. Core system demo-able.</div>
+
+  <div class="phase-label">Phase 3 — Interface Completion (Weeks 6–7)</div>
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEKS 6–7</span><span class="week-date">10 Aug – 23 Aug</span><div class="week-line"></div></div>
+    <div class="task tm1">
+      <div class="task-title">Insight cards, citation badges, artifact detail modal</div>
+      <div class="task-detail">TM1. Build InsightCard component — renders inline within chat stream when insight_card event fires. Shows artifact image, name, tribe, time period, institution, source link. CitationBadge component anchored to each factual claim. Artifact detail modal on card click.</div>
+      <span class="tag del">Deliverable: insight cards appearing mid-stream correctly</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Culture profile pages + browse/search interface</div>
+      <div class="task-detail">TM1. Build dedicated page per tribe/culture: hero image, description, artifact gallery, historical timeline, related art forms, "Ask about this culture" shortcut button that preloads context into chat. Browse page: search + filter by region, period, art form.</div>
+      <span class="tag del">Deliverable: culture profile pages live and linked from map clicks</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Migration path animation + timeline slider</div>
+      <div class="task-detail">TM1. Animate polylines on map for migration paths when AI references movement. Timeline slider component (1000 BCE – present) that filters visible territory layers by period. Connect slider to /map/geojson/territories?period= endpoint.</div>
+      <span class="tag del">Deliverable: timeline slider filtering map, migration path animations</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">Auth, user sessions, bookmarks</div>
+      <div class="task-detail">TM3. Complete JWT auth flow. Google OAuth integration. Save/load conversation sessions (messages + map state as JSONB). Bookmark artifacts and territories per user. Admin role middleware protecting /admin/* routes.</div>
+      <span class="tag del">Deliverable: full auth flow working, sessions persisting</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">Admin ingestion dashboard backend</div>
+      <div class="task-detail">TM3. POST /admin/ingest/document (multipart upload), GET /admin/ingest/status/{task_id} (Celery task progress), DELETE /admin/documents/{id} (cascade delete vectors from Qdrant). GET /admin/corpus/stats (total chunks, docs, coverage by region).</div>
+      <span class="tag del">Deliverable: admin ingestion API fully functional</span>
+    </div>
+  </div>
+
+  <div class="milestone"><strong>Milestone 2 (End Week 7):</strong> Full UI complete — map, chat, profile pages, browse/search, auth. System is a complete product, all three modules started.</div>
+
+  <div class="phase-label">Phase 4 — Visual Intelligence Module (Weeks 8–9)</div>
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEKS 8–9</span><span class="week-date">24 Aug – 6 Sep</span><div class="week-line"></div></div>
+    <div class="task tm2">
+      <div class="task-title">CLIP image embedding + artifact classification</div>
+      <div class="task-detail">TM2. Embed all artifact images from corpus using CLIP ViT-B/32. Store in a second Qdrant collection (arkana_images). Build artifact style classifier on top — categories: Warli, Gond, Madhubani, Pithora, Bhil, Mughal, Buddhist, other. Test classification accuracy on held-out images.</div>
+      <span class="tag del">Deliverable: image collection indexed, classifier returning style + confidence</span>
+    </div>
+    <div class="task tm2">
+      <div class="task-title">Visual search: image → similar artifacts → RAG handoff</div>
+      <div class="task-detail">TM2. Embed query image with CLIP, search arkana_images collection for top-5 similar artifacts. Extract identified tribe and artifact metadata, pass to RAG retriever as context filters. Generate a grounded response about the identified artifact's cultural significance.</div>
+      <span class="tag del">Deliverable: image in → cultural context out, end-to-end</span>
+      <span class="tag hard">Core Module 2 deliverable</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">Image upload API + processing pipeline</div>
+      <div class="task-detail">TM3. POST /visual/identify — accepts multipart image upload, queues Celery task for CLIP embedding + classification, returns task_id. GET /visual/result/{task_id} — returns classification result, similar artifacts, RAG response. Image storage with S3-compatible backend or local volume.</div>
+      <span class="tag del">Deliverable: image upload API returning visual intelligence results</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Visual intelligence UI</div>
+      <div class="task-detail">TM1. Image upload component with drag-and-drop. Processing state animation. Results view: identified style with confidence meter, top-5 similar artifact gallery, RAG knowledge panel for the identified culture. "Explore on map" button that zooms map to identified region.</div>
+      <span class="tag del">Deliverable: complete visual intelligence screen working end-to-end</span>
+    </div>
+  </div>
+
+  <div class="phase-label">Phase 5 — Observability Module (Weeks 9–10)</div>
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEKS 9–10</span><span class="week-date">7 Sep – 20 Sep</span><div class="week-line"></div></div>
+    <div class="task tm2">
+      <div class="task-title">Golden test set + LLM-as-judge evaluator</div>
+      <div class="task-detail">TM2. Finalise 50 Q&A pairs from corpus (hand-curated, answers verifiable against source). Build async evaluator: after each production response, a secondary LLM call scores faithfulness (is every claim traceable to the retrieved chunks?) and relevance (does it answer the question?). Scores logged to DB.</div>
+      <span class="tag del">Deliverable: evaluator running async on all production queries</span>
+    </div>
+    <div class="task tm2">
+      <div class="task-title">Retrieval precision evaluation + CI gate</div>
+      <div class="task-detail">TM2. Run golden test set against the retrieval pipeline: measure precision@3 (are correct chunks in top 3?). Set threshold at 85%. Wire this as a GitHub Actions check triggered on every new document ingestion batch. Fail the ingestion if precision drops below threshold.</div>
+      <span class="tag del">Deliverable: CI gate blocking bad ingestions automatically</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">Query logging + metrics aggregation pipeline</div>
+      <div class="task-detail">TM3. Log every query: timestamp, latency (time to first token, total), retrieved chunk IDs, faithfulness score, relevance score, user region filter. Aggregate into time-series metrics: p50/p95 latency, daily faithfulness trend, top unanswered query topics. Store in PostgreSQL metrics tables.</div>
+      <span class="tag del">Deliverable: metrics pipeline populating DB in real time</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Observability dashboard UI</div>
+      <div class="task-detail">TM1. Admin-facing dashboard: latency distribution chart (p50/p95 trend), faithfulness score trend, retrieval precision over time, coverage gap heatmap by region (which tribes have thin corpus coverage?), failed/refused query log with drill-down, corpus health score per culture. Built with Recharts or D3.</div>
+      <span class="tag del">Deliverable: live observability dashboard pulling from metrics API</span>
+    </div>
+  </div>
+
+  <div class="milestone"><strong>Milestone 3 (End Week 10):</strong> All three modules complete. Visual Intelligence identifies artifacts. Observability dashboard shows live retrieval metrics. CI gate is active.</div>
+
+  <div class="phase-label">Phase 6 — Integration & Delivery (Weeks 11–12)</div>
+  <div class="week">
+    <div class="week-header"><span class="week-label">WEEKS 11–12</span><span class="week-date">21 Sep – 4 Oct</span><div class="week-line"></div></div>
+    <div class="task all">
+      <div class="task-title">End-to-end integration testing</div>
+      <div class="task-detail">All members. Test every user journey: map click → chat context → response → map highlight. Image upload → identification → RAG response → map zoom. Admin ingestion → CI evaluation → corpus update. Fix cross-module bugs.</div>
+      <span class="tag del">Deliverable: all three journeys working without errors</span>
+    </div>
+    <div class="task tm1">
+      <div class="task-title">Accessibility review + responsive fixes</div>
+      <div class="task-detail">TM1. WCAG 2.1 AA check: keyboard navigation on map, colour contrast ratios, alt text on all artifact images, screen reader labels on all interactive elements. Fix responsive layout for tablet viewport.</div>
+      <span class="tag del">Deliverable: WCAG AA compliance confirmed</span>
+    </div>
+    <div class="task tm2">
+      <div class="task-title">Model performance optimisation</div>
+      <div class="task-detail">TM2. Profile retrieval latency — identify bottlenecks (embedding inference, Qdrant search, reranker). Implement embedding cache for repeated queries. Batch reranking where possible. Target: p50 < 2 seconds to first token.</div>
+      <span class="tag del">Deliverable: p50 latency under 2 seconds confirmed</span>
+    </div>
+    <div class="task tm3">
+      <div class="task-title">Production hardening + final documentation</div>
+      <div class="task-detail">TM3. Rate limiting on /chat/query (20 req/min/user). Input sanitisation. Nginx config finalised. Docker volumes confirmed persistent. Write README with setup instructions, API docs finalised. Prepare demo dataset (clean subset of corpus for presentation).</div>
+      <span class="tag del">Deliverable: system deployable from README in one command</span>
+    </div>
+    <div class="task all">
+      <div class="task-title">Demo preparation + final submission</div>
+      <div class="task-detail">All members. Prepare demo script covering all three modules. Rehearse the live demo (map click → chat → insight card → image upload → observability). Final document submission.</div>
+      <span class="tag del">Deliverable: project submitted, demo rehearsed</span>
+    </div>
+  </div>
+
+  <div class="milestone"><strong>Final Milestone (End Week 12):</strong> Project complete, documented, deployable in one command, and demo-ready.</div>
+
+</div>
+
+<!-- TM1 PANEL -->
+<div class="panel" id="tm1">
+  <div style="background:#EEEDFE;border-radius:8px;padding:12px 16px;margin-bottom:1rem;border-left:3px solid #534AB7">
+    <div style="font-size:13px;font-weight:600;color:#2C1F5E;margin-bottom:4px">TM1 — UI/UX | Total: ~12 weeks</div>
+    <div style="font-size:12px;color:#534AB7">Design System → Map → Split-screen → Chat UI → Insight Cards → Profile Pages → Visual UI → Observability UI → Accessibility</div>
+  </div>
+  <div class="task tm1"><div class="task-title">Week 1 — Design system, Tailwind tokens, base components</div><div class="task-detail">Colour palette, typography, Button, Card, Badge, CitationChip, Loading states. Figma component library.</div></div>
+  <div class="task tm1"><div class="task-title">Weeks 2–3 — Wireframes (all 5 screens)</div><div class="task-detail">Split-screen home, culture profile page, artifact modal, admin ingestion dashboard, observability dashboard. Team sign-off required before implementation.</div></div>
+  <div class="task tm1"><div class="task-title">Weeks 3–4 — Leaflet map + territory layers + artifact pins</div><div class="task-detail">GeoJSON territory polygons, hover + click states, artifact pin clusters, connect to map API endpoints.</div></div>
+  <div class="task tm1"><div class="task-title">Weeks 4–5 — Split-screen layout + SSE chat consumer</div><div class="task-detail">SplitLayout component, useSSEChat hook, message thread renderer, chat input. Forward map events to event bus.</div></div>
+  <div class="task tm1"><div class="task-title">Weeks 6–7 — Insight cards + citation badges + artifact modal</div><div class="task-detail">InsightCard rendering mid-stream on insight_card events. CitationBadge per factual claim. Full artifact detail modal.</div></div>
+  <div class="task tm1"><div class="task-title">Weeks 6–7 — Culture profile pages + browse/search</div><div class="task-detail">Per-tribe page: hero, description, artifact gallery, timeline, related art forms, Ask shortcut. Browse: search + filter.</div></div>
+  <div class="task tm1"><div class="task-title">Week 7 — Migration path animation + timeline slider</div><div class="task-detail">Animated polylines on map for migration events. Timeline slider filtering territory layers by historical period.</div></div>
+  <div class="task tm1"><div class="task-title">Week 9 — Visual intelligence UI</div><div class="task-detail">Drag-and-drop image upload, processing animation, results: style + confidence, similar artifact gallery, RAG knowledge panel, map zoom button.</div></div>
+  <div class="task tm1"><div class="task-title">Week 10 — Observability dashboard UI</div><div class="task-detail">Latency trend, faithfulness score trend, retrieval precision chart, coverage gap heatmap by region, failed query log.</div></div>
+  <div class="task tm1"><div class="task-title">Weeks 11–12 — Accessibility + responsive fixes</div><div class="task-detail">WCAG 2.1 AA compliance, keyboard navigation, colour contrast, alt text, screen reader labels, tablet layout.</div></div>
+</div>
+
+<!-- TM2 PANEL -->
+<div class="panel" id="tm2">
+  <div style="background:#E1F5EE;border-radius:8px;padding:12px 16px;margin-bottom:1rem;border-left:3px solid #0A6E56">
+    <div style="font-size:13px;font-weight:600;color:#0A3D2C;margin-bottom:4px">TM2 — AI/ML | Total: ~11 weeks</div>
+    <div style="font-size:12px;color:#0A6E56">Corpus audit → Chunking → Embedding → Hybrid retrieval → Reranking → Prompt → NER → CLIP → Evaluation → CI gate</div>
+  </div>
+  <div class="task tm2"><div class="task-title">Week 1 — Corpus audit + test set schema</div><div class="task-detail">Assess text quality per source. Identify chunking challenges (noisy PDFs vs clean prose). Define 50-item golden test set schema.</div></div>
+  <div class="task tm2"><div class="task-title">Weeks 2–3 — Semantic chunking pipeline</div><div class="task-detail">Sentence-level cosine similarity boundary detection. Tune threshold for each source type. 150–512 token bounds, 50-token overlap, metadata payload attachment.</div></div>
+  <div class="task tm2"><div class="task-title">Weeks 3–4 — Embedding pipeline + Qdrant + BM25 index</div><div class="task-detail">Batch embed with all-mpnet-base-v2. Push to Qdrant. Build BM25 index in PostgreSQL full-text search. Verify with test queries.</div></div>
+  <div class="task tm2"><div class="task-title">Week 4 — Hybrid retrieval + RRF fusion</div><div class="task-detail">Dual retrieval: Qdrant cosine (top-20) + PostgreSQL BM25 (top-20). Reciprocal Rank Fusion. retrieve(query, filters) function.</div></div>
+  <div class="task tm2"><div class="task-title">Weeks 4–5 — Cross-encoder reranking</div><div class="task-detail">Integrate ms-marco-MiniLM-L-6-v2. Score top-20 fused candidates, select top 3–4. Measure improvement over raw vector search on test queries.</div></div>
+  <div class="task tm2"><div class="task-title">Week 5 — Prompt engineering + refusal clause</div><div class="task-detail">System prompt: refusal clause, citation requirement, conversation history injection. Test against adversarial out-of-corpus queries until refusal is consistent.</div></div>
+  <div class="task tm2"><div class="task-title">Week 5 — NER for map synchronisation</div><div class="task-detail">spaCy NER + tribe name lookup table. Emit MAP_HIGHLIGHT, MAP_PAN, TIMELINE_SEEK events into SSE stream. Test against 20 representative queries.</div></div>
+  <div class="task tm2"><div class="task-title">Weeks 8–9 — CLIP image embedding + classifier</div><div class="task-detail">Embed artifact images with CLIP ViT-B/32. Index in arkana_images Qdrant collection. Style classifier: Warli, Gond, Madhubani, Pithora, Bhil, Mughal, Buddhist, other.</div></div>
+  <div class="task tm2"><div class="task-title">Week 9 — Visual search → RAG handoff</div><div class="task-detail">Image → CLIP embed → similar artifacts → metadata → RAG filters → grounded cultural response. End-to-end pipeline.</div></div>
+  <div class="task tm2"><div class="task-title">Weeks 9–10 — LLM-as-judge evaluator + golden test set</div><div class="task-detail">Finalise 50 Q&A pairs. Async faithfulness + relevance evaluator running on every production query. Scores logged to DB.</div></div>
+  <div class="task tm2"><div class="task-title">Week 10 — Retrieval precision evaluation + CI gate</div><div class="task-detail">Precision@3 on golden test set. GitHub Actions check on every ingestion batch. Fail if below 85% threshold.</div></div>
+  <div class="task tm2"><div class="task-title">Weeks 11–12 — Latency optimisation</div><div class="task-detail">Profile bottlenecks, implement embedding cache for repeated queries, batch reranking. Target p50 < 2 seconds to first token.</div></div>
+</div>
+
+<!-- TM3 PANEL -->
+<div class="panel" id="tm3">
+  <div style="background:#FEF3EC;border-radius:8px;padding:12px 16px;margin-bottom:1rem;border-left:3px solid #B84A1A">
+    <div style="font-size:13px;font-weight:600;color:#6B2A1A;margin-bottom:4px">TM3 — Full Stack | Total: ~12 weeks</div>
+    <div style="font-size:12px;color:#B84A1A">Docker → Schema → Ingestion → APIs → SSE → Auth → Admin → Image pipeline → Query logging → Hardening</div>
+  </div>
+  <div class="task tm3"><div class="task-title">Week 1 — Docker Compose + PostgreSQL schema + Qdrant setup</div><div class="task-detail">All 6 containers running. DB migrations applied. Qdrant collections created. .env structure defined. GitHub repo and branch strategy.</div></div>
+  <div class="task tm3"><div class="task-title">Weeks 2–3 — Data ingestion pipeline (all 6 sources)</div><div class="task-detail">MAP Academy scraper, IGNCA PDF downloader, Museums of India API client, ASI scraper, Internet Archive bulk download, Europeana API client. Redis caching, rate limit handling. 300+ documents ingested.</div></div>
+  <div class="task tm3"><div class="task-title">Weeks 3–4 — FastAPI core routes + OpenAPI docs</div><div class="task-detail">All map, chat, artifact, auth endpoints returning real data. JWT middleware. Request validation. OpenAPI documentation live at /docs.</div></div>
+  <div class="task tm3"><div class="task-title">Weeks 4–5 — SSE streaming server + Celery workers</div><div class="task-detail">SSE endpoint streaming token, insight_card, map event, citation, done events. Celery ingestion tasks with 3-retry exponential backoff. Celery Beat for scheduled re-ingestion.</div></div>
+  <div class="task tm3"><div class="task-title">Weeks 6–7 — Auth (JWT + Google OAuth) + sessions + bookmarks</div><div class="task-detail">Complete auth flow. Session save/load (messages + map state). Bookmark artifacts and territories. Admin role middleware.</div></div>
+  <div class="task tm3"><div class="task-title">Weeks 6–7 — Admin ingestion dashboard backend</div><div class="task-detail">Upload, task status, corpus stats, document deletion with Qdrant cascade. All /admin/* routes protected by role check.</div></div>
+  <div class="task tm3"><div class="task-title">Week 9 — Image upload API + visual processing pipeline</div><div class="task-detail">POST /visual/identify, GET /visual/result/{task_id}. Image storage. Celery task wiring for CLIP embed + classify. Result caching.</div></div>
+  <div class="task tm3"><div class="task-title">Weeks 9–10 — Query logging + metrics aggregation</div><div class="task-detail">Log every query: latency, chunk IDs, scores. Aggregate p50/p95, faithfulness trends, coverage gaps into metrics tables. Metrics API for observability dashboard.</div></div>
+  <div class="task tm3"><div class="task-title">Weeks 11–12 — Production hardening + README + demo dataset</div><div class="task-detail">Rate limiting, input sanitisation, Nginx final config, Docker volume persistence confirmed. README: setup in one command. Demo corpus subset prepared.</div></div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
