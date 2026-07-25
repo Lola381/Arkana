@@ -35,6 +35,7 @@
 
 ## 🏗️ System Architecture
 
+### Current State
 ```
                                   ┌────────────────────────┐
                                   │      Client Browser    │
@@ -61,6 +62,32 @@
                                   └────────────────────────┘
 ```
 
+### Planned Future State (Echolore Integration)
+*The Echolore backend will handle AI (RAG) and Heritage Data retrieval, while the existing Node.js server will act as an API Gateway proxying requests.*
+```
+                                  ┌────────────────────────┐
+                                  │      Client Browser    │
+                                  └───────────┬────────────┘
+                                              │
+                                              ▼
+                                  ┌────────────────────────┐
+                                  │ Node.js / Express      │
+                                  │ (Port 5000)            │
+                                  └─┬────────────────────┬─┘
+                                    │ /api/auth/*        │ /api/heritage/* & /api/chat/*
+                                    ▼                    ▼
+                        ┌──────────────────┐    ┌────────────────────────┐
+                        │   MongoDB Atlas  │    │ Python FastAPI         │
+                        │   (Users & Auth) │    │ (Echolore - Port 8000) │
+                        └──────────────────┘    └─┬────────────────────┬─┘
+                                                  │                    │
+                                                  ▼                    ▼
+                                        ┌──────────────────┐ ┌──────────────────┐
+                                        │ Qdrant Vector DB │ │ PostgreSQL       │
+                                        │ (Embeddings)     │ │ (+ PostGIS)      │
+                                        └──────────────────┘ └──────────────────┘
+```
+
 ---
 
 ## ⚡ Tech Stack & Tools
@@ -80,6 +107,7 @@
 | Technology | Stack | Key Packages / Modules |
 | :--- | :--- | :--- |
 | **Node.js + Express** | Canonical backend | `express` (4.21), `mongoose` (8.12), `jsonwebtoken` (9.0), `bcryptjs` (2.4), `cookie-parser` (1.4), `dotenv` |
+| **Python FastAPI (Echolore)** | Planned Data/AI Backend | Phase 3 integration pending. Will serve PostgreSQL, Qdrant, and Gemini RAG. |
 | ~~Python Flask (`server.py`)~~ | **Legacy — do not use** | Superseded by the Node.js backend. Kept for historical reference only. |
 
 ### Database

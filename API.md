@@ -302,15 +302,15 @@ curl http://localhost:5000/api/health
 
 ---
 
-## Planned Future Endpoints
+## Planned Future Endpoints (Echolore Integration)
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/artifacts` | List all artifacts (pagination, filters) |
-| `GET` | `/artifacts/:id` | Get single artifact by ID |
-| `POST` | `/artifacts` | Create artifact (admin) |
-| `PUT` | `/artifacts/:id` | Update artifact (admin) |
-| `DELETE` | `/artifacts/:id` | Delete artifact (admin) |
-| `GET` | `/cultures` | List all culture profiles |
-| `GET` | `/cultures/:id` | Get single culture profile |
-| `POST` | `/identify` | Upload image, return similar artifacts |
+The following endpoints are planned for Phase 3 via integration with the Echolore FastAPI backend. The Node.js server will proxy these requests.
+
+| Method | Endpoint | Description | Backend Source |
+|--------|----------|-------------|----------------|
+| `GET` | `/api/heritage/sites` | List heritage sites (pagination, filters like `state`, `category`) | PostgreSQL |
+| `GET` | `/api/heritage/sites/:id` | Get full details for a single site by UUID | PostgreSQL |
+| `POST` | `/api/chat/ask` | RAG Chat API (returns text, citations, geoData) | Qdrant + Gemini |
+| `GET` | `/api/map/bounds` | Fetch GeoJSON polygons/markers for viewport | PostGIS |
+| `POST` | `/api/search` | Semantic and Full-Text search across heritage corpus | Qdrant/PostgreSQL |
+| `POST` | `/api/identify` | Upload image, return similar artifacts (Future phase) | TBD |

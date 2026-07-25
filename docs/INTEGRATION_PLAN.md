@@ -33,9 +33,9 @@ The **data and AI layer**. This is what powers the content.
 | Data ingestion — Wikidata, Wikipedia, UNESCO, OSM | Complete |
 | ETL — normalise, deduplicate, enrich | Complete |
 | PostgreSQL + PostGIS (3,826 sites, 516 images) | Complete |
-| Text chunking for RAG | Implemented, not run at scale |
-| Vector embedding (`scripts/embedder.py`) | Ready, not yet run |
-| Qdrant `arkana_corpus` collection | Not yet populated |
+| Text chunking for RAG | Complete (Phase 2) |
+| Vector embedding (`scripts/embedder.py`) | Complete (Phase 2 - 3,826 records) |
+| Qdrant `arkana_corpus` collection | Complete (Phase 2 - 3,826 records) |
 | FastAPI retrieval endpoints | Not yet implemented |
 | Gemini LLM integration | Not yet implemented |
 | Redis caching | Not yet implemented |
@@ -127,8 +127,7 @@ Echolore's `/api/sites` endpoint when that endpoint is available.
 
 ## 5. Integration Steps (Ordered)
 
-### Step 1 — Echolore: FastAPI + Qdrant Embedding (3-5 weeks)
-- Run `scripts/embedder.py` on all 3,826 sites' Wikipedia chunks
+### Step 1 — Echolore: FastAPI (2-3 weeks)
 - Build FastAPI with: `GET /api/sites`, `GET /api/sites/:id`, `POST /api/chat`, `GET /api/map/bounds`
 - Implement Redis caching and `slowapi` rate limiting
 - **Deliverable**: Live service at `http://echolore:8000`
@@ -169,7 +168,7 @@ Echolore's `/api/sites` endpoint when that endpoint is available.
 | Authentication (JWT) | ARKANA | Complete. |
 | Heritage data ETL | Echolore | Complete (Phases 1 & 2). |
 | PostgreSQL heritage database | Echolore | 3,826 sites loaded. |
-| Qdrant embeddings | Echolore | Ready to run. |
+| Qdrant embeddings | Echolore | Complete (3,826 records). |
 | FastAPI data service | Echolore | Not yet built. |
 | Gemini LLM integration | Echolore | Not yet built. |
 | Leaflet map rendering | ARKANA | Uses data from Echolore via API. |

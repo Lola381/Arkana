@@ -5,6 +5,8 @@
 ARKANA is a full-stack monorepo containing a React 19 SPA (frontend) and a Node.js/Express REST API (backend),
 backed by MongoDB Atlas. In development, Vite proxies all `/api/*` requests to the Express server on port 5000.
 
+### Current Architecture
+
 ```mermaid
 graph TB
     subgraph Client["Client — Browser"]
@@ -32,6 +34,47 @@ graph TB
     D --> E
     E --> F
     F --> G
+```
+
+### Planned Future Architecture (Echolore Integration)
+*The Echolore repository will provide a FastAPI backend to serve heritage data and RAG chat. The Node.js server will act as an API gateway for these routes.*
+
+```mermaid
+graph TB
+    subgraph Client["Client — Browser"]
+        A["React SPA"]
+    end
+
+    subgraph Gateway["Backend — Node.js (Port 5000)"]
+        C["Express Server"]
+        D["Auth Controller"]
+        E["Proxy (/api/heritage, /api/chat)"]
+    end
+    
+    subgraph DataAI["Echolore Backend (Port 8000)"]
+        F["FastAPI Server"]
+        G["RAG Retriever"]
+    end
+
+    subgraph DBs["Databases"]
+        H[("MongoDB Atlas\n(Auth)")]
+        I[("PostgreSQL + PostGIS\n(Sites)")]
+        J[("Qdrant\n(Vectors)")]
+    end
+    
+    subgraph External["External APIs"]
+        K["Gemini API"]
+    end
+
+    A -->|"HTTP request"| C
+    C -->|"/api/auth/*"| D
+    D --> H
+    C -->|"/api/heritage/* & /api/chat/*"| E
+    E -->|"Proxy to Port 8000"| F
+    F --> I
+    F --> G
+    G --> J
+    G --> K
 ```
 
 ---

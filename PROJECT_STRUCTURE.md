@@ -9,6 +9,7 @@ A complete file-by-file breakdown of every folder and significant file in the pr
 This is the parent git repository (`github.com/Lola381/Arkana`).
 
 > ⚠️ **Known Issue:** `arkana-react/` is registered as a broken git gitlink (no `.gitmodules` file exists).
+> (Note: The heritage data and AI backend engine is being built separately in the Echolore repository. Once integrated, the static data mocks detailed above will be replaced by dynamic API calls to Echolore's FastAPI service.)
 > All React source code is currently invisible on GitHub. This must be fixed before the project can be
 > properly cloned by others.
 
@@ -127,7 +128,7 @@ arkana-react/
 │   │                                 Kailasa cave painting (dark editorial aesthetic)
 │   │
 │   ├── data/
-│   │   └── artifacts.js           ← ALL static content (170 lines, 9 exports)
+│   │   └── artifacts.js           ← ⚠️ TEMPORARY MOCKS (ALL static content)
 │   │       ├── COLLECTION_ARTIFACTS  [6 items] — Home page featured collection
 │   │       ├── BROWSE_ARTIFACTS      [8 items] — Browse grid with filter tags
 │   │       ├── RELATED_ARTIFACTS     [4 items] — ArtifactDetail sidebar
