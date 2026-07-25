@@ -46,12 +46,19 @@ const Router = (() => {
       updateNavLinks();
       Animations.initReveal();
       Components.init();
+      
+      if (currentPage === 'askarkana') {
+        AskArkana.init();
+      }
+      if (currentPage === 'explore') {
+        ExploreMap.init();
+      }
     });
   }
 
   // ---- Load Page Fragments ----
   async function loadAllPages() {
-    const pageNames = ['home', 'explore', 'browse', 'culture', 'artifact', 'identify', 'login'];
+    const pageNames = ['home', 'explore', 'browse', 'culture', 'artifact', 'identify', 'askarkana', 'login'];
     const promises = pageNames.map(async (name) => {
       try {
         const resp = await fetch(`pages/${name}.html`);

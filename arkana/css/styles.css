@@ -350,3 +350,550 @@ input[type="range"]::-webkit-slider-thumb {
 .card-anim-b:hover::after {
   opacity: 1;
 }
+
+/* ============================
+   ASK ARKANA — Chat UI
+   ============================ */
+
+/* Header */
+.arkana-chat-header {
+  background: linear-gradient(180deg, rgba(251,249,245,1) 0%, rgba(251,249,245,0.95) 100%);
+  backdrop-filter: blur(12px);
+}
+
+/* Avatar */
+.arkana-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff0da;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.25);
+  flex-shrink: 0;
+}
+
+/* Status Badge */
+.arkana-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: rgba(139, 105, 20, 0.06);
+  border: 1px solid rgba(139, 105, 20, 0.12);
+}
+
+.arkana-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
+  animation: arkana-pulse 2s ease-in-out infinite;
+}
+
+@keyframes arkana-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* Messages */
+.arkana-msg {
+  display: flex;
+  gap: 12px;
+  max-width: 100%;
+}
+
+.arkana-msg-user {
+  justify-content: flex-end;
+}
+
+.arkana-msg-avatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff0da;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.arkana-msg-avatar-sm {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  border-radius: 8px;
+}
+
+.arkana-msg-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 80%;
+  min-width: 0;
+}
+
+.arkana-msg-content-user {
+  align-items: flex-end;
+}
+
+/* Message Bubbles */
+.arkana-msg-bubble {
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  word-wrap: break-word;
+}
+
+.arkana-msg-bubble p {
+  margin: 0;
+}
+
+.arkana-msg-bubble p + p {
+  margin-top: 10px;
+}
+
+.arkana-msg-bubble-ai {
+  background: #f5f3ef;
+  color: #1b1c1a;
+  border-top-left-radius: 4px;
+  border: 1px solid rgba(209, 197, 178, 0.3);
+}
+
+.arkana-msg-bubble-user {
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  color: #fff0da;
+  border-top-right-radius: 4px;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.2);
+}
+
+.arkana-msg-error {
+  border-color: rgba(211, 47, 47, 0.3);
+  background: rgba(211, 47, 47, 0.05);
+}
+
+.arkana-msg-time {
+  font-size: 11px;
+  padding: 0 4px;
+}
+
+.arkana-msg-time-user {
+  text-align: right;
+}
+
+/* Suggestion Chips */
+.arkana-suggestions {
+  padding: 8px 0 8px 46px;
+}
+
+.arkana-chip {
+  padding: 8px 18px;
+  border-radius: 100px;
+  background: transparent;
+  border: 1px solid #d1c5b2;
+  color: #4e4637;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.arkana-chip:hover {
+  background: #8b6914;
+  color: #fff0da;
+  border-color: #8b6914;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 105, 20, 0.25);
+}
+
+/* Typing Indicator */
+.arkana-typing-dots {
+  display: flex;
+  gap: 4px;
+  padding: 10px 16px;
+  background: #f5f3ef;
+  border-radius: 18px;
+  border-top-left-radius: 4px;
+  border: 1px solid rgba(209, 197, 178, 0.3);
+}
+
+.arkana-typing-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8b6914;
+  opacity: 0.4;
+  animation: arkana-bounce 1.4s ease-in-out infinite;
+}
+
+.arkana-typing-dots span:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.arkana-typing-dots span:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes arkana-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Chat Input Area */
+.arkana-chat-input-area {
+  background: linear-gradient(0deg, rgba(251,249,245,1) 0%, rgba(251,249,245,0.95) 100%);
+  backdrop-filter: blur(12px);
+}
+
+.arkana-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 6px 20px;
+  border-radius: 28px;
+  background: #f5f3ef;
+  border: 1.5px solid #d1c5b2;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.arkana-input-container:focus-within {
+  border-color: #8b6914;
+  box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.1);
+}
+
+.arkana-input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: #1b1c1a;
+  padding: 10px 0;
+}
+
+.arkana-input::placeholder {
+  color: rgba(78, 70, 55, 0.4);
+}
+
+.arkana-send-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  color: #fff0da;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(139, 105, 20, 0.2);
+}
+
+.arkana-send-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.35);
+}
+
+.arkana-send-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* API Key Input */
+.arkana-key-input {
+  flex-grow: 1;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid #d1c5b2;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #1b1c1a;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.arkana-key-input:focus {
+  border-color: #8b6914;
+}
+
+.arkana-key-submit {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  color: #fff0da;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.arkana-key-submit:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(139, 105, 20, 0.3);
+}
+
+/* Fade-in Animation */
+.arkana-fade-in {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: arkanaFadeIn 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes arkanaFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chat scrollbar */
+#arkana-chat-messages::-webkit-scrollbar {
+  width: 5px;
+}
+#arkana-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#arkana-chat-messages::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 3px;
+}
+#arkana-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #8b6914;
+}
+
+/* ============================
+   ASK ARKANA — Map Styles
+   ============================ */
+
+/* Custom Map Marker */
+.arkana-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.arkana-marker-pin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.arkana-marker-pin span {
+  transform: rotate(45deg);
+}
+
+.arkana-marker-pulse {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(139, 105, 20, 0.2);
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  z-index: 1;
+  animation: markerPulse 2s ease-out infinite;
+}
+
+@keyframes markerPulse {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* Map Popup */
+.arkana-popup-container .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(209, 197, 178, 0.4);
+  font-family: 'Inter', sans-serif;
+}
+
+.arkana-popup-container .leaflet-popup-content {
+  margin: 12px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1b1c1a;
+}
+
+.arkana-popup-container .leaflet-popup-tip {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Map Badge */
+.arkana-map-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: rgba(251, 249, 245, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(209, 197, 178, 0.5);
+  color: #4e4637;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Map Info Card */
+.arkana-map-info-card {
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(251, 249, 245, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(209, 197, 178, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Map Legend */
+.arkana-map-legend-card {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(251, 249, 245, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(209, 197, 178, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  max-width: 200px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.arkana-map-legend-card::-webkit-scrollbar {
+  width: 3px;
+}
+.arkana-map-legend-card::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 2px;
+}
+
+/* Fix Leaflet z-index conflicts with navbar */
+#arkana-map .leaflet-top,
+#arkana-map .leaflet-bottom {
+  z-index: 400 !important;
+}
+
+/* ============================
+   EXPLORE PAGE — Map + Chat
+   ============================ */
+
+/* Explore map Leaflet z-index fix */
+#explore-map .leaflet-top,
+#explore-map .leaflet-bottom {
+  z-index: 400 !important;
+}
+
+/* Quick-jump heritage chips (on map) */
+.explore-quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: rgba(251, 249, 245, 0.88);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(209, 197, 178, 0.6);
+  color: #4e4637;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.explore-quick-chip:hover {
+  background: #8b6914;
+  color: #fff0da;
+  border-color: #8b6914;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(139, 105, 20, 0.3);
+}
+
+.explore-quick-chip .material-symbols-outlined {
+  font-size: 14px !important;
+  line-height: 1;
+}
+
+/* Explore map legend interactive items */
+.explore-legend-item {
+  padding: 3px 4px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+.explore-legend-item:hover {
+  background: rgba(139, 105, 20, 0.08);
+}
+
+/* Numbered marker counter badge */
+.arkana-marker-pin-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.4);
+  position: relative;
+  z-index: 2;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff0da;
+}
+
+/* Explore chat messages scrollbar */
+#explore-chat-messages::-webkit-scrollbar {
+  width: 5px;
+}
+#explore-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#explore-chat-messages::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 3px;
+}
+#explore-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #8b6914;
+}
+
+/* Timeline container smooth transitions */
+#explore-timeline-container {
+  transition: opacity 0.5s ease, pointer-events 0s;
+}
+
+/* Timeline slider custom era colors */
+#explore-timeline-slider::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  box-shadow: 0 2px 8px rgba(139, 105, 20, 0.4);
+}
+
+/* ============================
+   END EXPLORE PAGE STYLES
+   ============================ */

@@ -13,6 +13,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
+  <!-- Leaflet Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
   <!-- Tailwind Config (Design System Tokens) -->
   <script>
     tailwind.config = {
@@ -110,6 +114,7 @@
     <a href="#" data-page="browse" class="mobile-nav-link font-headline-md text-headline-md text-on-surface hover:text-primary-container transition-colors">Browse</a>
     <a href="#" data-page="culture" class="mobile-nav-link font-headline-md text-headline-md text-on-surface hover:text-primary-container transition-colors">Cultures</a>
     <a href="#" data-page="identify" class="mobile-nav-link font-headline-md text-headline-md text-on-surface hover:text-primary-container transition-colors">Identify</a>
+    <a href="#" data-page="askarkana" class="mobile-nav-link font-headline-md text-headline-md text-on-surface hover:text-primary-container transition-colors">Ask Arkana</a>
     <a href="#" data-page="login" class="mobile-nav-link font-headline-md text-headline-md text-on-surface hover:text-primary-container transition-colors">Sign In</a>
   </div>
 
@@ -125,7 +130,7 @@
         <a href="#" data-page="culture" class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 scale-95 hover:scale-100 transition-transform">Cultures</a>
         <a href="#" data-page="browse" class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 scale-95 hover:scale-100 transition-transform">Browse</a>
         <a href="#" data-page="identify" class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 scale-95 hover:scale-100 transition-transform">Identify</a>
-        <a href="#" data-page="explore" class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 scale-95 hover:scale-100 transition-transform">Ask Arkana</a>
+        <a href="#" data-page="askarkana" class="nav-link text-on-surface-variant hover:text-primary transition-colors duration-300 scale-95 hover:scale-100 transition-transform">Ask Arkana</a>
       </div>
 
       <div class="flex items-center gap-4 text-primary-container">
@@ -154,6 +159,7 @@
   <div id="page-culture" class="page"></div>
   <div id="page-artifact" class="page"></div>
   <div id="page-identify" class="page"></div>
+  <div id="page-askarkana" class="page"></div>
   <div id="page-login" class="page"></div>
 
   <!-- ================================
@@ -161,6 +167,8 @@
        ================================ -->
   <script src="js/animations.js"></script>
   <script src="js/components.js"></script>
+  <script src="js/askarkana.js"></script>
+  <script src="js/exploremap.js"></script>
   <script src="js/router.js"></script>
 
 </body>

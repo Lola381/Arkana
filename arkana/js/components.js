@@ -25,8 +25,11 @@ const Components = (() => {
       initAccordion();
     }
     if (pageId === 'explore') {
-      initTimeline();
-      initChat();
+      // Use the new AI-powered ExploreMap module
+      ExploreMap.init();
+    }
+    if (pageId === 'askarkana') {
+      AskArkana.init();
     }
   }
 

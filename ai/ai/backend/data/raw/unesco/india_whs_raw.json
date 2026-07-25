@@ -1,0 +1,756 @@
+[
+  {
+    "id": "1321",
+    "name": "The Architectural Work of Le Corbusier, an Outstanding Contribution to the Modern Movement",
+    "year": 2016,
+    "criteria": "(i)(ii)",
+    "lat": 46.4684138889,
+    "lon": 6.8293361111,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Chosen from the work of Le Corbusier, the 17 sites comprising this transnational serial property are spread over seven countries and are a testimonial to the invention of a new architectural language that made a break with the past. They were built over a period of a half-century, in the course of what Le Corbusier described as “patient research”. The Complexe du Capitole in Chandigarh (India), the National Museum of Western Art, Tokyo (Japan), the House of Dr Curutchet in La Plata (Argentina) and the Unité d’habitation in Marseille (France) reflect the solutions that the Modern Movement sought to apply during the 20th century to the challenges of inventing new architectural techniques to respond to the needs of society. These masterpieces of creative genius also attest to the internationalization of architectural practice across the planet.",
+    "is_transboundary": true,
+    "states_names": [
+      "India",
+      "Japan",
+      "France",
+      "Belgium",
+      "Switzerland",
+      "Argentina",
+      "Germany"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1101",
+    "name": "Champaner-Pavagadh Archaeological Park",
+    "year": 2004,
+    "criteria": "(iii)(iv)(v)",
+    "lat": 22.48333333,
+    "lon": 73.53333333,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "A concentration of largely unexcavated archaeological, historic and living cultural heritage properties cradled in an impressive landscape which includes prehistoric (chalcolithic) sites, a hill fortress of an early Hindu capital, and remains of the 16th-century capital of the state of Gujarat. The site also includes, among other vestiges, fortifications, palaces, religious buildings, residential precincts, agricultural structures and water installations, from the 8th to 14th centuries. The Kalikamata Temple on top of Pavagadh Hill is considered to be an important shrine, attracting large numbers of pilgrims throughout the year. The site is the only complete and unchanged Islamic pre-Mughal city.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "945",
+    "name": "Chhatrapati Shivaji Terminus (formerly Victoria Terminus)",
+    "year": 2004,
+    "criteria": "(ii)(iv)",
+    "lat": 18.9401222222,
+    "lon": 72.8362027777,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The Chhatrapati Shivaji Terminus, formerly known as Victoria Terminus Station, in Mumbai, is an outstanding example of Victorian Gothic Revival architecture in India, blended with themes deriving from Indian traditional architecture. The building, designed by the British architect F. W. Stevens, became the symbol of Bombay as the ‘Gothic City’ and the major international mercantile port of India. The terminal was built over 10 years, starting in 1878, according to a High Victorian Gothic design based on late medieval Italian models. Its remarkable stone dome, turrets, pointed arches and eccentric ground plan are close to traditional Indian palace architecture. It is an outstanding example of the meeting of two cultures, as British architects worked with Indian craftsmen to include Indian architectural tradition and idioms thus forging a new style unique to Bombay.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "243",
+    "name": "Ellora Caves",
+    "year": 1983,
+    "criteria": "(i)(iii)",
+    "lat": 20.02639,
+    "lon": 75.17917,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "These 34 monasteries and temples, extending over more than 2 km, were dug side by side in the wall of a high basalt cliff, not far from Aurangabad, in Maharashtra. Ellora, with its uninterrupted sequence of monuments dating from A.D. 600 to 1000, brings the civilization of ancient India to life. Not only is the Ellora complex a unique artistic creation and a technological exploit but, with its sanctuaries devoted to Buddhism, Hinduism and Jainism, it illustrates the spirit of tolerance that was characteristic of ancient India.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "239",
+    "name": "Group of Monuments at Pattadakal",
+    "year": 1987,
+    "criteria": "(iii)(iv)",
+    "lat": 15.94833,
+    "lon": 75.81667,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Pattadakal, in Karnataka, represents the high point of an eclectic art which, in the 7th and 8th centuries under the Chalukya dynasty, achieved a harmonious blend of architectural forms from northern and southern India. An impressive series of nine Hindu temples, as well as a Jain sanctuary, can be seen there. One masterpiece from the group stands out – the Temple of Virupaksha, built c. 740 by Queen Lokamahadevi to commemorate her husband's victory over the kings from the South.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "247",
+    "name": "Hill Forts of Rajasthan",
+    "year": 2013,
+    "criteria": "(ii)(iii)",
+    "lat": 24.8833333333,
+    "lon": 74.6461111111,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The serial site, situated in the state of Rajastahan, includes six majestic forts in Chittorgarh; Kumbhalgarh; Sawai Madhopur; Jhalawar; Jaipur, and Jaisalmer. The ecclectic architecture of the forts, some up to 20 kilometres in circumference, bears testimony to the power of the Rajput princely states that flourished in the region from the 8th to the 18th centuries. Enclosed within defensive walls are major urban centres, palaces, trading centres and other buildings including temples that often predate the fortifications within which developed an elaborate courtly culture that supported learning, music and the arts. Some of the urban centres enclosed in the fortifications have survived, as have many of the site's temples and other sacred buildings. The forts use the natural defenses offered by the landscape: hills, deserts, rivers, and dense forests. They also feature extensive water harvesting structures, largely still in use today.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1551",
+    "name": "Historic City of Ahmadabad",
+    "year": 2017,
+    "criteria": "(ii)(v)",
+    "lat": 23.0263888889,
+    "lon": 72.5880555556,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The walled city of Ahmadabad, founded by Sultan Ahmad Shah in the 15th century, on the eastern bank of the Sabarmati river, presents a rich architectural heritage from the sultanate period, notably the Bhadra citadel, the walls and gates of the Fort city and numerous mosques and tombs as well as important Hindu and Jain temples of later periods. The urban fabric is made up of densely-packed traditional houses (pols) in gated traditional streets (puras) with characteristic features such as bird feeders, public wells and religious institutions. The city continued to flourish as the capital of the State of Gujarat for six centuries, up to the present.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "340",
+    "name": "Keoladeo National Park",
+    "year": 1985,
+    "criteria": "(x)",
+    "lat": 27.15888889,
+    "lon": 77.50861111,
+    "state": "",
+    "category": "natural",
+    "qid": null,
+    "description": "This former duck-hunting reserve of the Maharajas is one of the major wintering areas for large numbers of aquatic birds from Afghanistan, Turkmenistan, China and Siberia. Some 364 species of birds, including the rare Siberian crane, have been recorded in the park.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1570",
+    "name": "Kakatiya Rudreshwara (Ramappa) Temple, Telangana",
+    "year": 2021,
+    "criteria": "(i)(iii)",
+    "lat": 18.2591333333,
+    "lon": 79.9432055556,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Rudreshwara, popularly known as Ramappa Temple, is located in the village of Palampet approximately 200km north-east of Hyderabad, in the State of Telangana. It is the main Shiva temple in a walled complex built during the Kakatiyan period (1123–1323 CE) under rulers Rudradeva and Recharla Rudra. Construction of the sandstone temple began in 1213 CE and is believed to have continued over some 40 years. The building features decorated beams and pillars of carved granite and dolerite with a distinctive and pyramidal Vimana (horizontally stepped tower) made of lightweight porous bricks, so-called ‘floating bricks’, which reduced the weight of the roof structures. The temple’s sculptures of high artistic quality illustrate regional dance customs and Kakatiyan culture. Located at the foothills of a forested area and amidst agricultural fields, close to the shores of the Ramappa Cheruvu, a Kakatiya-built water reservoir, the choice of setting for the edifice followed the ideology and practice sanctioned in dharmic texts that temples are to be constructed to form an integral part of a natural setting, including hills, forests, springs, streams, lakes, catchment areas, and agricultural lands.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "337",
+    "name": "Kaziranga National Park",
+    "year": 1985,
+    "criteria": "(ix)(x)",
+    "lat": 26.66666667,
+    "lon": 93.41666667,
+    "state": "",
+    "category": "natural",
+    "qid": null,
+    "description": "In the heart of Assam, this park is one of the last areas in eastern India undisturbed by a human presence. It is inhabited by the world's largest population of one-horned rhinoceroses, as well as many mammals, including tigers, elephants, panthers and bears, and thousands of birds.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "335",
+    "name": "Nanda Devi and Valley of Flowers National Parks",
+    "year": 1988,
+    "criteria": "(vii)(x)",
+    "lat": 30.71667,
+    "lon": 79.66667,
+    "state": "",
+    "category": "natural",
+    "qid": null,
+    "description": "Nestled high in West Himalaya, India’s Valley of Flowers National Park is renowned for its meadows of endemic alpine flowers and outstanding natural beauty. This richly diverse area is also home to rare and endangered animals, including the Asiatic black bear, snow leopard, brown bear and blue sheep. The gentle landscape of the Valley of Flowers National Park complements the rugged mountain wilderness of Nanda Devi National Park. Together they encompass a unique transition zone between the mountain ranges of the Zanskar and Great Himalaya, praised by mountaineers and botanists for over a century and in Hindu mythology for much longer.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1056",
+    "name": "Mahabodhi Temple Complex at Bodh Gaya",
+    "year": 2002,
+    "criteria": "(i)(ii)(iii)(iv)",
+    "lat": 24.69528,
+    "lon": 84.99389,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The Mahabodhi Temple Complex is one of the four holy sites related to the life of the Lord Buddha, and particularly to the attainment of Enlightenment. The first temple was built by Emperor Asoka in the 3rd century B.C., and the present temple dates from the 5th or 6th centuries. It is one of the earliest Buddhist temples built entirely in brick, still standing in India, from the late Gupta period.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "338",
+    "name": "Manas Wildlife Sanctuary",
+    "year": 1985,
+    "criteria": "(vii)(ix)(x)",
+    "lat": 26.725,
+    "lon": 91.03055556,
+    "state": "",
+    "category": "natural",
+    "qid": null,
+    "description": "On a gentle slope in the foothills of the Himalayas, where wooded hills give way to alluvial grasslands and tropical forests, the Manas sanctuary is home to a great variety of wildlife, including many endangered species, such as the tiger, pygmy hog, Indian rhinoceros and Indian elephant.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "944",
+    "name": "Mountain Railways of India",
+    "year": 1999,
+    "criteria": "(ii)(iv)",
+    "lat": 11.51028,
+    "lon": 76.93583,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "This site includes three railways. The Darjeeling Himalayan Railway was the first, and is still the most outstanding, example of a hill passenger railway. Opened in 1881, its design applies bold and ingenious engineering solutions to the problem of establishing an effective rail link across a mountainous terrain of great beauty. The construction of the Nilgiri Mountain Railway, a 46-km long metre-gauge single-track railway in Tamil Nadu State was first proposed in 1854, but due to the difficulty of the mountainous location the work only started in 1891 and was completed in 1908. This railway, scaling an elevation of 326 m to 2,203 m, represented the latest technology of the time. The Kalka Shimla Railway, a 96-km long, single track working rail link built in the mid-19th century to provide a service to the highland town of Shimla is emblematic of the technical and material efforts to disenclave mountain populations through the railway. All three railways are still fully operational.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "922",
+    "name": "Rani-ki-Vav (the Queen’s Stepwell) at Patan, Gujarat",
+    "year": 2014,
+    "criteria": "(i)(iv)",
+    "lat": 23.8588888889,
+    "lon": 72.1016666667,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Rani-ki-Vav, on the banks of the Saraswati River, was initially built as a memorial to a king in the 11th century AD. Stepwells are a distinctive form of subterranean water resource and storage systems on the Indian subcontinent, and have been constructed since the 3rd millennium BC. They evolved over time from what was basically a pit in sandy soil towards elaborate multi-storey works of art and architecture. Rani-ki-Vav was built at the height of craftsmens’ ability in stepwell construction and the Maru-Gurjara architectural style, reflecting mastery of this complex technique and great beauty of detail and proportions. Designed as an inverted temple highlighting the sanctity of water, it is divided into seven levels of stairs with sculptural panels of high artistic quality; more than 500 principle sculptures and over a thousand minor ones combine religious, mythological and secular imagery, often referencing literary works. The fourth level is the deepest and leads into a rectangular tank 9.5 m by 9.4 m, at a depth of 23 m. The well is located at the westernmost end of the property and consists of a shaft 10 m in diameter and 30 m deep.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "246",
+    "name": "Sun Temple, Konârak",
+    "year": 1984,
+    "criteria": "(i)(iii)",
+    "lat": 19.8875,
+    "lon": 86.09472,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "On the shores of the Bay of Bengal, bathed in the rays of the rising sun, the temple at Konarak is a monumental representation of the sun god Surya's chariot; its 24 wheels are decorated with symbolic designs and it is led by a team of six horses. Built in the 13th century, it is one of India's most famous Brahman sanctuaries.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "925",
+    "name": "Rock Shelters of Bhimbetka",
+    "year": 2003,
+    "criteria": "(iii)(v)",
+    "lat": 22.92777778,
+    "lon": 77.58333333,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The Rock Shelters of Bhimbetka are in the foothills of the Vindhyan Mountains on the southern edge of the central Indian plateau. Within massive sandstone outcrops, above comparatively dense forest, are five clusters of natural rock shelters, displaying paintings that appear to date from the Mesolithic Period right through to the historical period. The cultural traditions of the inhabitants of the twenty-one villages adjacent to the site bear a strong resemblance to those represented in the rock paintings.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "231",
+    "name": "Red Fort Complex",
+    "year": 2007,
+    "criteria": "(ii)(iii)",
+    "lat": 28.6555555556,
+    "lon": 77.2408333333,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The Red Fort Complex was built as the palace fort of Shahjahanabad – the new capital of the fifth Mughal Emperor of India, Shah Jahan. Named for its massive enclosing walls of red sandstone, it is adjacent to an older fort, the Salimgarh, built by Islam Shah Suri in 1546, with which it forms the Red Fort Complex. The private apartments consist of a row of pavilions connected by a continuous water channel, known as the Nahr-i-Behisht (Stream of Paradise). The Red Fort is considered to represent the zenith of Mughal creativity which, under the Shah Jahan, was brought to a new level of refinement. The planning of the palace is based on Islamic prototypes, but each pavilion reveals architectural elements typical of Mughal building, reflecting a fusion of Persian, Timurid and Hindu traditions The Red Fort’s innovative planning and architectural style, including the garden design, strongly influenced later buildings and gardens in Rajasthan, Delhi, Agra and further afield.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "252",
+    "name": "Taj Mahal",
+    "year": 1983,
+    "criteria": "(i)",
+    "lat": 27.17417,
+    "lon": 78.04222,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "An immense mausoleum of white marble, built in Agra between 1631 and 1648 by order of the Mughal emperor Shah Jahan in memory of his favourite wife, the Taj Mahal is the jewel of Muslim art in India and one of the universally admired masterpieces of the world's heritage.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "251",
+    "name": "Agra Fort",
+    "year": 1983,
+    "criteria": "(iii)",
+    "lat": 27.179806,
+    "lon": 78.021528,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Near the gardens of the Taj Mahal stands the important 16th-century Mughal monument known as the Red Fort of Agra. This powerful fortress of red sandstone encompasses, within its 2.5-km-long enclosure walls, the imperial city of the Mughal rulers. It comprises many fairy-tale palaces, such as the Jahangir Palace and the Khas Mahal, built by Shah Jahan; audience halls, such as the Diwan-i-Khas; and two very beautiful mosques.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "244",
+    "name": "Elephanta Caves",
+    "year": 1987,
+    "criteria": "(i)(iii)",
+    "lat": 18.96667,
+    "lon": 72.93583,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The 'City of Caves', on an island in the Sea of Oman close to Mumbai, contains a collection of rock art linked to the cult of Shiva. Here, Indian art has found one of its most perfect expressions, particularly the huge high reliefs in the main cave.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "249",
+    "name": "Group of Monuments at Mahabalipuram",
+    "year": 1984,
+    "criteria": "(i)(ii)(iii)",
+    "lat": 12.61667,
+    "lon": 80.19167,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "This group of sanctuaries, founded by the Pallava kings, was carved out of rock along the Coromandel coast in the 7th and 8th centuries. It is known especially for its rathas (temples in the form of chariots), mandapas (cave sanctuaries), giant open-air reliefs such as the famous 'Descent of the Ganges', and the temple of Rivage, with thousands of sculptures to the glory of Shiva.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1605",
+    "name": "Jaipur City, Rajasthan",
+    "year": 2019,
+    "criteria": "(ii)(iv)",
+    "lat": 26.9242777778,
+    "lon": 75.8218611111,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The walled city of Jaipur, in India’s north-western state of Rajasthan was founded in 1727 by Sawai Jai Singh II. Unlike other cities in the region located in hilly terrain, Jaipur was established on the plain and built according to a grid plan interpreted in the light of Vedic architecture. The streets feature continuous colonnaded businesses that intersect in the centre, creating large public squares called chaupars. Markets, shops, residences and temples built along the main streets have uniform facades. The city's urban planning shows an exchange of ideas from ancient Hindu and early modern Mughal as well as Western cultures. The grid plan is a model that prevails in the West, while the organization of the different city sectors (chowkris) refers to traditional Hindu concepts. Designed to be a commercial capital, the city has maintained its local commercial, artisanal and cooperative traditions to this day.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "233",
+    "name": "Qutb Minar and its Monuments, Delhi",
+    "year": 1993,
+    "criteria": "(iv)",
+    "lat": 28.52583,
+    "lon": 77.18528,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Built in the early 13th century a few kilometres south of Delhi, the red sandstone tower of Qutb Minar is 72.5 m high, tapering from 2.75 m in diameter at its peak to 14.32 m at its base, and alternating angular and rounded flutings. The surrounding archaeological area contains funerary buildings, notably the magnificent Alai-Darwaza Gate, the masterpiece of Indo-Muslim art (built in 1311), and two mosques, including the Quwwatu'l-Islam, the oldest in northern India, built of materials reused from some 20 Brahman temples.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1711",
+    "name": "Moidams – the Mound-Burial System of the Ahom Dynasty",
+    "year": 2024,
+    "criteria": "(iii)(iv)",
+    "lat": 26.9411747222,
+    "lon": 94.87635,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Set in the foothills of the Patkai Ranges in eastern Assam, the property contains the royal necropolis of the Tai-Ahom. For 600 years, the Tai-Ahom created moidams (burial mounds) accentuating the natural topography of hills, forests and water, thus forming a sacred geography. Banyan trees and the trees used for coffins and bark manuscripts were planted and water bodies created. Ninety moidams – hollow vaults built of brick, stone or earth – of different sizes are found within the site. They contain the remains of kings and other royals together with grave goods such as food, horses and elephants, and sometimes queens and servants. The Tai-Ahom rituals of “Me-Dam-Me-Phi” and “Tarpan” are practiced at the Charaideo necropolis. While moidams are found in other areas within the Brahmaputra Valley, those found at the property are regarded as exceptional.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1670",
+    "name": "Sacred Ensembles of the Hoysalas",
+    "year": 2023,
+    "criteria": "(i)(ii)(iv)",
+    "lat": 13.2124527778,
+    "lon": 75.9940722222,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "This serial property encompasses the three most representative examples of Hoysala-style temple complexes in southern India, dating from the 12th to 13th centuries. The Hoysala style was created through careful selection of contemporary temple features and those from the past to create a different identity from neighbouring kingdoms. The shrines are characterized by hyper-real sculptures and stone carvings that cover the entire architectural surface, a circumambulatory platform, a large-scale sculptural gallery, a multi-tiered frieze, and sculptures of the Sala legend. The excellence of the sculptural art underpins the artistic achievement of these temple complexes, which represent a significant stage in the historical development of Hindu temple architecture.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1375",
+    "name": "Santiniketan",
+    "year": 2023,
+    "criteria": "(iv)",
+    "lat": 23.6802777778,
+    "lon": 87.6849722222,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Established in rural West Bengal in 1901 by the renowned poet and philosopher Rabindranath Tagore, Santiniketan was a residential school and centre for art based on ancient Indian traditions and a vision of the unity of humanity transcending religious and cultural boundaries. A ‘world university’ was established at Santiniketan in 1921, recognizing the unity of humanity or “Visva Bharati”. Distinct from the prevailing British colonial architectural orientations of the early 20th century and of European modernism, Santiniketan represents approaches toward a pan-Asian modernity, drawing on ancient, medieval and folk traditions from across the region.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "452",
+    "name": "Sundarbans National Park",
+    "year": 1987,
+    "criteria": "(ix)(x)",
+    "lat": 21.945,
+    "lon": 88.89583333,
+    "state": "",
+    "category": "natural",
+    "qid": null,
+    "description": "The Sundarbans covers 10,000 km2 of land and water (more than half of it in India, the rest in Bangladesh) in the Ganges delta. It contains the world's largest area of mangrove forests. A number of rare or endangered species live in the park, including tigers, aquatic mammals, birds and reptiles.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1342",
+    "name": "Western Ghats",
+    "year": 2012,
+    "criteria": "(ix)(x)",
+    "lat": 8.5297222222,
+    "lon": 77.2497222222,
+    "state": "",
+    "category": "natural",
+    "qid": null,
+    "description": "Older than the Himalaya mountains, the mountain chain of the Western Ghats represents geomorphic features of immense importance with unique biophysical and ecological processes. The site’s high montane forest ecosystems influence the Indian monsoon weather pattern. Moderating the tropical climate of the region, the site presents one of the best examples of the monsoon system on the planet. It also has an exceptionally high level of biological diversity and endemism and is recognized as one of the world’s eight ‘hottest hotspots’ of biological diversity. The forests of the site include some of the best representatives of non-equatorial tropical evergreen forests anywhere and are home to at least 325 globally threatened flora, fauna, bird, amphibian, reptile and fish species.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1338",
+    "name": "The Jantar Mantar, Jaipur",
+    "year": 2010,
+    "criteria": "(iii)(iv)",
+    "lat": 26.9247222222,
+    "lon": 75.825,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The Jantar Mantar, in Jaipur, is an astronomical observation site built in the early 18th century. It includes a set of some 20 main fixed instruments. They are monumental examples in masonry of known instruments but which in many cases have specific characteristics of their own. Designed for the observation of astronomical positions with the naked eye, they embody several architectural and instrumental innovations. This is the most significant, most comprehensive, and the best preserved of India's historic observatories. It is an expression of the astronomical skills and cosmological concepts of the court of a scholarly prince at the end of the Mughal period.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1502",
+    "name": "Archaeological Site of Nalanda Mahavihara at Nalanda, Bihar",
+    "year": 2016,
+    "criteria": "(iv)",
+    "lat": 25.1366666667,
+    "lon": 85.4438888889,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The Nalanda Mahavihara site is in the State of Bihar, in north-eastern India. It comprises the archaeological remains of a monastic and scholastic institution dating from the 3rd century BCE to the 13th century CE. It includes stupas, shrines, viharas (residential and educational buildings) and important art works in stucco, stone and metal. Nalanda stands out as the most ancient university of the Indian Subcontinent. It engaged in the organized transmission of knowledge over an uninterrupted period of 800 years. The historical development of the site testifies to the development of Buddhism into a religion and the flourishing of monastic and educational traditions.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "242",
+    "name": "Ajanta Caves",
+    "year": 1983,
+    "criteria": "(i)(ii)(iii)",
+    "lat": 20.553111,
+    "lon": 75.70025,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The first Buddhist cave monuments at Ajanta date from the 2nd and 1st centuries B.C. During the Gupta period (5th and 6th centuries A.D.), many more richly decorated caves were added to the original group. The paintings and sculptures of Ajanta, considered masterpieces of Buddhist religious art, have had a considerable artistic influence.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "234",
+    "name": "Churches and Convents of Goa",
+    "year": 1986,
+    "criteria": "(ii)(iv)",
+    "lat": 15.50222,
+    "lon": 73.91167,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The churches and convents of Goa, the former capital of the Portuguese Indies – particularly the Church of Bom Jesus, which contains the tomb of St Francis-Xavier – illustrate the evangelization of Asia. These monuments were influential in spreading forms of Manueline, Mannerist and Baroque art in all the countries of Asia where missions were established.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "524",
+    "name": "Buddhist Monuments at Sanchi",
+    "year": 1989,
+    "criteria": "(i)(ii)(iii)(iv)",
+    "lat": 23.47944,
+    "lon": 77.73972,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "On a hill overlooking the plain and about 40 km from Bhopal, the site of Sanchi comprises a group of Buddhist monuments (monolithic pillars, palaces, temples and monasteries) all in different states of conservation most of which date back to the 2nd and 1st centuries B.C. It is the oldest Buddhist sanctuary in existence and was a major Buddhist centre in India until the 12th century A.D.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1645",
+    "name": "Dholavira: a Harappan City",
+    "year": 2021,
+    "criteria": "(iii)(iv)",
+    "lat": 23.8884083333,
+    "lon": 70.2133027778,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The ancient city of Dholavira, the southern centre of the Harappan Civilization, is sited on the arid island of Khadir in the State of Gujarat. Occupied between ca. 3000-1500 BCE, the archaeological site, one of the best preserved urban settlements from the period in Southeast Asia, comprises a fortified city and a cemetery. Two seasonal streams provided water, a scarce resource in the region, to the walled city which comprises a heavily fortified castle and ceremonial ground as well as streets and houses of different proportion quality which testify to a stratified social order. A sophisticated water management system demonstrates the ingenuity of the Dholavira people in their struggle to survive and thrive in a harsh environment. The site includes a large cemetery with cenotaphs of six types testifying to the Harappan’s unique view of death. Bead processing workshops and artifacts of various kinds such as copper, shell, stone, jewellery of semi-precious stones, terracotta, gold, ivory and other materials have been found during archaeological excavations of the site, exhibiting the culture’s artistic and technological achievements. Evidence for inter-regional trade with other Harappan cities, as well as with cities in the Mesopotamia region and the Oman peninsula have also been discovered.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "250",
+    "name": "Great Living Chola Temples",
+    "year": 1987,
+    "criteria": "(ii)(iii)",
+    "lat": 10.78305556,
+    "lon": 79.1325,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The Great Living Chola Temples were built by kings of the Chola Empire, which stretched over all of south India and the neighbouring islands. The site includes three great 11th- and 12th-century Temples: the Brihadisvara Temple at Thanjavur, the Brihadisvara Temple at Gangaikondacholisvaram and the Airavatesvara Temple at Darasuram. The Temple of Gangaikondacholisvaram, built by Rajendra I, was completed in 1035. Its 53-m vimana (sanctum tower) has recessed corners and a graceful upward curving movement, contrasting with the straight and severe tower at Thanjavur. The Airavatesvara temple complex, built by Rajaraja II, at Darasuram features a 24-m vimana and a stone image of Shiva. The temples testify to the brilliant achievements of the Chola in architecture, sculpture, painting and bronze casting.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1406",
+    "name": "Great Himalayan National Park Conservation Area",
+    "year": 2014,
+    "criteria": "(x)",
+    "lat": 31.8333333333,
+    "lon": 77.5833333333,
+    "state": "",
+    "category": "natural",
+    "qid": null,
+    "description": "This National Park in the western part of the Himalayan Mountains in the northern Indian state of Himachal Pradesh is characterized by high alpine peaks, alpine meadows and riverine forests. The 90,540 ha property includes the upper mountain glacial and snow meltwater sources of several rivers, and the catchments of water supplies that are vital to millions of downstream users. The GHNPCA protects the monsoon-affected forests and alpine meadows of the Himalayan front ranges. It is part of the Himalaya biodiversity hotspot and includes twenty-five forest types along with a rich assemblage of fauna species, several of which are threatened. This gives the site outstanding significance for biodiversity conservation.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "255",
+    "name": "Fatehpur Sikri",
+    "year": 1986,
+    "criteria": "(ii)(iii)(iv)",
+    "lat": 27.097528,
+    "lon": 77.6665,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Built during the second half of the 16th century by the Emperor Akbar, Fatehpur Sikri (the City of Victory) was the capital of the Mughal Empire for only some 10 years. The complex of monuments and temples, all in a uniform architectural style, includes one of the largest mosques in India, the Jama Masjid.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "241",
+    "name": "Group of Monuments at Hampi",
+    "year": 1986,
+    "criteria": "(i)(iii)(iv)",
+    "lat": 15.31444,
+    "lon": 76.47167,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The austere, grandiose site of Hampi was the last capital of the last great Hindu Kingdom of Vijayanagar. Its fabulously rich princes built Dravidian temples and palaces which won the admiration of travellers between the 14th and 16th centuries. Conquered by the Deccan Muslim confederacy in 1565, the city was pillaged over a period of six months before being abandoned.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "232",
+    "name": "Humayun's Tomb, Delhi",
+    "year": 1993,
+    "criteria": "(ii)(iv)",
+    "lat": 28.59333,
+    "lon": 77.25056,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "This tomb, built in 1570, is of particular cultural significance as it was the first garden-tomb on the Indian subcontinent. It inspired several major architectural innovations, culminating in the construction of the Taj Mahal.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1513",
+    "name": "Khangchendzonga National Park",
+    "year": 2016,
+    "criteria": "(iii)(vii)(x)",
+    "lat": 27.7647222222,
+    "lon": 88.3772222222,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Located at the heart of the Himalayan range in northern India (State of Sikkim), the Khangchendzonga National Park includes a unique diversity of plains, valleys, lakes, glaciers and spectacular, snow-capped mountains covered with ancient forests, including the world’s third highest peak, Mount Khangchendzonga. Mythological stories are associated with this mountain and with a great number of natural elements (caves, rivers, lakes, etc.) that are the object of worship by the indigenous people of Sikkim. The sacred meanings of these stories and practices have been integrated with Buddhist beliefs and constitute the basis for Sikkimese identity.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1739",
+    "name": "Maratha Military Landscapes of India",
+    "year": 2025,
+    "criteria": "(iv)",
+    "lat": 20.7225,
+    "lon": 73.9425,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The property includes twelve major fortifications, mostly in Maharashtra State, with one in Tamil Nadu. These forts, such as Raigad, Shivneri, and Sindhudurg, were built, adapted, or expanded by the Marathas between the late 17th and early 19th centuries. Strategically located on coastal and mountainous terrain, they formed a complex defence system supporting Maratha military dominance, trade protection, and territorial control. This network played a key role in the Marathas’ rise as a major political and military force.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "240",
+    "name": "Khajuraho Group of Monuments",
+    "year": 1986,
+    "criteria": "(i)(iii)",
+    "lat": 24.85222,
+    "lon": 79.92222,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "The temples at Khajuraho were built during the Chandella dynasty, which reached its apogee between 950 and 1050. Only about 20 temples remain; they fall into three distinct groups and belong to two different religions – Hinduism and Jainism. They strike a perfect balance between architecture and sculpture. The Temple of Kandariya is decorated with a profusion of sculptures that are among the greatest masterpieces of Indian art.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  },
+  {
+    "id": "1480",
+    "name": "Victorian Gothic and Art Deco Ensembles of Mumbai",
+    "year": 2018,
+    "criteria": "(ii)(iv)",
+    "lat": 18.9298055556,
+    "lon": 72.8300833333,
+    "state": "",
+    "category": "cultural",
+    "qid": null,
+    "description": "Having become a global trading centre, the city of Mumbai implemented an ambitious urban planning project in the second half of the 19th century. It led to the construction of ensembles of public buildings bordering the Oval Maidan open space, first in the Victorian Neo-Gothic style and then, in the early 20th century, in the Art Deco idiom. The Victorian ensemble includes Indian elements suited to the climate, including balconies and verandas. The Art Deco edifices, with their cinemas and residential buildings, blend Indian design with Art Deco imagery, creating a unique style that has been described as Indo-Deco. These two ensembles bear testimony to the phases of modernization that Mumbai has undergone in the course of the 19th and 20th centuries.",
+    "is_transboundary": false,
+    "states_names": [
+      "India"
+    ],
+    "source": "api"
+  }
+]
