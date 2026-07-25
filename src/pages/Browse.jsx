@@ -7,12 +7,23 @@ export default function Browse() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('all');
 
+  /* ── Sidebar multi-select state ── */
+  const [selectedRegions, setSelectedRegions]   = useState([]);
+  const [selectedPeriods, setSelectedPeriods]   = useState([]);
+  const [selectedArtForms, setSelectedArtForms] = useState([]);
+
   /* ── Accordion ── */
   const [openAccordions, setOpenAccordions] = useState({
-    region: true, period: false, artForm: false, institution: false,
+    region: true, period: false, artForm: false,
   });
   const toggleAccordion = (key) =>
     setOpenAccordions((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  /* ── Toggle checkbox helpers ── */
+  const toggleItem = (setter, val) =>
+    setter((prev) =>
+      prev.includes(val) ? prev.filter((v) => v !== val) : [...prev, val]
+    );
 
   /* ── Filter chips ── */
   const filterChips = [
@@ -25,25 +36,52 @@ export default function Browse() {
     { id: 'rajput',   label: 'Rajput'   },
   ];
 
-  /* ── Filter logic ── */
+  const REGIONS   = ['Maharashtra', 'Rajasthan', 'Tamil Nadu', 'Madhya Pradesh'];
+  const PERIODS   = ['Ancient (pre-500 CE)', 'Medieval (500–1500 CE)', 'Early Modern (1500–1800)', 'Contemporary'];
+  const ART_FORMS = ['Sculpture', 'Painting', 'Manuscript', 'Textile'];
+
+  /* ── Combined filter logic ── */
   const filteredArtifacts = useMemo(() => {
     return BROWSE_ARTIFACTS.filter((art) => {
       const q = searchQuery.toLowerCase();
       const matchSearch =
         art.title.toLowerCase().includes(q) ||
         art.type.toLowerCase().includes(q) ||
-        art.period.toLowerCase().includes(q);
+        art.period.toLowerCase().includes(q) ||
+        (art.description || '').toLowerCase().includes(q);
+
+      // Chip filter: 'all' shows everything, otherwise match art.filter OR check if
+      // chip label matches the art's filter category
       const matchChip = selectedFilter === 'all' || art.filter === selectedFilter;
-      return matchSearch && matchChip;
+
+      // Sidebar: if any checkboxes selected, artifact must match at least one in each
+      // non-empty group (AND between groups, OR within group)
+      const matchRegion  = selectedRegions.length === 0  || selectedRegions.includes(art.region);
+      const matchPeriod  = selectedPeriods.length === 0  || selectedPeriods.includes(art.timePeriod);
+      const matchArtForm = selectedArtForms.length === 0 || selectedArtForms.includes(art.artForm);
+
+      return matchSearch && matchChip && matchRegion && matchPeriod && matchArtForm;
     });
-  }, [searchQuery, selectedFilter]);
+  }, [searchQuery, selectedFilter, selectedRegions, selectedPeriods, selectedArtForms]);
 
   const countText = useMemo(() => {
-    if (searchQuery) return `Showing ${filteredArtifacts.length} search results`;
+    const hasActiveFilter =
+      searchQuery || selectedFilter !== 'all' ||
+      selectedRegions.length || selectedPeriods.length || selectedArtForms.length;
+    if (hasActiveFilter) return `Showing ${filteredArtifacts.length} results`;
     return `Showing ${FILTER_COUNTS[selectedFilter] ?? '1,204'} artifacts`;
-  }, [selectedFilter, searchQuery, filteredArtifacts.length]);
+  }, [selectedFilter, searchQuery, filteredArtifacts.length, selectedRegions, selectedPeriods, selectedArtForms]);
 
-  const handleReset = () => { setSearchQuery(''); setSelectedFilter('all'); };
+  const handleReset = () => {
+    setSearchQuery('');
+    setSelectedFilter('all');
+    setSelectedRegions([]);
+    setSelectedPeriods([]);
+    setSelectedArtForms([]);
+  };
+
+  const hasActiveFilters =
+    selectedRegions.length || selectedPeriods.length || selectedArtForms.length;
 
   return (
     <main className="pt-20 pb-[120px] bg-[#fbf9f5] min-h-screen text-[#1b1c1a]"
@@ -98,39 +136,104 @@ export default function Browse() {
           {/* Filter sidebar */}
           <aside className="w-full md:w-64 flex-shrink-0" aria-label="Filters">
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#d1c5b2]">
-              <h2 className="font-['Playfair_Display'] text-[12px] font-semibold uppercase tracking-widest text-[#1b1c1a]">Filters</h2>
+              <h2 className="font-['Playfair_Display'] text-[12px] font-semibold uppercase tracking-widest text-[#1b1c1a]">
+                Filters
+                {hasActiveFilters > 0 && (
+                  <span className="ml-2 px-1.5 py-0.5 bg-[#8b6914] text-white text-[9px] rounded-full">
+                    {(selectedRegions.length + selectedPeriods.length + selectedArtForms.length)}
+                  </span>
+                )}
+              </h2>
               <button onClick={handleReset} className="text-[#807665] hover:text-[#1b1c1a] text-[12px] font-medium transition-colors">Reset</button>
             </div>
 
             <div className="flex flex-col gap-2">
-              {[
-                { key: 'region',      label: 'Region',      items: ['Maharashtra', 'Rajasthan', 'Tamil Nadu', 'Madhya Pradesh'] },
-                { key: 'period',      label: 'Time Period',  items: ['Ancient (pre-500 CE)', 'Medieval (500–1500 CE)', 'Early Modern (1500–1800)', 'Contemporary'] },
-                { key: 'artForm',     label: 'Art Form',     items: ['Sculpture', 'Painting', 'Manuscript', 'Textile'] },
-                { key: 'institution', label: 'Institution',  items: ['National Museum', 'IGNCA', 'Salar Jung'] },
-              ].map(({ key, label, items }) => (
-                <div key={key} className="border-b border-[#d1c5b2] pb-2">
-                  <button
-                    onClick={() => toggleAccordion(key)}
-                    className="flex items-center justify-between w-full text-left text-[16px] text-[#1b1c1a] py-3 hover:text-[#8b6914] transition-colors"
-                    aria-expanded={openAccordions[key]}
-                  >
-                    <span>{label}</span>
-                    <span className={`material-symbols-outlined text-[#807665] transition-transform duration-300 ${openAccordions[key] ? 'rotate-180' : ''}`}>
-                      expand_more
-                    </span>
-                  </button>
-                  {openAccordions[key] && (
-                    <div className="py-3 space-y-2 pl-2">
-                      {items.map((item) => (
-                        <label key={item} className="flex items-center gap-2 text-sm text-[#4e4637] cursor-pointer hover:text-[#1b1c1a] transition-colors">
-                          <input type="checkbox" className="accent-[#8b6914]" /> {item}
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
+              {/* Region accordion */}
+              <div className="border-b border-[#d1c5b2] pb-2">
+                <button
+                  onClick={() => toggleAccordion('region')}
+                  className="flex items-center justify-between w-full text-left text-[16px] text-[#1b1c1a] py-3 hover:text-[#8b6914] transition-colors"
+                  aria-expanded={openAccordions.region}
+                >
+                  <span>Region</span>
+                  <span className={`material-symbols-outlined text-[#807665] transition-transform duration-300 ${openAccordions.region ? 'rotate-180' : ''}`}>
+                    expand_more
+                  </span>
+                </button>
+                {openAccordions.region && (
+                  <div className="py-3 space-y-2 pl-2">
+                    {REGIONS.map((item) => (
+                      <label key={item} className="flex items-center gap-2 text-sm text-[#4e4637] cursor-pointer hover:text-[#1b1c1a] transition-colors">
+                        <input
+                          type="checkbox"
+                          className="accent-[#8b6914]"
+                          checked={selectedRegions.includes(item)}
+                          onChange={() => toggleItem(setSelectedRegions, item)}
+                        />
+                        {item}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Time Period accordion */}
+              <div className="border-b border-[#d1c5b2] pb-2">
+                <button
+                  onClick={() => toggleAccordion('period')}
+                  className="flex items-center justify-between w-full text-left text-[16px] text-[#1b1c1a] py-3 hover:text-[#8b6914] transition-colors"
+                  aria-expanded={openAccordions.period}
+                >
+                  <span>Time Period</span>
+                  <span className={`material-symbols-outlined text-[#807665] transition-transform duration-300 ${openAccordions.period ? 'rotate-180' : ''}`}>
+                    expand_more
+                  </span>
+                </button>
+                {openAccordions.period && (
+                  <div className="py-3 space-y-2 pl-2">
+                    {PERIODS.map((item) => (
+                      <label key={item} className="flex items-center gap-2 text-sm text-[#4e4637] cursor-pointer hover:text-[#1b1c1a] transition-colors">
+                        <input
+                          type="checkbox"
+                          className="accent-[#8b6914]"
+                          checked={selectedPeriods.includes(item)}
+                          onChange={() => toggleItem(setSelectedPeriods, item)}
+                        />
+                        {item}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Art Form accordion */}
+              <div className="border-b border-[#d1c5b2] pb-2">
+                <button
+                  onClick={() => toggleAccordion('artForm')}
+                  className="flex items-center justify-between w-full text-left text-[16px] text-[#1b1c1a] py-3 hover:text-[#8b6914] transition-colors"
+                  aria-expanded={openAccordions.artForm}
+                >
+                  <span>Art Form</span>
+                  <span className={`material-symbols-outlined text-[#807665] transition-transform duration-300 ${openAccordions.artForm ? 'rotate-180' : ''}`}>
+                    expand_more
+                  </span>
+                </button>
+                {openAccordions.artForm && (
+                  <div className="py-3 space-y-2 pl-2">
+                    {ART_FORMS.map((item) => (
+                      <label key={item} className="flex items-center gap-2 text-sm text-[#4e4637] cursor-pointer hover:text-[#1b1c1a] transition-colors">
+                        <input
+                          type="checkbox"
+                          className="accent-[#8b6914]"
+                          checked={selectedArtForms.includes(item)}
+                          onChange={() => toggleItem(setSelectedArtForms, item)}
+                        />
+                        {item}
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </aside>
 

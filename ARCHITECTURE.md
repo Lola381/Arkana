@@ -1,0 +1,288 @@
+# ARKANA — System Architecture
+
+## System Overview
+
+ARKANA is a full-stack monorepo containing a React 19 SPA (frontend) and a Node.js/Express REST API (backend),
+backed by MongoDB Atlas. In development, Vite proxies all `/api/*` requests to the Express server on port 5000.
+
+```mermaid
+graph TB
+    subgraph Client["Client — Browser"]
+        A["React SPA\nport 5173"]
+    end
+
+    subgraph DevServer["Development"]
+        B["Vite Dev Server\nProxy /api/*"]
+    end
+
+    subgraph Backend["Backend — Node.js"]
+        C["Express Server\nport 5000"]
+        D["verifyJWT\nMiddleware"]
+        E["Auth Controller"]
+        F["User Model\nMongoose"]
+    end
+
+    subgraph DB["Database"]
+        G[("MongoDB Atlas\narkana-cluster")]
+    end
+
+    A -->|"HTTP fetch('/api/...')"| B
+    B -->|"http://localhost:5000/api/*"| C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+```
+
+---
+
+## Component Interaction
+
+```mermaid
+graph TD
+    A["main.jsx\nEntry point"] --> B["BrowserRouter"]
+    B --> C["App.jsx\nRoute table"]
+    C --> D["TransitionProvider\nPage transition state"]
+    D --> E["CardModalProvider\nModal state"]
+    E --> F["Navbar.jsx\nFixed nav + auth"]
+    E --> G["Routes"]
+    E --> H["TransitionOverlay\nWipe + card-expand"]
+    E --> I["CardModal\nFull-screen portal"]
+    E --> J["GlobalCursor\nCustom 'READ' cursor"]
+
+    G --> K["Home /"]
+    G --> L["Explore /explore"]
+    G --> M["Browse /browse"]
+    G --> N["Culture /culture"]
+    G --> O["ArtifactDetail /artifact"]
+    G --> P["Identify /identify"]
+    G --> Q["Login /login"]
+    G --> R["Register /register"]
+
+    K --> S["ArtifactCard"]
+    K --> T["LiquidImage\nThree.js + GLSL"]
+    K --> U["ScrollReveal\nIntersectionObserver"]
+    M --> V["ArticleCard"]
+    S -->|"openCard()"| E
+    V -->|"openCard()"| E
+
+    style T fill:#6f5100,color:#fff
+    style D fill:#1b1c1a,color:#fff
+    style E fill:#1b1c1a,color:#fff
+```
+
+---
+
+## Frontend Architecture
+
+The frontend is a **React 19 SPA** using:
+- **React Router DOM v7** for client-side routing (8 routes)
+- **Two React Contexts** for global state (`TransitionContext`, `CardModalContext`)
+- **Vanilla CSS design tokens** (`index.css`) + **Tailwind CDN** for utilities
+- **Static data layer** (`src/data/artifacts.js`) for all artifact/culture content
+
+### State Management Strategy
+
+| State Type | Mechanism |
+|------------|-----------|
+| Page transition animation | `TransitionContext` (React Context) |
+| Card modal open/close | `CardModalContext` (React Context) |
+| Auth session (UI) | `localStorage` (`token`, `user`) |
+| Auth session (API) | `httpOnly` cookies (`accessToken`, `refreshToken`) |
+| Page-level UI state | `useState` / `useRef` (local) |
+| Scroll animation | `IntersectionObserver` (DOM, no state) |
+
+### Context Providers
+
+#### `TransitionContext`
+**File:** `src/components/TransitionContext.jsx`
+
+Manages page transition animations. Provides two transition modes:
+
+| Mode | Trigger | Animation |
+|------|---------|-----------|
+| Geometric Wipe | `triggerWipe(path)` | 4 horizontal panels wipe across screen |
+| Card Expand | `triggerCardExpand(path, el)` | Card element scales to fill viewport |
+
+**Custom exports:** `TransitionLink`, `TransitionNavLink`, `useTransition()`
+
+#### `CardModalContext`
+**File:** `src/components/CardModalContext.jsx`
+
+Manages the full-screen artifact detail modal. Tracks modal state (`isOpen`, `artifact`, `originX`, `originY`).
+
+**Custom export:** `useCardModal()`
+
+---
+
+## Backend Architecture
+
+The backend is a **Node.js/Express REST API** using the CommonJS module system.
+
+### Middleware Stack (applied globally)
+```
+Request
+  │
+  ├── cors()           — Validates Origin header against CORS_ORIGIN env var
+  ├── express.json()   — Parses JSON body (limit: 16kb)
+  ├── express.urlencoded() — Parses URL-encoded body (limit: 16kb)
+  └── cookieParser()   — Parses cookies (for JWT token extraction)
+  │
+  └── Router → /api/auth/*
+        │
+        ├── Public routes (no auth check)
+        └── Protected routes → verifyJWT → controller
+```
+
+### Module Dependency Graph
+```
+index.js
+  ├── require('dotenv').config()
+  ├── require('./db')          → mongoose.connect(MONGODB_URI/arkana)
+  └── require('./app')
+        ├── require('express')
+        ├── require('cors')
+        ├── require('cookie-parser')
+        └── require('./routes/auth.routes')
+              ├── require('./controllers/auth.controller')
+              │     ├── require('../models/user.model')
+              │     │     ├── require('mongoose')
+              │     │     ├── require('bcryptjs')
+              │     │     └── require('jsonwebtoken')
+              │     ├── require('jsonwebtoken')
+              │     └── require('../constants')
+              └── require('../middleware/auth.middleware')
+                    ├── require('jsonwebtoken')
+                    └── require('../models/user.model')
+```
+
+---
+
+## Authentication Flow
+
+```mermaid
+sequenceDiagram
+    participant B as Browser
+    participant V as Vite Proxy
+    participant E as Express
+    participant M as MongoDB
+
+    Note over B,M: REGISTER / LOGIN
+    B->>V: POST /api/auth/login {email, password}
+    V->>E: POST http://localhost:5000/api/auth/login
+    E->>M: User.findOne({ email })
+    M-->>E: User document
+    E->>E: bcrypt.compare(password, hash)
+    E->>E: jwt.sign() → accessToken (1d expiry)
+    E->>E: jwt.sign() → refreshToken (7d expiry)
+    E->>M: user.refreshToken = refreshToken → user.save()
+    M-->>E: OK
+    E-->>B: Set-Cookie: accessToken (httpOnly, 1d)\nSet-Cookie: refreshToken (httpOnly, 7d)\n{ message, token, user }
+    B->>B: localStorage.setItem('token', data.token)
+    B->>B: localStorage.setItem('user', JSON.stringify(data.user))
+
+    Note over B,M: PROTECTED REQUEST
+    B->>V: GET /api/auth/profile (cookie: accessToken auto-sent)
+    V->>E: GET http://localhost:5000/api/auth/profile
+    E->>E: verifyJWT: extract token from cookies
+    E->>E: jwt.verify(token, ACCESS_TOKEN_SECRET)
+    E->>M: User.findById(decoded._id).select('-password -refreshToken')
+    M-->>E: User (sensitive fields excluded)
+    E->>E: req.user = user → next()
+    E-->>B: 200 { user: { _id, name, email } }
+
+    Note over B,M: TOKEN REFRESH
+    B->>V: POST /api/auth/refresh-token (cookie: refreshToken)
+    V->>E: POST http://localhost:5000/api/auth/refresh-token
+    E->>E: jwt.verify(refreshToken, REFRESH_TOKEN_SECRET)
+    E->>M: User.findById(decoded._id)
+    M-->>E: User
+    E->>E: Verify stored token matches incoming token
+    E->>E: Generate new accessToken + refreshToken
+    E->>M: user.refreshToken = newRefreshToken → user.save()
+    E-->>B: Set new cookies + { token: newAccessToken }
+
+    Note over B,M: LOGOUT
+    B->>V: POST /api/auth/logout (cookie: accessToken)
+    V->>E: POST http://localhost:5000/api/auth/logout
+    E->>E: verifyJWT middleware runs
+    E->>M: User.findByIdAndUpdate(_id, { $unset: { refreshToken: 1 } })
+    E-->>B: clearCookie('accessToken') + clearCookie('refreshToken')\n{ message: "Logged out successfully" }
+    B->>B: localStorage.removeItem('token')\nlocalStorage.removeItem('user')
+```
+
+---
+
+## API Flow
+
+```mermaid
+sequenceDiagram
+    participant FE as Frontend (React)
+    participant VP as Vite Proxy
+    participant EX as Express
+    participant CT as Controller
+    participant DB as MongoDB
+
+    FE->>VP: fetch('/api/auth/register', { method: 'POST', body: JSON })
+    Note over VP: Dev only — transparent proxy
+    VP->>EX: POST http://localhost:5000/api/auth/register
+    EX->>EX: cors() → json() → cookieParser()
+    EX->>CT: registerUser(req, res)
+    CT->>CT: Validate fields (name, email, password)
+    CT->>DB: User.findOne({ email }) — check duplicate
+    DB-->>CT: null (no duplicate)
+    CT->>DB: User.create({ name, email, password })
+    Note over DB: pre-save hook: bcrypt.hash(password, 12)
+    DB-->>CT: new User document
+    CT->>CT: generateAccessAndRefreshTokens(user._id)
+    CT->>DB: user.save({ refreshToken })
+    CT-->>EX: res.status(201).cookie().json()
+    EX-->>FE: 201 { message, token, user }
+```
+
+---
+
+## Database Interaction
+
+```mermaid
+erDiagram
+    USERS {
+        ObjectId _id PK "Auto-generated"
+        String name "required, trimmed"
+        String email UK "required, unique, lowercase"
+        String password "bcrypt hash — never returned"
+        String refreshToken "null when logged out"
+        Date createdAt "auto-timestamp"
+        Date updatedAt "auto-timestamp"
+    }
+```
+
+> **Current state:** Only the `users` collection exists. All artifact, culture, and heritage data
+> is served from the static file `src/data/artifacts.js` (9 exported arrays). A MongoDB `artifacts`
+> collection is a planned future improvement.
+
+---
+
+## Design System
+
+The visual language is defined in two places:
+
+| File | Role |
+|------|------|
+| `src/index.css` | CSS custom properties (design tokens), animation classes, component styles |
+| `index.html` | Tailwind CDN config with extended color/spacing/font tokens |
+| `heritage_editorial/DESIGN.md` | Full design system specification document |
+
+### Core Design Tokens
+
+```css
+--color-surface:          #fbf9f5   /* Warm parchment white — main background */
+--color-on-surface:       #1b1c1a   /* Near-black text */
+--color-primary:          #6f5100   /* Deep heritage gold — links, active states */
+--color-primary-container:#8b6914   /* Heritage gold — accents */
+--color-outline-variant:  #d1c5b2   /* Warm grey — borders, dividers */
+--font-display: 'Playfair Display', serif
+--font-body:    'Inter', sans-serif
+--ease-museum:  cubic-bezier(0.16, 1, 0.3, 1)  /* Springy, gallery-quality */
+--ease-sharp:   cubic-bezier(0.77, 0, 0.175, 1) /* Fast entry, abrupt stop */
+```

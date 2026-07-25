@@ -1,9 +1,11 @@
+import { useCallback } from 'react';
 import ScrollReveal from '../components/ScrollReveal';
-import { TransitionLink, useTransition } from '../components/TransitionContext';
+import { TransitionLink } from '../components/TransitionContext';
+import { useCardModal } from '../components/CardModalContext';
 import { RELATED_CULTURES, WARLI_ARTIFACTS } from '../data/artifacts';
 
 export default function Culture() {
-  const { triggerCardExpand } = useTransition();
+  const { openCard } = useCardModal();
 
   return (
     <main className="pt-20 pb-[120px] bg-[#fbf9f5] min-h-screen text-[#1b1c1a]" aria-label="Warli culture profile">
@@ -127,11 +129,12 @@ export default function Culture() {
           {WARLI_ARTIFACTS.map((artifact) => (
             <div
               key={artifact.id}
-              onClick={(e) => triggerCardExpand('/artifact', e.currentTarget)}
+              onClick={(e) => openCard(artifact, e.currentTarget)}
               className="min-w-[280px] w-[280px] bg-white border border-[#d1c5b2] rounded shadow-sm snap-start group overflow-hidden flex flex-col cursor-pointer card-anim-lift"
-              role="link"
+              role="button"
               tabIndex={0}
               aria-label={`View ${artifact.title}`}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openCard(artifact, e.currentTarget); }}
             >
               <div className="h-48 overflow-hidden bg-[#efeeea]">
                 <img
@@ -192,7 +195,7 @@ export default function Culture() {
       {/* CTA */}
       <section className="max-w-[1280px] mx-auto px-5 md:px-20 py-16 flex justify-center">
         <ScrollReveal>
-          <TransitionLink to="/explore" className="inline-flex items-center gap-2 group cursor-pointer">
+          <TransitionLink to="/ask" className="inline-flex items-center gap-2 group cursor-pointer">
             <span className="font-['Playfair_Display'] italic text-[28px] md:text-[40px] heritage-link text-[#1b1c1a]">
               Ask Arkana about Warli Art
             </span>

@@ -755,3 +755,39 @@ input[type="range"]::-webkit-slider-thumb {
     margin-top: 0;
   }
 }
+
+/* ── AI Chat Animations ─────────────────────────────────────── */
+
+/* Blinking cursor during token streaming */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.animate-blink {
+  animation: blink 0.9s step-end infinite;
+}
+
+/* Insight card slide-up reveal */
+@keyframes insightCardAppear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.insight-card-appear {
+  animation: insightCardAppear 0.35s ease-out both;
+}
+
+/* Map event NER banner fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out both;
+}
+

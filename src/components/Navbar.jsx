@@ -32,11 +32,10 @@ export default function Navbar() {
   const linkBase = "text-[#4e4637] hover:text-[#6f5100] transition-colors duration-300 font-['Inter'] text-[16px]";
 
   const navItems = [
-    { to: '/explore', label: 'Explore' },
     { to: '/culture', label: 'Cultures' },
     { to: '/browse', label: 'Browse' },
     { to: '/identify', label: 'Identify' },
-    { to: '/explore', label: 'Ask Arkana' },
+    { to: '/ask',      label: 'Ask Arkana' },
   ];
 
   return (
@@ -150,7 +149,7 @@ export default function Navbar() {
 
         {[
           { to: '/', label: 'Home' },
-          ...navItems.slice(0, 4),
+          ...navItems,
           user 
             ? { label: 'Sign Out', onClick: handleLogout }
             : { to: '/login', label: 'Sign In' }

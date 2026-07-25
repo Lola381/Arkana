@@ -85,7 +85,7 @@ def register():
         return jsonify({"message": "Email address already registered"}), 400
         
     # Hash password using secure helper
-    hashed_password = generate_password_hash(password, method='scrypt')
+    hashed_password = generate_password_hash(password)
     
     # Save user
     user_doc = {

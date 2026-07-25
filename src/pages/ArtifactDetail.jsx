@@ -83,10 +83,10 @@ export default function ArtifactDetail() {
                 <span className="material-symbols-outlined text-[18px]">bookmark_border</span> Bookmark
               </button>
               <TransitionLink
-                to="/explore"
+                to="/ask"
                 className="px-6 py-3 border border-[#d1c5b2] rounded font-semibold text-[12px] text-[#1b1c1a] hover:border-[#1b1c1a] transition-all duration-300 flex items-center gap-2"
               >
-                <span className="material-symbols-outlined text-[18px]">location_on</span> View on Map
+                <span className="material-symbols-outlined text-[18px]">auto_awesome</span> Ask Arkana
               </TransitionLink>
             </div>
           </ScrollReveal>

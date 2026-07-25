@@ -6,7 +6,7 @@ import kailasaBg from '../assets/kailasa_bg.png';
 /* ─── Reusable clip-reveal line ────────────────────────────────────────── */
 function RevealLine({ children, delay = 0, revealed, tag: Tag = 'span', className = '', style: extraStyle = {} }) {
   return (
-    <div className="overflow-hidden leading-normal">
+    <div className="overflow-hidden py-3 -my-3 leading-normal">
       <Tag
         className={className}
         style={{
@@ -245,7 +245,7 @@ export default function Register() {
       {/* ══════════════════════════════════════════
           RIGHT PANEL — Sign-up form
           ══════════════════════════════════════════ */}
-      <div className="flex-1 flex flex-col justify-center items-center px-8 bg-[#fbf9f5] relative min-h-screen">
+      <div className="flex-1 flex flex-col justify-center items-center px-8 bg-[#fbf9f5] relative min-h-screen pt-24 pb-12 lg:pt-20">
 
         {/* Mobile logo */}
         <div className="lg:hidden absolute top-8 left-8">

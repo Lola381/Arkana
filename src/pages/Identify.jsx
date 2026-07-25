@@ -140,10 +140,10 @@ export default function Identify() {
                 ))}
               </div>
               <TransitionLink
-                to="/explore"
+                to="/browse"
                 className="text-[#8b6914] font-medium text-[16px] heritage-link group inline-flex items-center gap-2"
               >
-                Explore Warli on Map
+                Browse Warli Collection
                 <span className="material-symbols-outlined text-[14px] transition-transform group-hover:translate-x-1">
                   arrow_forward
                 </span>

@@ -6,13 +6,13 @@ import { CardModalProvider } from './components/CardModalContext';
 import CardModal from './components/CardModal';
 import GlobalCursor from './components/GlobalCursor';
 import Home from './pages/Home';
-import Explore from './pages/Explore';
 import Browse from './pages/Browse';
 import Culture from './pages/Culture';
 import ArtifactDetail from './pages/ArtifactDetail';
 import Identify from './pages/Identify';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AskArkana from './pages/AskArkana';
 
 function App() {
   return (
@@ -21,13 +21,13 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/"         element={<Home />}           />
-          <Route path="/explore"  element={<Explore />}        />
           <Route path="/browse"   element={<Browse />}         />
           <Route path="/culture"  element={<Culture />}        />
           <Route path="/artifact" element={<ArtifactDetail />} />
           <Route path="/identify" element={<Identify />}       />
           <Route path="/login"    element={<Login />}          />
           <Route path="/register" element={<Register />}       />
+          <Route path="/ask"      element={<AskArkana />}      />
         </Routes>
         <TransitionOverlay />
         {/* Card expand modal — Photography Page Transition */}
