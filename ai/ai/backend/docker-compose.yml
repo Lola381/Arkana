@@ -1,0 +1,80 @@
+
+
+services:
+  # ── PostgreSQL + PostGIS ──────────────────────────────────────────────────
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    container_name: arkana_postgres
+    environment:
+      POSTGRES_DB: arkana
+      POSTGRES_USER: arkana
+      POSTGRES_PASSWORD: arkana_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U arkana -d arkana"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Redis (Query Cache) ───────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: arkana_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  # ── ChromaDB (Vector Store — MVP) ─────────────────────────────────────────
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: arkana_chromadb
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/chroma
+      - ANONYMIZED_TELEMETRY=FALSE
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/localhost/8000'"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # ── pgAdmin (DB management UI — dev only) ────────────────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: arkana_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@arkana.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    profiles:
+      - dev   # Only starts with: docker compose --profile dev up
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  chroma_data:
+
+networks:
+  default:
+    name: arkana_network

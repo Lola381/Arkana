@@ -1,0 +1,134 @@
+<!-- ================================
+     ASK ARKANA — AI Chat + Interactive Map
+     Split-screen: Map (left) + Chat (right)
+     ================================ -->
+<main class="flex flex-col md:flex-row h-screen pt-20 overflow-hidden" aria-label="Ask Arkana AI Chat with Map">
+
+  <!-- ═══════════════════════════════════
+       LEFT: Interactive Map Panel
+       ═══════════════════════════════════ -->
+  <section class="w-full md:w-[55%] h-[40vh] md:h-full relative bg-surface-container flex-shrink-0" aria-label="Heritage Map">
+    <!-- Leaflet Map Container -->
+    <div id="arkana-map" class="absolute inset-0 z-0"></div>
+
+    <!-- Map Overlay: Title -->
+    <div class="absolute top-4 left-4 z-[1000] pointer-events-none">
+      <div class="arkana-map-badge pointer-events-auto">
+        <span class="material-symbols-outlined text-[16px]">explore</span>
+        <span class="font-label-sm text-label-sm">Heritage Map</span>
+      </div>
+    </div>
+
+    <!-- Map Overlay: Location Info Card (shown when locations are plotted) -->
+    <div id="arkana-map-info" class="absolute bottom-4 left-4 right-4 z-[1000] hidden">
+      <div class="arkana-map-info-card">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="material-symbols-outlined text-[18px] text-primary-container">location_on</span>
+          <h3 id="arkana-map-title" class="font-headline-md text-[15px] text-on-surface font-semibold"></h3>
+        </div>
+        <p id="arkana-map-desc" class="font-body-md text-[13px] text-on-surface-variant leading-relaxed"></p>
+      </div>
+    </div>
+
+    <!-- Map Overlay: Legend (for multi-marker empires/regions) -->
+    <div id="arkana-map-legend" class="absolute top-4 right-4 z-[1000] hidden">
+      <div class="arkana-map-legend-card">
+        <p class="font-label-sm text-label-sm text-on-surface-variant/70 uppercase tracking-widest mb-2">Locations</p>
+        <div id="arkana-legend-items" class="space-y-1"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       RIGHT: Chat Panel
+       ═══════════════════════════════════ -->
+  <section class="w-full md:w-[45%] h-[60vh] md:h-full bg-surface flex flex-col border-l border-outline-variant/30" aria-label="Ask Arkana AI chat">
+
+    <!-- Chat Header -->
+    <div class="arkana-chat-header flex-shrink-0">
+      <div class="px-6 py-4 flex items-center gap-3">
+        <div class="arkana-avatar" style="width:36px;height:36px;border-radius:11px;">
+          <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+        </div>
+        <div class="flex-grow min-w-0">
+          <h1 class="font-headline-md text-[17px] text-on-surface tracking-wide">Ask Arkana</h1>
+          <p class="font-label-sm text-[11px] text-on-surface-variant mt-0">AI guide · Indian cultural heritage</p>
+        </div>
+        <div class="arkana-status-badge" style="padding:3px 10px;">
+          <span class="arkana-status-dot" style="width:6px;height:6px;"></span>
+          <span class="font-label-sm text-[11px] text-on-surface-variant">Online</span>
+        </div>
+      </div>
+      <div class="h-px bg-gradient-to-r from-transparent via-outline-variant/50 to-transparent"></div>
+    </div>
+
+    <!-- Chat Messages Area -->
+    <div id="arkana-chat-messages" class="flex-grow overflow-y-auto">
+      <div class="px-5 py-6 space-y-5" id="arkana-messages-inner">
+
+        <!-- Welcome Message -->
+        <div class="arkana-msg arkana-msg-ai arkana-fade-in">
+          <div class="arkana-msg-avatar">
+            <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+          </div>
+          <div class="arkana-msg-content">
+            <div class="arkana-msg-bubble arkana-msg-bubble-ai">
+              <p>Namaste! 🙏 I'm <strong>Arkana</strong>, your AI guide to India's rich cultural heritage.</p>
+              <p class="mt-2">Ask me about any monument, dynasty, art form, or tradition — and I'll show you <strong>where it belongs on the map</strong> too!</p>
+            </div>
+            <span class="arkana-msg-time font-label-sm text-label-sm text-on-surface-variant/60">Just now</span>
+          </div>
+        </div>
+
+        <!-- Suggestion Chips -->
+        <div class="arkana-suggestions arkana-fade-in" id="arkana-suggestions" style="padding-left:46px;">
+          <p class="font-label-sm text-[11px] text-on-surface-variant/70 uppercase tracking-widest mb-2">Try asking about</p>
+          <div class="flex flex-wrap gap-1.5">
+            <button class="arkana-chip" style="padding:6px 14px;font-size:12px;" data-suggestion="Tell me about the Taj Mahal and its architecture">Taj Mahal</button>
+            <button class="arkana-chip" style="padding:6px 14px;font-size:12px;" data-suggestion="Tell me about the Mughal Empire and its major cities">Mughal Empire</button>
+            <button class="arkana-chip" style="padding:6px 14px;font-size:12px;" data-suggestion="Tell me about the Chola dynasty bronzes">Chola Bronzes</button>
+            <button class="arkana-chip" style="padding:6px 14px;font-size:12px;" data-suggestion="What is the significance of Warli art?">Warli Art</button>
+            <button class="arkana-chip" style="padding:6px 14px;font-size:12px;" data-suggestion="Tell me about Hampi and the Vijayanagara Empire">Hampi</button>
+            <button class="arkana-chip" style="padding:6px 14px;font-size:12px;" data-suggestion="Explain the Khajuraho temples">Khajuraho</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Typing Indicator (hidden by default) -->
+    <div id="arkana-typing" class="hidden px-5 pb-2">
+      <div class="flex items-center gap-3">
+        <div class="arkana-msg-avatar arkana-msg-avatar-sm">
+          <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+        </div>
+        <div class="arkana-typing-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Input Area -->
+    <div class="arkana-chat-input-area flex-shrink-0">
+      <div class="h-px bg-gradient-to-r from-transparent via-outline-variant/50 to-transparent"></div>
+      <div class="px-5 py-4">
+        <div class="arkana-input-container">
+          <input
+            type="text"
+            id="arkana-input"
+            class="arkana-input"
+            placeholder="Ask about heritage, art, monuments..."
+            aria-label="Type your question about Indian cultural heritage"
+            autocomplete="off"
+          />
+          <button id="arkana-send" class="arkana-send-btn" aria-label="Send message" disabled>
+            <span class="material-symbols-outlined text-[20px]">arrow_upward</span>
+          </button>
+        </div>
+        <p class="text-center mt-2 font-label-sm text-[10px] text-on-surface-variant/40">Responses include interactive map locations</p>
+      </div>
+    </div>
+
+  </section>
+
+</main>
