@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>A cinematic digital museum & AI-powered exploration platform for India's 5,000-year artistic legacy.</strong><br/>
-  Inspired by Google Arts & Culture · Built with React 19, Leaflet, Node.js / Python Flask, and MongoDB Atlas.
+  Inspired by Google Arts &amp; Culture · Built with React 19, Leaflet, Node.js/Express, and MongoDB Atlas.
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/Vite-8.1-646cff?logo=vite&style=flat-square" alt="Vite 8"/>
   <img src="https://img.shields.io/badge/Leaflet-1.9-199900?logo=leaflet&style=flat-square" alt="Leaflet"/>
   <img src="https://img.shields.io/badge/Node.js-Express_4.21-339933?logo=nodedotjs&style=flat-square" alt="Node.js"/>
-  <img src="https://img.shields.io/badge/Python-Flask_2.2-3776AB?logo=python&style=flat-square" alt="Python"/>
+  <img src="https://img.shields.io/badge/server.py-Legacy_Flask-lightgrey?logo=python&style=flat-square" alt="Legacy"/>
   <img src="https://img.shields.io/badge/MongoDB-Atlas_8.12-47A248?logo=mongodb&style=flat-square" alt="MongoDB"/>
   <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License"/>
 </p>
@@ -71,11 +71,11 @@
 | **GSAP** | `3.15.0` | Smooth Animation & Liquid Image Transitions |
 | **Tailwind CSS** | CDN / Utility | Layout & Utility Styling |
 
-### Backend (Dual Support)
+### Backend
 | Technology | Stack | Key Packages / Modules |
 | :--- | :--- | :--- |
-| **Node.js + Express** | Production Primary | `express` (4.21), `mongoose` (8.12), `jsonwebtoken` (9.0), `bcryptjs` (2.4), `cookie-parser` (1.4), `dotenv` |
-| **Python + Flask** | Alternative / AI | `Flask` (2.2), `pymongo` (4.17), `pyjwt` (2.9), `werkzeug` (2.2 - `pbkdf2:sha256`), `certifi`, `flask-cors` |
+| **Node.js + Express** | Canonical backend | `express` (4.21), `mongoose` (8.12), `jsonwebtoken` (9.0), `bcryptjs` (2.4), `cookie-parser` (1.4), `dotenv` |
+| ~~Python Flask (`server.py`)~~ | **Legacy — do not use** | Superseded by the Node.js backend. Kept for historical reference only. |
 
 ### Database
 * **MongoDB Atlas**: Cloud-hosted NoSQL cluster (`arkana-cluster.csv6ioe.mongodb.net`, DB: `arkana`).
@@ -119,8 +119,8 @@ arkana-react/
 │   ├── App.jsx                # Main route table & provider wrapper
 │   ├── main.jsx               # React DOM root mounting
 │   └── index.css              # Global design tokens, keyframes, & custom CSS
-├── server.py                  # Python Flask backend server (Port 5000)
-├── mongodb.py                 # PyMongo Atlas connection test script
+├── server.py                  # [LEGACY] Python Flask server — superseded by backend/ (Node.js)
+├── mongodb.py                 # [LEGACY] PyMongo connection test script
 ├── vite.config.js             # Vite configuration with /api proxy to 5000
 └── package.json
 ```
