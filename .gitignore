@@ -25,3 +25,15 @@ dist-ssr
 
 .env
 WORK_LOG.txt
+
+__pycache__/
+*.pyc
+
+ai/ai/backend/arkana_backup_2026-07-25.sql
+
+docs/architecture/*.dump
+
+*.bak
+
+*.sql
+*.dump

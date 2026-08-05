@@ -24,6 +24,7 @@ class EmbeddingConfig:
     batch_size: int = 32
     qdrant_collection: str = "arkana_corpus"
     qdrant_url: str = "http://localhost:6333"
+    postgres_table: str = "rag_chunks"
 
 
 class Embedder:
@@ -140,8 +141,8 @@ class Embedder:
         
         async with self.db_pool.acquire() as conn:
             # Prepare insert statement
-            query = """
-                INSERT INTO chunks (
+            query = f"""
+                INSERT INTO {self.config.postgres_table} (
                     chunk_id, doc_id, chunk_index, chunk_text, token_count,
                     tribe_name, region, time_period_start, time_period_end,
                     institution, source_title, source_url
@@ -179,7 +180,7 @@ class Embedder:
             await conn.executemany(query, values)
             return len(values)
     
-    def process_and_index(self, chunks: List[Dict[str, Any]]) -> Dict[str, int]:
+    async def process_and_index(self, chunks: List[Dict[str, Any]]) -> Dict[str, int]:
         """
         Full pipeline: embed chunks and index to both Qdrant and PostgreSQL.
         
@@ -194,8 +195,7 @@ class Embedder:
         
         pg_count = 0
         if self.db_pool:
-            import asyncio
-            pg_count = asyncio.run(self.upsert_to_postgres(chunks_with_vectors))
+            pg_count = await self.upsert_to_postgres(chunks_with_vectors)
         
         return {
             "embedded": len(chunks_with_vectors),
@@ -284,7 +284,7 @@ class Embedder:
             SELECT 
                 chunk_id, chunk_text, tribe_name, region, source_title, institution,
                 ts_rank(to_tsvector('english', chunk_text), plainto_tsquery('english', $1)) AS rank_score
-            FROM chunks
+            FROM {self.config.postgres_table}
             {where_clause}
             ORDER BY rank_score DESC
             LIMIT $2

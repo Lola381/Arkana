@@ -5,6 +5,8 @@ to emit map events via SSE.
 """
 
 import spacy
+import re
+import asyncio
 from typing import List, Dict, Any, Optional, Set
 from dataclasses import dataclass
 import logging
@@ -115,6 +117,14 @@ class EntityExtractor:
         # Load custom tribe lookup if provided
         if self.config.tribe_lookup_path:
             self._load_custom_tribe_map()
+            
+        self._compile_tribe_regexes()
+        
+    def _compile_tribe_regexes(self):
+        """Compile word-boundary regexes for all tribes to prevent false positives"""
+        self.compiled_tribes = {}
+        for tribe_name, tribe_id in self.TRIBE_MAP.items():
+            self.compiled_tribes[tribe_name] = (tribe_id, re.compile(rf"\b{re.escape(tribe_name)}\b", re.IGNORECASE))
     
     def _load_model(self):
         """Load spaCy model"""
@@ -138,7 +148,7 @@ class EntityExtractor:
         except Exception as e:
             logger.error(f"Failed to load custom tribe map: {e}")
     
-    def extract_map_events(self, text: str) -> List[Dict[str, Any]]:
+    async def extract_map_events(self, text: str) -> List[Dict[str, Any]]:
         """
         Extract map synchronization events from generated text.
         
@@ -153,7 +163,7 @@ class EntityExtractor:
         events.extend(tribe_events)
         
         # 2. spaCy NER for locations (GPE) and dates
-        doc = self.nlp(text)
+        doc = await asyncio.to_thread(self.nlp, text)
         ner_events = self._extract_ner_events(doc)
         events.extend(ner_events)
         
@@ -166,8 +176,8 @@ class EntityExtractor:
         """Extract tribe mentions from text"""
         events = []
         
-        for tribe_name, tribe_id in self.TRIBE_MAP.items():
-            if tribe_name in text_lower:
+        for tribe_name, (tribe_id, pattern) in self.compiled_tribes.items():
+            if pattern.search(text_lower):
                 events.append({
                     "type": "MAP_HIGHLIGHT",
                     "tribe_id": tribe_id,
@@ -228,7 +238,9 @@ class EntityExtractor:
     
     def add_tribe_mapping(self, tribe_name: str, tribe_id: str):
         """Add a new tribe mapping at runtime"""
-        self.TRIBE_MAP[tribe_name.lower()] = tribe_id
+        tribe_lower = tribe_name.lower()
+        self.TRIBE_MAP[tribe_lower] = tribe_id
+        self.compiled_tribes[tribe_lower] = (tribe_id, re.compile(rf"\b{re.escape(tribe_lower)}\b", re.IGNORECASE))
     
     def add_region_mapping(self, region_name: str, region_id: str):
         """Add a new region mapping at runtime"""
@@ -246,10 +258,10 @@ def get_extractor(config: Optional[NERConfig] = None) -> EntityExtractor:
     return _extractor_instance
 
 
-def extract_map_events(text: str) -> List[Dict[str, Any]]:
+async def extract_map_events(text: str) -> List[Dict[str, Any]]:
     """Convenience function to extract map events from text"""
     extractor = get_extractor()
-    return extractor.extract_map_events(text)
+    return await extractor.extract_map_events(text)
 
 
 if __name__ == "__main__":
@@ -261,12 +273,16 @@ if __name__ == "__main__":
         "Warli painting uses circles for the sun and moon, triangles for mountains. The Warli tribe lives in Maharashtra.",
         "The Gond art of Madhya Pradesh features vibrant colors. The Gond tribe creates these paintings.",
         "In 1200 CE, the Mughal empire expanded into the Deccan region. Bhil art from Gujarat shows similar patterns.",
-        "Madhubani painting originated in the Mithila region of Bihar around 2500 years ago."
+        "Madhubani painting originated in the Mithila region of Bihar around 2500 years ago.",
+        "The malicious intent of the king was to conquer the okola forest."
     ]
     
-    for response in test_responses:
-        print(f"\nText: {response}")
-        events = extractor.extract_map_events(response)
-        print("Events:")
-        for event in events:
-            print(f"  {event}")
+    async def run_tests():
+        for response in test_responses:
+            print(f"\nText: {response}")
+            events = await extractor.extract_map_events(response)
+            print("Events:")
+            for event in events:
+                print(f"  {event}")
+                
+    asyncio.run(run_tests())

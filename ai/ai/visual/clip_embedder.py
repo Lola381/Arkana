@@ -5,6 +5,7 @@ Handles image embedding, artifact classification, and visual search.
 
 import torch
 import clip
+import asyncio
 from PIL import Image
 from typing import List, Dict, Any, Optional
 import numpy as np
@@ -299,44 +300,28 @@ class VisualIntelligencePipeline:
             Dict with style classification, similar artifacts, and RAG context
         """
         # 1. Classify style
-        style_result = self.clip.classify_style(image)
+        style_result = await asyncio.to_thread(self.clip.classify_style, image)
         
         # 2. Find visually similar artifacts
-        similar = self.clip.visual_search(image, top_k=5)
+        similar = await asyncio.to_thread(self.clip.visual_search, image, 5)
         
         # 3. Get top artifact for RAG context
         top_artifact = similar[0] if similar else None
         rag_context = {}
         rag_query = ""
         
+        style = style_result["top_style"]
+        
         if top_artifact:
             tribe = top_artifact["payload"].get("tribe_name")
-            style = style_result["top_style"]
+            if tribe:
+                rag_context = {"tribe_name": tribe}
+        
+        # Fallback to STYLE_TO_CONTEXT if Qdrant yields no tribe context
+        if not rag_context and style in STYLE_TO_CONTEXT:
+            rag_context = STYLE_TO_CONTEXT[style].copy()
             
-            rag_context = {"tribe_name": tribe} if tribe else {}
-            rag_query = f"What is the cultural significance and historical context of {style}?"
-        
-        return {
-            "style_classification": style_result,
-            "similar_artifacts": similar,
-            "rag_query": rag_query,
-            "rag_context": rag_context
-        }
-    
-    def identify_image_sync(self, image: Image.Image) -> Dict[str, Any]:
-        """Synchronous version of identify_image"""
-        style_result = self.clip.classify_style(image)
-        similar = self.clip.visual_search(image, top_k=5)
-        
-        top_artifact = similar[0] if similar else None
-        rag_context = {}
-        rag_query = ""
-        
-        if top_artifact:
-            tribe = top_artifact["payload"].get("tribe_name")
-            style = style_result["top_style"]
-            rag_context = {"tribe_name": tribe} if tribe else {}
-            rag_query = f"What is the cultural significance and historical context of {style}?"
+        rag_query = f"What is the cultural significance and historical context of {style}?"
         
         return {
             "style_classification": style_result,
@@ -354,11 +339,13 @@ if __name__ == "__main__":
     # Create a test image (white square)
     test_image = Image.new("RGB", (224, 224), color="white")
     
-    # Test embedding
-    embedding = clip_embedder.embed_image(test_image)
-    print(f"Embedding dimension: {len(embedding)}")
-    
-    # Test classification
-    style_result = clip_embedder.classify_style(test_image)
-    print(f"Top style: {style_result['top_style']} (confidence: {style_result['confidence']:.3f})")
-    print(f"All scores: {style_result['all_scores']}")
+    async def run_test():
+        pipeline = VisualIntelligencePipeline(clip_embedder)
+        print("Running async image identification...")
+        result = await pipeline.identify_image(test_image)
+        
+        print(f"Top style: {result['style_classification']['top_style']} (confidence: {result['style_classification']['confidence']:.3f})")
+        print(f"RAG Context Fallback: {result['rag_context']}")
+        print(f"RAG Query: {result['rag_query']}")
+        
+    asyncio.run(run_test())

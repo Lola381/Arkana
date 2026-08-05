@@ -35,7 +35,7 @@ psycopg2-binary>=2.9.0        # Sync driver (for Alembic + tools)
 GeoAlchemy2>=0.14.0           # PostGIS extension for SQLAlchemy
 
 # ── Vector Database (Phase 3 — AI layer) ─────────────────────────────────────
-chromadb>=0.5.0               # MVP vector store
+qdrant-client>=1.9.0          # Qdrant vector store
 
 # ── Embedding (Phase 3 — AI layer) ───────────────────────────────────────────
 sentence-transformers>=3.0.0  # paraphrase-multilingual-mpnet-base-v2

@@ -13,7 +13,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U arkana -d arkana"]
       interval: 10s
@@ -36,23 +35,15 @@ services:
       retries: 3
     restart: unless-stopped
 
-  # ── ChromaDB (Vector Store — MVP) ─────────────────────────────────────────
-  chromadb:
-    image: chromadb/chroma:latest
-    container_name: arkana_chromadb
+  # ── Qdrant (Vector Store) ───────────────────────────────────────────────────
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: arkana_qdrant
     ports:
-      - "8001:8000"
+      - "6333:6333"
+      - "6334:6334"
     volumes:
-      - chroma_data:/chroma/chroma
-    environment:
-      - IS_PERSISTENT=TRUE
-      - PERSIST_DIRECTORY=/chroma/chroma
-      - ANONYMIZED_TELEMETRY=FALSE
-    healthcheck:
-      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/localhost/8000'"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
+      - qdrant_data:/qdrant/storage
     restart: unless-stopped
 
   # ── pgAdmin (DB management UI — dev only) ────────────────────────────────
@@ -73,7 +64,7 @@ services:
 volumes:
   postgres_data:
   redis_data:
-  chroma_data:
+  qdrant_data:
 
 networks:
   default:

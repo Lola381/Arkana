@@ -99,21 +99,26 @@ class HybridRetriever:
         Returns:
             Fused results sorted by RRF score
         """
+        import asyncio
         top_k = top_k or self.config.fused_top_k
         
-        # Run both retrievers in parallel (dense is sync, sparse is async)
-        dense_results = self.embedder.search_dense(
+        # Run both retrievers concurrently
+        tribe_name = filters.get("tribe_name") if filters else None
+        
+        dense_task = asyncio.to_thread(
+            self.embedder.search_dense,
             query, 
-            filters=filters, 
-            top_k=self.config.dense_top_k
+            filters, 
+            self.config.dense_top_k
         )
         
-        tribe_name = filters.get("tribe_name") if filters else None
-        sparse_results = await self.embedder.search_sparse(
+        sparse_task = self.embedder.search_sparse(
             query, 
             top_k=self.config.sparse_top_k,
             tribe_name=tribe_name
         )
+        
+        dense_results, sparse_results = await asyncio.gather(dense_task, sparse_task)
         
         # Apply RRF fusion
         fused = reciprocal_rank_fusion(
@@ -125,41 +130,7 @@ class HybridRetriever:
         
         return fused
     
-    def retrieve_sync(
-        self, 
-        query: str, 
-        filters: Optional[Dict[str, Any]] = None,
-        top_k: Optional[int] = None
-    ) -> List[Dict[str, Any]]:
-        """
-        Synchronous version of retrieve (dense only, or if sparse is not available).
-        """
-        top_k = top_k or self.config.fused_top_k
-        
-        dense_results = self.embedder.search_dense(
-            query, 
-            filters=filters, 
-            top_k=self.config.dense_top_k
-        )
-        
-        # If no sparse search available, just return dense results
-        try:
-            import asyncio
-            tribe_name = filters.get("tribe_name") if filters else None
-            sparse_results = asyncio.run(
-                self.embedder.search_sparse(query, top_k=self.config.sparse_top_k, tribe_name=tribe_name)
-            )
-        except Exception:
-            sparse_results = []
-        
-        fused = reciprocal_rank_fusion(
-            dense_results,
-            sparse_results,
-            k=self.config.rrf_k,
-            top_k=top_k
-        )
-        
-        return fused
+
 
 
 if __name__ == "__main__":

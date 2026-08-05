@@ -32,14 +32,14 @@ class CrossEncoderReranker:
         self.reranker = CrossEncoder(self.config.model_name)
         logger.info(f"Loaded cross-encoder: {self.config.model_name}")
     
-    def rerank(
+    async def rerank(
         self, 
         query: str, 
         candidates: List[Dict[str, Any]], 
         top_n: Optional[int] = None
     ) -> List[Dict[str, Any]]:
         """
-        Rerank candidates using cross-encoder.
+        Rerank candidates using cross-encoder concurrently.
         
         Args:
             query: User query text
@@ -47,8 +47,9 @@ class CrossEncoderReranker:
             top_n: Number of top results to return (default from config)
             
         Returns:
-            Reranked candidates with rerank_score, filtered by relevance threshold
+            New list of reranked candidate dicts with rerank_score, filtered by threshold
         """
+        import asyncio
         if not candidates:
             return []
         
@@ -57,15 +58,20 @@ class CrossEncoderReranker:
         # Prepare query-chunk pairs
         pairs = [(query, candidate["chunk"]["text"]) for candidate in candidates]
         
-        # Get cross-encoder scores
-        scores = self.reranker.predict(pairs, batch_size=self.config.batch_size)
+        # Get cross-encoder scores without blocking the event loop
+        scores = await asyncio.to_thread(
+            self.reranker.predict, pairs, batch_size=self.config.batch_size
+        )
         
-        # Attach scores to candidates
+        # Create new dictionaries to prevent mutating input arguments
+        new_candidates = []
         for candidate, score in zip(candidates, scores):
-            candidate["rerank_score"] = float(score)
+            new_candidate = candidate.copy()
+            new_candidate["rerank_score"] = float(score)
+            new_candidates.append(new_candidate)
         
         # Sort by rerank score (descending)
-        reranked = sorted(candidates, key=lambda x: x["rerank_score"], reverse=True)
+        reranked = sorted(new_candidates, key=lambda x: x["rerank_score"], reverse=True)
         
         # Hard filter: reject chunks below minimum relevance threshold
         filtered = [
@@ -76,54 +82,7 @@ class CrossEncoderReranker:
         # Return top-n
         return filtered[:top_n]
     
-    def rerank_with_details(
-        self, 
-        query: str, 
-        candidates: List[Dict[str, Any]], 
-        top_n: Optional[int] = None
-    ) -> Dict[str, Any]:
-        """
-        Rerank with detailed scoring information.
-        
-        Returns:
-            Dict with reranked results and score statistics
-        """
-        if not candidates:
-            return {"results": [], "stats": {}}
-        
-        top_n = top_n or self.config.top_n
-        
-        pairs = [(query, candidate["chunk"]["text"]) for candidate in candidates]
-        scores = self.reranker.predict(pairs, batch_size=self.config.batch_size)
-        
-        # Attach scores
-        for candidate, score in zip(candidates, scores):
-            candidate["rerank_score"] = float(score)
-        
-        # Sort and filter
-        reranked = sorted(candidates, key=lambda x: x["rerank_score"], reverse=True)
-        filtered = [
-            c for c in reranked 
-            if c["rerank_score"] > self.config.min_relevance_score
-        ]
-        top_results = filtered[:top_n]
-        
-        # Compute stats
-        all_scores = [c["rerank_score"] for c in candidates]
-        stats = {
-            "num_candidates": len(candidates),
-            "num_after_filter": len(filtered),
-            "num_returned": len(top_results),
-            "max_score": max(all_scores) if all_scores else 0,
-            "min_score": min(all_scores) if all_scores else 0,
-            "mean_score": np.mean(all_scores) if all_scores else 0,
-            "threshold": self.config.min_relevance_score
-        }
-        
-        return {
-            "results": top_results,
-            "stats": stats
-        }
+
 
 
 def create_reranker(model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2") -> CrossEncoderReranker:
@@ -166,10 +125,12 @@ if __name__ == "__main__":
         }
     ]
     
-    result = reranker.rerank_with_details(query, candidates, top_n=2)
+    import asyncio
     
-    print("Reranked results:")
-    for i, r in enumerate(result["results"]):
-        print(f"  {i+1}. [{r['rerank_score']:.3f}] {r['chunk']['text'][:60]}...")
-    
-    print(f"\nStats: {result['stats']}")
+    async def run_test():
+        result = await reranker.rerank(query, candidates, top_n=2)
+        print("Reranked results:")
+        for i, r in enumerate(result):
+            print(f"  {i+1}. [{r['rerank_score']:.3f}] {r['chunk']['text'][:60]}...")
+            
+    asyncio.run(run_test())

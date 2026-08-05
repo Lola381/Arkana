@@ -151,11 +151,14 @@ class FaithfulnessJudge:
         self, 
         items: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        """Evaluate multiple responses in parallel"""
-        tasks = [
-            self.evaluate(item["query"], item["response"], item["chunks"])
-            for item in items
-        ]
+        """Evaluate multiple responses in parallel with concurrency limits"""
+        semaphore = asyncio.Semaphore(10)
+        
+        async def _bounded_evaluate(item):
+            async with semaphore:
+                return await self.evaluate(item["query"], item["response"], item["chunks"])
+                
+        tasks = [_bounded_evaluate(item) for item in items]
         return await asyncio.gather(*tasks)
 
 
@@ -243,7 +246,7 @@ class RetrievalEvaluator:
             fused = reciprocal_rank_fusion(dense_results, sparse_results, top_k=20)
             
             # Rerank
-            reranked = self.reranker.rerank(item.query, fused, top_n=3)
+            reranked = await self.reranker.rerank(item.query, fused, top_n=3)
             
             # Check precision@3
             retrieved_doc_ids = [c["chunk"]["doc_id"] for c in reranked]
@@ -344,8 +347,9 @@ class MetricsLogger:
                 ])
         except Exception as e:
             logger.error(f"Failed to flush metrics: {e}")
-            # Re-add to buffer
-            self.buffer = records + self.buffer
+            # Re-add to buffer with a hard ceiling to prevent OOM
+            MAX_RETAIN = 5000
+            self.buffer = (records + self.buffer)[-MAX_RETAIN:]
 
 
 def create_golden_test_set_template() -> List[GoldenTestItem]:

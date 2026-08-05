@@ -1,3 +1,0 @@
-"""
-Arkana — Extractors Package
-"""

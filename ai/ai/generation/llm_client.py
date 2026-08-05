@@ -6,7 +6,7 @@ Handles streaming generation with proper error handling.
 import os
 import asyncio
 from typing import AsyncGenerator, List, Dict, Any, Optional
-from groq import Groq
+from groq import AsyncGroq
 from dataclasses import dataclass
 import logging
 
@@ -35,7 +35,7 @@ class LLMClient:
         if not api_key:
             raise ValueError("GROQ_API_KEY not found in config or environment")
 
-        self.client = Groq(api_key=api_key)
+        self.client = AsyncGroq(api_key=api_key)
 
     async def generate_streaming(
         self,
@@ -55,7 +55,7 @@ class LLMClient:
             Text chunks as they stream
         """
         try:
-            stream = self.client.chat.completions.create(
+            stream = await self.client.chat.completions.create(
                 model=self.config.model,
                 max_tokens=max_tokens or self.config.max_tokens,
                 temperature=temperature or self.config.temperature,
@@ -63,7 +63,7 @@ class LLMClient:
                 stream=True
             )
 
-            for chunk in stream:
+            async for chunk in stream:
                 if chunk.choices[0].delta.content:
                     yield chunk.choices[0].delta.content
 
@@ -84,7 +84,7 @@ class LLMClient:
             Full response text
         """
         try:
-            response = self.client.chat.completions.create(
+            response = await self.client.chat.completions.create(
                 model=self.config.model,
                 max_tokens=max_tokens or self.config.max_tokens,
                 temperature=temperature or self.config.temperature,
@@ -164,9 +164,8 @@ Respond in JSON only:
             }
 
 
-def create_llm_client(api_key: Optional[str] = None, model: str = "llama-3.1-8b-instant") -> LLMClient:
+def create_llm_client(config: Optional[LLMConfig] = None) -> LLMClient:
     """Factory function to create LLM client"""
-    config = LLMConfig(api_key=api_key, model=model)
     return LLMClient(config)
 
 

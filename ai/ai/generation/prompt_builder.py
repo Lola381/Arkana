@@ -21,7 +21,7 @@ STRICT RULES — you must follow these without exception:
 
 1. Answer ONLY using the SOURCE EXCERPTS provided below. Do not use any other knowledge.
 2. If the answer is not present in the excerpts, respond with exactly: "This information is not currently in the Arkana archive."
-3. Every factual claim must end with a citation in this format: [Source: {institution} — {source_title}]
+3. Every factual claim must end with a citation in this format: [Source: {{institution}} — {{source_title}}]
 4. Never speculate, extrapolate, or infer beyond what the excerpts explicitly state.
 5. Never mention that you are an AI, a language model, or that you are "looking up" information.
 6. Be concise but complete. Use neutral, informative tone.
@@ -29,9 +29,7 @@ STRICT RULES — you must follow these without exception:
 Current map context: {map_context}
 
 SOURCE EXCERPTS:
-{excerpts}
-
-QUESTION: {query}"""
+{excerpts}"""
 
 
 def build_excerpt_block(chunks: List[Dict[str, Any]]) -> str:
@@ -105,8 +103,7 @@ def build_prompt(
     # Format system prompt
     system_content = SYSTEM_PROMPT.format(
         map_context=map_ctx,
-        excerpts=excerpts,
-        query=query
+        excerpts=excerpts
     )
     
     messages = [{"role": "system", "content": system_content}]
@@ -116,8 +113,8 @@ def build_prompt(
         history = build_conversation_history(conversation_history, config.max_history_turns)
         messages.extend(history)
     
-    # Add current query (already in system prompt, but some APIs expect it in user message)
-    # We include it in system prompt, so no need for separate user message
+    # Add current query
+    messages.append({"role": "user", "content": query})
     
     return messages
 

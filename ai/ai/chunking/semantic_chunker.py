@@ -10,6 +10,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 from dataclasses import dataclass
 import re
+from transformers import AutoTokenizer
 
 # Download required NLTK data
 try:
@@ -31,6 +32,7 @@ class ChunkConfig:
     overlap_tokens: int = 50
     similarity_threshold: float = 0.6
     embedding_model: str = "all-MiniLM-L6-v2"
+    target_tokenizer_model: str = "sentence-transformers/all-mpnet-base-v2"
 
 
 class SemanticChunker:
@@ -42,6 +44,9 @@ class SemanticChunker:
     def __init__(self, config: Optional[ChunkConfig] = None):
         self.config = config or ChunkConfig()
         self.embedder = SentenceTransformer(self.config.embedding_model)
+        
+        # Load the exact tokenizer used by the downstream Embedder pipeline
+        self.target_tokenizer = AutoTokenizer.from_pretrained(self.config.target_tokenizer_model)
         
         # Source-specific threshold calibration
         self.source_thresholds = {
@@ -83,8 +88,9 @@ class SemanticChunker:
         return text.strip()
     
     def count_tokens(self, text: str) -> int:
-        """Approximate token count (roughly 4 chars per token for English)"""
-        return len(text) // 4
+        """Exact token count using the embedding model's tokenizer"""
+        if not text.strip(): return 0
+        return len(self.target_tokenizer.encode(text, add_special_tokens=False))
     
     def split_into_sentences(self, text: str) -> List[str]:
         """Split text into sentences using NLTK"""
@@ -124,22 +130,34 @@ class SemanticChunker:
     ) -> List[Dict[str, Any]]:
         """Create chunks from sentence boundaries with token limits and overlap"""
         chunks = []
+        orphan_sentences = []
         
         for i in range(len(boundaries)):
             start_idx = boundaries[i]
             end_idx = boundaries[i + 1] if i + 1 < len(boundaries) else len(sentences)
             
-            # Get sentences for this chunk
-            chunk_sentences = sentences[start_idx:end_idx]
+            # Get sentences for this chunk, including any orphans
+            chunk_sentences = orphan_sentences + sentences[start_idx:end_idx]
+            orphan_sentences = []
+            
+            if not chunk_sentences:
+                continue
+                
             chunk_text = ' '.join(chunk_sentences)
             
             # Check token count
             token_count = self.count_tokens(chunk_text)
             
+            # The effective max tokens depends on whether this chunk will receive an overlap
+            effective_max_tokens = self.config.max_tokens
+            if len(chunks) > 0:
+                effective_max_tokens -= self.config.overlap_tokens
+                
             # If too large, split further by token count
-            if token_count > self.config.max_tokens:
-                sub_chunks = self._split_by_token_limit(chunk_sentences, doc_id, metadata, i)
+            if token_count > effective_max_tokens:
+                sub_chunks, leftover = self._split_by_token_limit(chunk_sentences, doc_id, metadata, len(chunks), effective_max_tokens)
                 chunks.extend(sub_chunks)
+                orphan_sentences = leftover
             elif token_count >= self.config.min_tokens:
                 chunk = self._create_chunk(
                     chunk_text=chunk_text,
@@ -148,8 +166,29 @@ class SemanticChunker:
                     metadata=metadata
                 )
                 chunks.append(chunk)
-            # If too small, try to merge with next chunk (handled in next iteration)
+            else:
+                # If too small, keep as orphan to merge with next chunk
+                orphan_sentences = chunk_sentences
         
+        # Handle trailing orphans
+        if orphan_sentences:
+            chunk_text = ' '.join(orphan_sentences)
+            if self.count_tokens(chunk_text) > 0:
+                if chunks and chunks[-1]["token_count"] + self.count_tokens(chunk_text) <= self.config.max_tokens:
+                    # Merge backward
+                    merged_text = chunks[-1]["text"] + ' ' + chunk_text
+                    chunks[-1]["text"] = merged_text
+                    chunks[-1]["token_count"] = self.count_tokens(merged_text)
+                else:
+                    # Create standalone chunk
+                    chunk = self._create_chunk(
+                        chunk_text=chunk_text,
+                        chunk_index=len(chunks),
+                        doc_id=doc_id,
+                        metadata=metadata
+                    )
+                    chunks.append(chunk)
+                    
         # Apply overlap between adjacent chunks
         chunks = self._apply_overlap(chunks)
         
@@ -160,44 +199,50 @@ class SemanticChunker:
         sentences: List[str], 
         doc_id: str, 
         metadata: Dict[str, Any],
-        base_index: int
-    ) -> List[Dict[str, Any]]:
-        """Split a large chunk into smaller ones respecting token limits"""
+        base_index: int,
+        effective_max_tokens: int
+    ) -> tuple[List[Dict[str, Any]], List[str]]:
+        """Split a large chunk into smaller ones respecting token limits. Returns (chunks, leftover_sentences)."""
         chunks = []
         current_sentences = []
         current_tokens = 0
         
         for sent in sentences:
             sent_tokens = self.count_tokens(sent)
-            if current_tokens + sent_tokens > self.config.max_tokens and current_sentences:
+            if current_tokens + sent_tokens > effective_max_tokens and current_sentences:
                 # Create chunk from current sentences
                 chunk_text = ' '.join(current_sentences)
                 chunk = self._create_chunk(
                     chunk_text=chunk_text,
-                    chunk_index=len(chunks),
+                    chunk_index=base_index + len(chunks),
                     doc_id=doc_id,
                     metadata=metadata
                 )
                 chunks.append(chunk)
                 current_sentences = [sent]
                 current_tokens = sent_tokens
+                # All subsequent sub-chunks will receive an overlap from the previous one
+                effective_max_tokens = self.config.max_tokens - self.config.overlap_tokens
             else:
                 current_sentences.append(sent)
                 current_tokens += sent_tokens
         
-        # Don't forget the last chunk
+        # Handle the last chunk
+        leftover_sentences = []
         if current_sentences:
             chunk_text = ' '.join(current_sentences)
             if self.count_tokens(chunk_text) >= self.config.min_tokens:
                 chunk = self._create_chunk(
                     chunk_text=chunk_text,
-                    chunk_index=len(chunks),
+                    chunk_index=base_index + len(chunks),
                     doc_id=doc_id,
                     metadata=metadata
                 )
                 chunks.append(chunk)
+            else:
+                leftover_sentences = current_sentences
         
-        return chunks
+        return chunks, leftover_sentences
     
     def _create_chunk(
         self, 
@@ -233,10 +278,10 @@ class SemanticChunker:
             prev_chunk = overlapped_chunks[-1]
             curr_chunk = chunks[i]
             
-            # Get last N tokens from previous chunk
-            prev_tokens = prev_chunk["text"].split()
-            overlap_tokens = prev_tokens[-self.config.overlap_tokens:] if len(prev_tokens) > self.config.overlap_tokens else prev_tokens
-            overlap_text = ' '.join(overlap_tokens)
+            # Get last N tokens from previous chunk using tokenizer
+            prev_token_ids = self.target_tokenizer.encode(prev_chunk["text"], add_special_tokens=False)
+            overlap_token_ids = prev_token_ids[-self.config.overlap_tokens:] if len(prev_token_ids) > self.config.overlap_tokens else prev_token_ids
+            overlap_text = self.target_tokenizer.decode(overlap_token_ids).strip()
             
             # Prepend overlap to current chunk
             overlapped_text = overlap_text + ' ' + curr_chunk["text"]

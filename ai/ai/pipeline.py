@@ -80,6 +80,7 @@ class ArkanaPipeline:
         self.config = config or PipelineConfig()
         self.db_pool = db_pool
         self._initialized = False
+        self._background_tasks = set()
         
         # Components (lazy initialized)
         self.chunker = None
@@ -214,7 +215,7 @@ class ArkanaPipeline:
             
             # 2. Rerank
             logger.info(f"Reranking {len(fused_results)} candidates...")
-            reranked = self.reranker.rerank(
+            reranked = await self.reranker.rerank(
                 user_query, 
                 fused_results, 
                 top_n=self.config.rerank_top_n
@@ -253,7 +254,7 @@ class ArkanaPipeline:
                 yield {"type": "citation", "data": citation}
             
             # 6. Extract Map Events (NER)
-            map_events = extract_map_events(full_response)
+            map_events = await extract_map_events(full_response)
             for event in map_events:
                 yield {"type": "map_event", "data": event}
             
@@ -274,24 +275,18 @@ class ArkanaPipeline:
                         }
                     }
             
-            # 8. Async evaluation (non-blocking)
-            if self.faithfulness_judge:
-                asyncio.create_task(self._run_evaluation(
-                    user_query, full_response, reranked
-                ))
-            
-            # 9. Log metrics (async)
+            # 8. Async evaluation and unified metrics logging (non-blocking)
             latency_ms = (asyncio.get_event_loop().time() - start_time) * 1000
-            if self.metrics_logger:
-                asyncio.create_task(self.metrics_logger.log_query(
-                    query=user_query,
-                    latency_ms=latency_ms,
-                    chunks_retrieved=[c["chunk"]["chunk_id"] for c in reranked],
-                    faithfulness_score=0.0,  # Will be updated by evaluator
-                    relevance_score=0.0,
-                    user_region=map_context.get("region"),
-                    refused="not currently in the Arkana archive" in full_response.lower()
-                ))
+            
+            task = asyncio.create_task(self._run_evaluation(
+                query=user_query, 
+                response=full_response, 
+                chunks=reranked,
+                latency_ms=latency_ms,
+                user_region=map_context.get("region")
+            ))
+            self._background_tasks.add(task)
+            task.add_done_callback(self._background_tasks.discard)
             
             yield {"type": "done", "data": None}
             
@@ -300,25 +295,41 @@ class ArkanaPipeline:
             yield {"type": "token", "data": f"[Error: {str(e)}]"}
             yield {"type": "done", "data": None}
     
-    async def _run_evaluation(self, query: str, response: str, chunks: List[Dict[str, Any]]):
-        """Run faithfulness evaluation asynchronously"""
+    async def _run_evaluation(
+        self, 
+        query: str, 
+        response: str, 
+        chunks: List[Dict[str, Any]], 
+        latency_ms: float, 
+        user_region: Optional[str] = None
+    ):
+        """Run faithfulness evaluation and log unified metrics asynchronously"""
+        faithfulness = 0.0
+        relevance = 0.0
+        
         try:
-            result = await self.faithfulness_judge.evaluate(query, response, chunks)
-            logger.info(f"Evaluation: faithfulness={result['faithfulness']:.2f}, relevance={result['relevance']:.2f}")
-            
-            # Update metrics with actual scores
-            if self.metrics_logger:
-                await self.metrics_logger.log_query(
-                    query=query,
-                    latency_ms=0,  # Already logged
-                    chunks_retrieved=[c["chunk"]["chunk_id"] for c in chunks],
-                    faithfulness_score=result["faithfulness"],
-                    relevance_score=result["relevance"],
-                    user_region=None,
-                    refused="not currently in the Arkana archive" in response.lower()
-                )
+            if self.faithfulness_judge:
+                result = await self.faithfulness_judge.evaluate(query, response, chunks)
+                faithfulness = result.get("faithfulness", 0.0)
+                relevance = result.get("relevance", 0.0)
+                logger.info(f"Evaluation: faithfulness={faithfulness:.2f}, relevance={relevance:.2f}")
         except Exception as e:
             logger.error(f"Evaluation failed: {e}")
+            
+        # Update metrics exactly once with true latency and true scores
+        if self.metrics_logger:
+            try:
+                await self.metrics_logger.log_query(
+                    query=query,
+                    latency_ms=latency_ms,
+                    chunks_retrieved=[c["chunk"]["chunk_id"] for c in chunks],
+                    faithfulness_score=faithfulness,
+                    relevance_score=relevance,
+                    user_region=user_region,
+                    refused="not currently in the Arkana archive" in response.lower()
+                )
+            except Exception as e:
+                logger.error(f"Metrics logging failed: {e}")
     
     async def identify_image(self, image_path: str) -> Dict[str, Any]:
         """
@@ -338,7 +349,7 @@ class ArkanaPipeline:
             image = Image.open(image_path).convert("RGB")
             
             # Run visual pipeline
-            result = self.visual_pipeline.identify_image_sync(image)
+            result = await self.visual_pipeline.identify_image(image)
             
             logger.info(f"Visual identification: {result['style_classification']['top_style']} ({result['style_classification']['confidence']:.2f})")
             
@@ -372,13 +383,13 @@ class ArkanaPipeline:
             "details": result.details
         }
     
-    def chunk_and_index_documents(self, documents: List[Dict[str, Any]], source: str = "default") -> Dict[str, int]:
+    async def chunk_and_index_documents(self, documents: List[Dict[str, Any]], source: str = "default") -> Dict[str, int]:
         """
         Process documents: chunk, embed, and index.
         Used by TM3's ingestion pipeline.
         """
         if not self._initialized:
-            asyncio.run(self.initialize())
+            await self.initialize()
         
         # Chunk documents
         all_chunks = []
@@ -392,54 +403,12 @@ class ArkanaPipeline:
             all_chunks.extend(chunks)
         
         # Embed and index
-        result = self.embedder.process_and_index(all_chunks)
+        result = await self.embedder.process_and_index(all_chunks)
         
         logger.info(f"Processed {len(documents)} documents into {result['embedded']} chunks")
         
         return result
 
-
-# Global pipeline instance
-_pipeline_instance = None
-
-async def get_pipeline(config: Optional[PipelineConfig] = None, db_pool=None) -> ArkanaPipeline:
-    """Get or create global pipeline instance"""
-    global _pipeline_instance
-    if _pipeline_instance is None:
-        _pipeline_instance = ArkanaPipeline(config, db_pool)
-        await _pipeline_instance.initialize()
-    return _pipeline_instance
-
-
-# Convenience functions for TM3 backend integration
-async def query(
-    user_query: str,
-    conversation_history: Optional[List[Dict[str, str]]] = None,
-    map_context: Optional[Dict[str, Any]] = None,
-    db_pool=None
-) -> AsyncGenerator[Dict[str, Any], None]:
-    """Main query entry point for TM3"""
-    pipeline = await get_pipeline(db_pool=db_pool)
-    async for event in pipeline.query(user_query, conversation_history, map_context):
-        yield event
-
-
-async def identify_image(image_path: str, db_pool=None) -> Dict[str, Any]:
-    """Visual identification entry point for TM3"""
-    pipeline = await get_pipeline(db_pool=db_pool)
-    return await pipeline.identify_image(image_path)
-
-
-async def run_retrieval_evaluation(db_pool=None) -> Dict[str, Any]:
-    """Retrieval evaluation entry point for TM3 (CI gate)"""
-    pipeline = await get_pipeline(db_pool=db_pool)
-    return await pipeline.run_retrieval_evaluation()
-
-
-def chunk_and_index_documents(documents: List[Dict[str, Any]], source: str = "default", db_pool=None) -> Dict[str, int]:
-    """Document ingestion entry point for TM3"""
-    pipeline = ArkanaPipeline(db_pool=db_pool)
-    return pipeline.chunk_and_index_documents(documents, source)
 
 
 if __name__ == "__main__":
