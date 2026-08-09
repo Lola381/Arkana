@@ -41,7 +41,6 @@ class EntityExtractor:
         "korku": "tribe_korku_001",
         "kol": "tribe_kol_001",
         "saharia": "tribe_saharia_001",
-        "korku": "tribe_korku_001",
         "bharia": "tribe_bharia_001",
         "patelia": "tribe_patelia_001",
         "pawra": "tribe_pawra_001",

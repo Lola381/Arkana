@@ -143,36 +143,31 @@ class Embedder:
             # Prepare insert statement
             query = f"""
                 INSERT INTO {self.config.postgres_table} (
-                    chunk_id, doc_id, chunk_index, chunk_text, token_count,
-                    tribe_name, region, time_period_start, time_period_end,
-                    institution, source_title, source_url
-                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                    chunk_id, site_id, chunk_index, chunk_text, token_count,
+                    source_url, chunk_source, embedding_model, parent_section, vector_db_id
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
                 ON CONFLICT (chunk_id) DO UPDATE SET
                     chunk_text = EXCLUDED.chunk_text,
                     token_count = EXCLUDED.token_count,
-                    tribe_name = EXCLUDED.tribe_name,
-                    region = EXCLUDED.region,
-                    time_period_start = EXCLUDED.time_period_start,
-                    time_period_end = EXCLUDED.time_period_end,
-                    institution = EXCLUDED.institution,
-                    source_title = EXCLUDED.source_title,
-                    source_url = EXCLUDED.source_url
+                    source_url = EXCLUDED.source_url,
+                    chunk_source = EXCLUDED.chunk_source,
+                    embedding_model = EXCLUDED.embedding_model,
+                    parent_section = EXCLUDED.parent_section,
+                    vector_db_id = EXCLUDED.vector_db_id
             """
             
             values = [
                 (
                     chunk["chunk_id"],
-                    chunk["doc_id"],
+                    chunk["doc_id"],  # Maps to site_id in DB
                     chunk["chunk_index"],
                     chunk["text"],
                     chunk["token_count"],
-                    chunk.get("tribe_name"),
-                    chunk.get("region"),
-                    chunk.get("time_period_start"),
-                    chunk.get("time_period_end"),
-                    chunk.get("institution"),
-                    chunk.get("source_title"),
-                    chunk.get("source_url"),
+                    chunk.get("source_url", ""),
+                    chunk.get("chunk_source", "ArkanaSemanticChunker"),
+                    chunk.get("embedding_model", self.config.model_name),
+                    chunk.get("parent_section", ""),
+                    chunk["chunk_id"],  # Qdrant ID maps to chunk_id
                 )
                 for chunk in chunks
             ]
@@ -234,9 +229,9 @@ class Embedder:
             if conditions:
                 qdrant_filter = Filter(must=conditions)
         
-        results = self.qdrant.search(
+        results = self.qdrant.query_points(
             collection_name=self.config.qdrant_collection,
-            query_vector=query_vector,
+            query=query_vector,
             query_filter=qdrant_filter,
             limit=top_k,
             with_payload=True
@@ -248,14 +243,13 @@ class Embedder:
                 "score": r.score,
                 "rank": i
             }
-            for i, r in enumerate(results)
+            for i, r in enumerate(results.points)
         ]
     
     async def search_sparse(
         self, 
         query: str, 
-        top_k: int = 20,
-        tribe_name: Optional[str] = None
+        top_k: int = 20
     ) -> List[Dict[str, Any]]:
         """
         Sparse BM25 search using PostgreSQL full-text search.
@@ -263,7 +257,6 @@ class Embedder:
         Args:
             query: Search query text
             top_k: Number of results to return
-            tribe_name: Optional tribe filter
             
         Returns:
             List of search results with BM25 scores
@@ -272,17 +265,13 @@ class Embedder:
             logger.warning("No database pool, returning empty results")
             return []
         
-        # Build query with optional tribe filter
+        # Build query
         where_clause = "WHERE to_tsvector('english', chunk_text) @@ plainto_tsquery('english', $1)"
         params = [query, top_k]
         
-        if tribe_name:
-            where_clause += " AND tribe_name = $3"
-            params.append(tribe_name)
-        
         sql = f"""
             SELECT 
-                chunk_id, chunk_text, tribe_name, region, source_title, institution,
+                chunk_id, site_id, chunk_text, source_url, chunk_source,
                 ts_rank(to_tsvector('english', chunk_text), plainto_tsquery('english', $1)) AS rank_score
             FROM {self.config.postgres_table}
             {where_clause}
@@ -295,7 +284,7 @@ class Embedder:
         
         return [
             {
-                "chunk": dict(row),
+                "chunk": {**dict(row), "text": row["chunk_text"]},
                 "score": float(row["rank_score"]),
                 "rank": i
             }
@@ -320,11 +309,10 @@ if __name__ == "__main__":
             "chunk_index": 0,
             "text": "Warli painting is a form of tribal art from Maharashtra, India.",
             "token_count": 20,
-            "tribe_name": "Warli",
-            "region": "Maharashtra",
-            "institution": "MAP Academy",
-            "source_title": "Warli Art Overview",
-            "source_url": "https://mapacademy.io/warli"
+            "source_url": "https://mapacademy.io/warli",
+            "chunk_source": "test",
+            "embedding_model": "test",
+            "parent_section": "test"
         }
     ]
     

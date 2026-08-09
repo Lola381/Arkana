@@ -164,34 +164,6 @@ arkana-react/
 ## 🚀 Getting Started
 
 ### Prerequisites
-* **Node.js** v18.0.0 or higher
-* **npm** v9.0.0 or higher
-* **MongoDB Atlas** account or local MongoDB instance
-
----
-
-### 1. Installation
-
-Clone the repository and install dependencies for the React app and backend:
-
-```bash
-git clone https://github.com/Lola381/Arkana.git
-cd Arkana/arkana-react
-
-# Install Frontend dependencies
-npm install
-
-# Install Node.js Backend dependencies
-cd backend
-npm install
-cd ..
-```
-
----
-
-### 2. Environment Configuration
-
-The repository includes pre-configured `.env` templates.
 
 #### Backend Configuration — `arkana-react/backend/.env`
 ```env
@@ -268,6 +240,25 @@ Access the application in your browser at `http://localhost:5173`.
 ---
 
 ## 📄 License & Credits
+
+Built as an MCA Final Year Specialization Project · 2026  
+Domain: India's History, Culture, Heritage & Monuments  
+Repository: [github.com/Arjit-14/Echolore](https://github.com/Arjit-14/Echolore)
+
+---
+
+## Project Context & Historical Development
+
+**Phase 1: Prototype Building & React Migration**
+*   **Monolithic Prototype**: Built the initial static HTML prototype in `/arkana` featuring styling, interactive routing, and basic Leaflet mapping.
+*   **React Scaffold**: Initialized a Vite-powered React container in `/arkana-react`.
+*   **Component Migration**: Split the static pages into modular React pages (Home, Explore, Browse, Culture, ArtifactDetail, Identify, Login).
+*   **Token System**: Created design tokens inside `src/index.css` supporting standard backgrounds (warm beige), primary highlights (gold `#8b6914`/`#c9a227`), and fluid animations.
+
+**Phase 2: Page Transitions & Card Animations**
+*   **Geometric Wipe Transition**: Navigates routes using a multi-strip horizontal CSS container (`.wipe-overlay` / `.wipe-piece`) that expands and translates out in a staggered, modern sequence.
+*   **Card Hover Reveal**: Integrated an editorial layout featuring staggered grids where hovering zooms images to `1.12x` and reveals titles with dynamic left-to-right underline draws.
+*   **Photography Page Transition (Modal Expand)**: Clicking an artifact expands a modal portal directly from the clicked card's coordinate origin using `transform: scale()`.
 
 * **License**: MIT License
 * **Repository**: [https://github.com/Lola381/Arkana](https://github.com/Lola381/Arkana)

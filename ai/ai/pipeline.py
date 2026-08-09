@@ -20,7 +20,7 @@ from ai.generation.prompt_builder import build_prompt, format_citations, PromptC
 from ai.generation.llm_client import LLMClient, LLMConfig, create_llm_client
 from ai.ner.entity_extractor import EntityExtractor, NERConfig, extract_map_events
 from ai.visual.clip_embedder import CLIPEmbedder, CLIPConfig, VisualIntelligencePipeline
-from ai.evaluation.faithfulness_judge import FaithfulnessJudge, RetrievalEvaluator, GoldenTestItem, MetricsLogger
+from ai.evaluation.faithfulness_judge import FaithfulnessJudge, RetrievalEvaluator, GoldenTestItem
 
 logger = logging.getLogger(__name__)
 
@@ -61,6 +61,7 @@ class PipelineConfig:
     spacy_model: str = "en_core_web_sm"
     
     # Visual
+    enable_clip: bool = False
     clip_model: str = "ViT-B/32"
     clip_device: str = "cpu"
     image_collection: str = "arkana_images"
@@ -93,7 +94,7 @@ class ArkanaPipeline:
         self.visual_pipeline = None
         self.faithfulness_judge = None
         self.retrieval_evaluator = None
-        self.metrics_logger = None
+
     
     async def initialize(self):
         """Initialize all pipeline components"""
@@ -150,16 +151,20 @@ class ArkanaPipeline:
         self.entity_extractor = EntityExtractor(ner_config)
         
         # 7. CLIP Visual Intelligence
-        clip_config = CLIPConfig(
-            model_name=self.config.clip_model,
-            device=self.config.clip_device,
-            image_collection=self.config.image_collection
-        )
-        self.clip_embedder = CLIPEmbedder(clip_config, qdrant_client=self.embedder.qdrant)
-        self.visual_pipeline = VisualIntelligencePipeline(
-            self.clip_embedder, 
-            text_retriever=self.retriever
-        )
+        if self.config.enable_clip:
+            clip_config = CLIPConfig(
+                model_name=self.config.clip_model,
+                device=self.config.clip_device,
+                image_collection=self.config.image_collection
+            )
+            self.clip_embedder = CLIPEmbedder(clip_config, qdrant_client=self.embedder.qdrant)
+            self.visual_pipeline = VisualIntelligencePipeline(
+                self.clip_embedder, 
+                text_retriever=self.retriever
+            )
+        else:
+            self.clip_embedder = None
+            self.visual_pipeline = None
         
         # 8. Evaluation
         if self.config.eval_enabled:
@@ -173,8 +178,8 @@ class ArkanaPipeline:
                 self.config.golden_test_set_path
             )
         
-        # 9. Metrics Logger
-        self.metrics_logger = MetricsLogger(db_pool=self.db_pool)
+        # 9. Metrics Logger (Disabled)
+        # self.metrics_logger = MetricsLogger(db_pool=self.db_pool)
         
         self._initialized = True
         logger.info("Arkana AI/ML pipeline initialized successfully!")
@@ -223,12 +228,12 @@ class ArkanaPipeline:
             
             # 3. Build Prompt
             map_ctx_str = None
-            if map_context.get("tribe_name") or map_context.get("region"):
+            if map_context.get("state") or map_context.get("category"):
                 parts = []
-                if map_context.get("tribe_name"):
-                    parts.append(map_context["tribe_name"])
-                if map_context.get("region"):
-                    parts.append(map_context["region"])
+                if map_context.get("state"):
+                    parts.append(map_context["state"])
+                if map_context.get("category"):
+                    parts.append(map_context["category"])
                 map_ctx_str = " — ".join(parts)
             
             prompt_messages = build_prompt(
@@ -262,16 +267,14 @@ class ArkanaPipeline:
             # This would be enhanced with actual artifact detection
             for chunk_data in reranked:
                 chunk = chunk_data["chunk"]
-                if chunk.get("source_title") and "artifact" in chunk.get("source_title", "").lower():
+                if chunk.get("source_url") and "artifact" in chunk.get("source_url", "").lower():
                     yield {
                         "type": "insight_card",
                         "data": {
                             "artifact_id": chunk.get("chunk_id", str(uuid.uuid4())),
-                            "title": chunk.get("source_title", "Artifact"),
-                            "image_url": chunk.get("image_url"),
-                            "tribe": chunk.get("tribe_name"),
-                            "period": f"{chunk.get('time_period_start', '')} - {chunk.get('time_period_end', '')}",
-                            "institution": chunk.get("institution")
+                            "title": chunk.get("chunk_source", "Artifact"),
+                            "image_url": chunk.get("image_url", ""),
+                            "url": chunk.get("source_url", "")
                         }
                     }
             
@@ -316,20 +319,7 @@ class ArkanaPipeline:
         except Exception as e:
             logger.error(f"Evaluation failed: {e}")
             
-        # Update metrics exactly once with true latency and true scores
-        if self.metrics_logger:
-            try:
-                await self.metrics_logger.log_query(
-                    query=query,
-                    latency_ms=latency_ms,
-                    chunks_retrieved=[c["chunk"]["chunk_id"] for c in chunks],
-                    faithfulness_score=faithfulness,
-                    relevance_score=relevance,
-                    user_region=user_region,
-                    refused="not currently in the Arkana archive" in response.lower()
-                )
-            except Exception as e:
-                logger.error(f"Metrics logging failed: {e}")
+        # Metrics logging is currently disabled
     
     async def identify_image(self, image_path: str) -> Dict[str, Any]:
         """
@@ -349,6 +339,8 @@ class ArkanaPipeline:
             image = Image.open(image_path).convert("RGB")
             
             # Run visual pipeline
+            if not self.visual_pipeline:
+                return {"error": "Image processing is currently disabled to save RAM."}
             result = await self.visual_pipeline.identify_image(image)
             
             logger.info(f"Visual identification: {result['style_classification']['top_style']} ({result['style_classification']['confidence']:.2f})")

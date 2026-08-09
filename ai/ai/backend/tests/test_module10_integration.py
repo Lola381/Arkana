@@ -37,8 +37,7 @@ def test_integration():
                 pipeline.llm_client is not None,
                 pipeline.entity_extractor is not None,
                 pipeline.clip_embedder is not None,
-                pipeline.visual_pipeline is not None,
-                pipeline.metrics_logger is not None
+                pipeline.visual_pipeline is not None
             ])
             if not modules_initialized:
                 failures.append("pipeline.initialize() failed to initialize all dependent modules.")
@@ -68,8 +67,6 @@ def test_integration():
                 # Mock FaithfulnessJudge to avoid LLM call in eval
                 if pipeline.faithfulness_judge:
                     pipeline.faithfulness_judge.evaluate = AsyncMock(return_value={"faithfulness": 1.0, "relevance": 1.0})
-                if pipeline.metrics_logger:
-                    pipeline.metrics_logger.log_query = AsyncMock()
                 
                 # 2. POST /api/chat
                 print("\nTesting POST /api/chat orchestration path...")

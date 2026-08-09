@@ -103,7 +103,6 @@ class HybridRetriever:
         top_k = top_k or self.config.fused_top_k
         
         # Run both retrievers concurrently
-        tribe_name = filters.get("tribe_name") if filters else None
         
         dense_task = asyncio.to_thread(
             self.embedder.search_dense,
@@ -114,8 +113,7 @@ class HybridRetriever:
         
         sparse_task = self.embedder.search_sparse(
             query, 
-            top_k=self.config.sparse_top_k,
-            tribe_name=tribe_name
+            top_k=self.config.sparse_top_k
         )
         
         dense_results, sparse_results = await asyncio.gather(dense_task, sparse_task)

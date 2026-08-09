@@ -93,8 +93,13 @@ lerna-debug.log*
 # Database backups
 ai/ai/backend/arkana_backup_2026-07-25.sql
 docs/architecture/*.dump
+ai/ai/backend/*.env
+ai/ai/backend/arkana_corpus-4448329783279606-2026-08-09-03-27-33.snapshot
+ai/ai/backend/arkana_backup_utf8.sql
 
 # ----------------------------
 # Misc
 # ----------------------------
 .history/
+
+ai/ai/backend/.env

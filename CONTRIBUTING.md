@@ -78,7 +78,14 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 3. Copy the `mongodb+srv://...` string
 4. Replace `<password>` with your actual password
 
-### 5. Verify Setup
+### 5. Restore the AI Database (Echolore)
+
+Because GitHub blocks files larger than 100MB, the database is not in the repo. You must obtain the database backups manually:
+1. Ask the project maintainer for `arkana_backup_2026.sql` and `qdrant_snapshot.snapshot`.
+2. Restore PostgreSQL: `psql -U postgres -d arkana_db < arkana_backup_2026.sql`
+3. Restore Qdrant by placing the snapshot in your Qdrant snapshots folder and calling the REST recover endpoint.
+
+### 6. Verify Setup
 
 **Terminal 1 — Start Backend:**
 ```bash
@@ -109,23 +116,20 @@ Open `http://localhost:5173` in your browser. You should see the ARKANA home pag
 ## Project Structure Quick Reference
 
 ```
-arkana-react/
-├── src/
-│   ├── components/    ← 11 shared React components
-│   ├── data/          ← artifacts.js (static data — all artifact/culture content)
-│   ├── pages/         ← 8 page components (one per route)
-│   ├── assets/        ← Local images
-│   ├── App.jsx        ← Routes + context providers
-│   ├── index.css      ← Design tokens + animation classes
-│   └── main.jsx       ← React entry point
-└── backend/
-    ├── controllers/   ← Route handler logic
-    ├── db/            ← MongoDB connection
-    ├── middleware/    ← JWT auth guard
-    ├── models/        ← Mongoose schemas
-    ├── routes/        ← Express route definitions
-    ├── app.js         ← Express configuration
-    └── index.js       ← Server entry point
+Arkana/
+├── src/               ← MAIN REACT FRONTEND
+│   ├── components/    ← Shared UI components
+│   ├── pages/         ← Route components
+│   └── data/          ← Mock data arrays
+├── backend/           ← MAIN NODE.JS BACKEND
+│   ├── controllers/   ← Route logic
+│   └── routes/        ← Express API routes
+├── ai/                ← MAIN PYTHON FASTAPI BACKEND
+│   └── ai/
+│       ├── pipeline.py
+│       └── backend/   ← FastAPI service
+└── docs/              ← DOCUMENTATION
+    └── frontend/      ← React / API Master Docs
 ```
 
 See [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) for a complete breakdown.

@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
     - Startup: Initialize ML models, DB pool, and global pipeline.
     - Shutdown: Await background tasks, close DB pool.
     """
-    logger.info("Initializing Echolore Backend...")
+    logger.info("Initializing Arkana AI Backend...")
     
     # Initialize DB pool
     try:
@@ -48,7 +48,7 @@ async def lifespan(app: FastAPI):
     yield
     
     # Shutdown
-    logger.info("Shutting down Echolore Backend...")
+    logger.info("Shutting down Arkana AI Backend...")
     
     # Await any pending background evaluation tasks
     pending_tasks = list(pipeline._background_tasks)
@@ -61,7 +61,7 @@ async def lifespan(app: FastAPI):
         logger.info("PostgreSQL pool closed.")
 
 app = FastAPI(
-    title="Echolore AI Backend",
+    title="Arkana AI Backend",
     description="Arkana RAG Pipeline and Data API",
     version="1.0.0",
     lifespan=lifespan

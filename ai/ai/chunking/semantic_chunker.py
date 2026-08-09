@@ -258,13 +258,10 @@ class SemanticChunker:
             "chunk_index": chunk_index,
             "text": chunk_text,
             "token_count": self.count_tokens(chunk_text),
-            "tribe_name": metadata.get("tribe_name"),
-            "region": metadata.get("region"),
-            "time_period_start": metadata.get("time_period_start"),
-            "time_period_end": metadata.get("time_period_end"),
-            "institution": metadata.get("institution"),
-            "source_title": metadata.get("title"),
-            "source_url": metadata.get("url"),
+            "source_url": metadata.get("url", ""),
+            "chunk_source": metadata.get("chunk_source", "ArkanaSemanticChunker"),
+            "embedding_model": self.config.embedding_model,
+            "parent_section": metadata.get("parent_section", ""),
         }
     
     def _apply_overlap(self, chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -391,9 +388,6 @@ if __name__ == "__main__":
     
     metadata = {
         "title": "Warli Art Overview",
-        "tribe_name": "Warli",
-        "region": "Maharashtra",
-        "institution": "MAP Academy",
         "url": "https://mapacademy.io/warli"
     }
     
@@ -403,5 +397,4 @@ if __name__ == "__main__":
     for i, chunk in enumerate(chunks):
         print(f"\nChunk {i+1}: {chunk['token_count']} tokens")
         print(f"  Text: {chunk['text'][:100]}...")
-        print(f"  Tribe: {chunk['tribe_name']}")
-        print(f"  Region: {chunk['region']}")
+        print(f"  URL: {chunk['source_url']}")

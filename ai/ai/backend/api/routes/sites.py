@@ -19,7 +19,9 @@ async def list_sites(
         raise HTTPException(status_code=503, detail="Database not connected")
         
     query = """
-        SELECT site_id, name, state, category, short_summary 
+        SELECT site_id, name, state, category, short_summary, 
+               ST_Y(coordinates::geometry) as latitude, 
+               ST_X(coordinates::geometry) as longitude 
         FROM heritage_sites 
         ORDER BY data_quality_score DESC
         LIMIT $1 OFFSET $2
@@ -33,7 +35,8 @@ async def list_sites(
             "name": row["name"],
             "state": row["state"],
             "category": row["category"],
-            "short_summary": row["short_summary"]
+            "short_summary": row["short_summary"],
+            "coordinates": {"lat": row["latitude"], "lng": row["longitude"]}
         }
         for row in rows
     ]
@@ -50,7 +53,9 @@ async def get_site(
         raise HTTPException(status_code=503, detail="Database not connected")
         
     query = """
-        SELECT site_id, name, state, category, short_summary 
+        SELECT site_id, name, state, category, short_summary, 
+               ST_Y(coordinates::geometry) as latitude, 
+               ST_X(coordinates::geometry) as longitude 
         FROM heritage_sites 
         WHERE site_id = $1::uuid
     """
@@ -65,5 +70,6 @@ async def get_site(
         "name": row["name"],
         "state": row["state"],
         "category": row["category"],
-        "short_summary": row["short_summary"]
+        "short_summary": row["short_summary"],
+        "coordinates": {"lat": row["latitude"], "lng": row["longitude"]}
     }

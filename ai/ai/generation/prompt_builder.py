@@ -158,11 +158,10 @@ def format_citations(chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         chunk = chunk_data["chunk"]
         citations.append({
             "index": i + 1,
-            "source_title": chunk.get("source_title", "Unknown"),
-            "institution": chunk.get("institution", "Unknown"),
+            "source_url": chunk.get("source_url", ""),
+            "chunk_source": chunk.get("chunk_source", "ArkanaSemanticChunker"),
             "chunk_id": chunk.get("chunk_id", ""),
-            "tribe_name": chunk.get("tribe_name"),
-            "region": chunk.get("region")
+            "score": chunk_data.get("rerank_score", chunk_data.get("score", 0.0))
         })
     return citations
 
@@ -174,10 +173,8 @@ if __name__ == "__main__":
             "chunk": {
                 "chunk_id": "c1",
                 "text": "Warli painting is a form of tribal art from Maharashtra using geometric shapes.",
-                "institution": "MAP Academy",
-                "source_title": "Warli Art Overview",
-                "tribe_name": "Warli",
-                "region": "Maharashtra"
+                "chunk_source": "MAP Academy",
+                "source_url": "https://mapacademy.io/warli"
             },
             "rerank_score": 0.92
         },
@@ -185,10 +182,8 @@ if __name__ == "__main__":
             "chunk": {
                 "chunk_id": "c2",
                 "text": "The Warli tribe uses circles for sun/moon, triangles for mountains, squares for sacred enclosures.",
-                "institution": "IGNCA",
-                "source_title": "Tribal Art of Western India",
-                "tribe_name": "Warli",
-                "region": "Maharashtra"
+                "chunk_source": "IGNCA",
+                "source_url": "https://ignca.gov.in"
             },
             "rerank_score": 0.87
         }
@@ -212,4 +207,4 @@ if __name__ == "__main__":
     print("\n=== CITATIONS ===")
     citations = format_citations(test_chunks)
     for c in citations:
-        print(f"  [{c['index']}] {c['institution']} — {c['source_title']}")
+        print(f"  [{c['index']}] {c['chunk_source']} — {c['source_url']}")
