@@ -31,19 +31,6 @@ Versioning follows [Semantic Versioning](https://semver.org/).
 
 ---
 
-## [0.3.0] — 2026-08-09
-
-### Added
-
-#### AI / Backend Integration (Echolore)
-- Consolidated Python AI infrastructure into the `ai/` workspace.
-- RAG Pipeline finalized with Qdrant (Vector DB) and PostGIS.
-- FastAPI server established as the primary backend data engine.
-- Complete cleanup of legacy documentation into consolidated `PRESENT_WORK.md` and `FUTURE_WORK.md`.
-- Consolidated React UI and Express Auth docs into `FRONTEND_MASTER.md`.
-
----
-
 ## [0.2.0] — 2026-07-08
 
 *Commit: `ea61b7a` — Author: Abhishek Singh*

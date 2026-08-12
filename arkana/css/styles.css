@@ -1,0 +1,899 @@
+/* ============================
+   ARKANA — Global Styles
+   Extracted from monolithic index.html
+   ============================ */
+
+/* ---- Material Icons ---- */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.material-symbols-outlined.fill {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ============================
+   Heritage Link — Sliding Underline
+   ============================ */
+.heritage-link {
+  position: relative;
+  display: inline-block;
+}
+.heritage-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.heritage-link:hover::after {
+  width: 100%;
+}
+
+/* ============================
+   Scroll Reveal Animation
+   ============================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================
+   Image Hover Effects
+   ============================ */
+.artifact-image-container {
+  overflow: hidden;
+}
+.artifact-image-container img {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.artifact-image-container:hover img {
+  transform: scale(1.03);
+}
+
+.img-hover-scale {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group:hover .img-hover-scale {
+  transform: scale(1.03);
+}
+
+/* ============================
+   Floating Parallax Elements
+   ============================ */
+.floating-element {
+  will-change: transform;
+}
+
+/* ============================
+   Utility: Hide Scrollbar
+   ============================ */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================
+   TRANSITION: Geometric Wipe
+   (trans.txt #4 — Multi-part horizontal strips)
+   Used between page navigations
+   ============================ */
+#transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.wipe-piece {
+  position: absolute;
+  background: #fbf9f5;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 300ms cubic-bezier(0.77, 0, 0.175, 1);
+  width: 100%;
+}
+.wipe-piece:nth-child(1) { top: 0;    height: 25vh; transition-delay: 0ms; }
+.wipe-piece:nth-child(2) { top: 25vh; height: 25vh; transition-delay: 50ms; }
+.wipe-piece:nth-child(3) { top: 50vh; height: 25vh; transition-delay: 100ms; }
+.wipe-piece:nth-child(4) { top: 75vh; height: 25vh; transition-delay: 150ms; }
+
+#transition-overlay.wipe-in .wipe-piece {
+  transform: scaleX(1);
+}
+#transition-overlay.wipe-out .wipe-piece {
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 300ms cubic-bezier(0.77, 0, 0.175, 1);
+}
+#transition-overlay.wipe-out .wipe-piece:nth-child(1) { transition-delay: 0ms; }
+#transition-overlay.wipe-out .wipe-piece:nth-child(2) { transition-delay: 50ms; }
+#transition-overlay.wipe-out .wipe-piece:nth-child(3) { transition-delay: 100ms; }
+#transition-overlay.wipe-out .wipe-piece:nth-child(4) { transition-delay: 150ms; }
+
+/* ============================
+   TRANSITION: Expanding Card
+   (trans.txt #2 — card expands to fill viewport)
+   ============================ */
+#card-cover {
+  position: fixed;
+  z-index: 9998;
+  background: #fbf9f5;
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 500ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+#card-cover.expanding {
+  opacity: 1;
+  border-radius: 0;
+}
+
+/* ============================
+   Page System
+   ============================ */
+.page {
+  display: none;
+}
+.page.active {
+  display: block;
+}
+
+/* ============================
+   Navbar
+   ============================ */
+#navbar {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+#navbar.scrolled {
+  background-color: rgba(251, 249, 245, 0.95) !important;
+  border-bottom-color: #d1c5b2 !important;
+}
+
+/* ============================
+   Form Inputs
+   ============================ */
+.input-field {
+  transition: border-color 0.3s ease;
+}
+.input-field:focus {
+  outline: none;
+  border-color: #8b6914;
+  box-shadow: none;
+}
+
+/* ============================
+   Timeline Range Slider
+   ============================ */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: #d1c5b2;
+  border-radius: 2px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #8b6914;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* ============================
+   Chat Panel
+   ============================ */
+#chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+#chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#chat-messages::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 2px;
+}
+
+/* ============================
+   Confidence Bar (Identify Page)
+   ============================ */
+.confidence-fill {
+  width: 0;
+  transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.confidence-fill.animate {
+  width: 87%;
+}
+
+/* ============================
+   Browse: Filter Chips
+   ============================ */
+.chip-active {
+  background-color: #1b1c1a !important;
+  color: #fbf9f5 !important;
+  border-color: #1b1c1a !important;
+}
+
+/* ============================
+   Browse: Accordion Filters
+   ============================ */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.accordion-content.open {
+  max-height: 300px;
+}
+.accordion-icon {
+  transition: transform 0.3s ease;
+}
+.accordion-icon.open {
+  transform: rotate(180deg);
+}
+
+/* ============================
+   Auth Page: Fade In
+   ============================ */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 800ms cubic-bezier(0.16, 1, 0.3, 1) 100ms forwards;
+}
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================
+   Mobile Menu
+   ============================ */
+#mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 9990;
+  background: #fbf9f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+#mobile-menu.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ============================
+   CARD ANIMATION A: "Lift & Glow"
+   Cards lift, gain shadow depth, and get
+   a subtle gold highlight on hover.
+   Apply class "card-anim-a" to a card.
+   ============================ */
+.card-anim-a {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-anim-a:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 12px 32px rgba(139, 105, 20, 0.10),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+}
+.card-anim-a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1.5px solid transparent;
+  transition: border-color 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.card-anim-a:hover::before {
+  border-color: rgba(139, 105, 20, 0.3);
+}
+
+/* ============================
+   CARD ANIMATION B: "Tilt Reveal"
+   Cards tilt slightly in 3D toward the
+   cursor and reveal a gradient overlay.
+   Apply class "card-anim-b" to a card.
+   ============================ */
+.card-anim-b {
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+.card-anim-b:hover {
+  transform: rotateX(-2deg) rotateY(3deg) scale(1.02);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 8px 16px rgba(0, 0, 0, 0.04);
+}
+.card-anim-b::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(236, 193, 101, 0.0) 0%,
+    rgba(236, 193, 101, 0.08) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+.card-anim-b:hover::after {
+  opacity: 1;
+}
+
+/* ============================
+   ASK ARKANA — Chat UI
+   ============================ */
+
+/* Header */
+.arkana-chat-header {
+  background: linear-gradient(180deg, rgba(251,249,245,1) 0%, rgba(251,249,245,0.95) 100%);
+  backdrop-filter: blur(12px);
+}
+
+/* Avatar */
+.arkana-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff0da;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.25);
+  flex-shrink: 0;
+}
+
+/* Status Badge */
+.arkana-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  background: rgba(139, 105, 20, 0.06);
+  border: 1px solid rgba(139, 105, 20, 0.12);
+}
+
+.arkana-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
+  animation: arkana-pulse 2s ease-in-out infinite;
+}
+
+@keyframes arkana-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* Messages */
+.arkana-msg {
+  display: flex;
+  gap: 12px;
+  max-width: 100%;
+}
+
+.arkana-msg-user {
+  justify-content: flex-end;
+}
+
+.arkana-msg-avatar {
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff0da;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.arkana-msg-avatar-sm {
+  width: 26px;
+  height: 26px;
+  min-width: 26px;
+  border-radius: 8px;
+}
+
+.arkana-msg-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 80%;
+  min-width: 0;
+}
+
+.arkana-msg-content-user {
+  align-items: flex-end;
+}
+
+/* Message Bubbles */
+.arkana-msg-bubble {
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  word-wrap: break-word;
+}
+
+.arkana-msg-bubble p {
+  margin: 0;
+}
+
+.arkana-msg-bubble p + p {
+  margin-top: 10px;
+}
+
+.arkana-msg-bubble-ai {
+  background: #f5f3ef;
+  color: #1b1c1a;
+  border-top-left-radius: 4px;
+  border: 1px solid rgba(209, 197, 178, 0.3);
+}
+
+.arkana-msg-bubble-user {
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  color: #fff0da;
+  border-top-right-radius: 4px;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.2);
+}
+
+.arkana-msg-error {
+  border-color: rgba(211, 47, 47, 0.3);
+  background: rgba(211, 47, 47, 0.05);
+}
+
+.arkana-msg-time {
+  font-size: 11px;
+  padding: 0 4px;
+}
+
+.arkana-msg-time-user {
+  text-align: right;
+}
+
+/* Suggestion Chips */
+.arkana-suggestions {
+  padding: 8px 0 8px 46px;
+}
+
+.arkana-chip {
+  padding: 8px 18px;
+  border-radius: 100px;
+  background: transparent;
+  border: 1px solid #d1c5b2;
+  color: #4e4637;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.arkana-chip:hover {
+  background: #8b6914;
+  color: #fff0da;
+  border-color: #8b6914;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 105, 20, 0.25);
+}
+
+/* Typing Indicator */
+.arkana-typing-dots {
+  display: flex;
+  gap: 4px;
+  padding: 10px 16px;
+  background: #f5f3ef;
+  border-radius: 18px;
+  border-top-left-radius: 4px;
+  border: 1px solid rgba(209, 197, 178, 0.3);
+}
+
+.arkana-typing-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8b6914;
+  opacity: 0.4;
+  animation: arkana-bounce 1.4s ease-in-out infinite;
+}
+
+.arkana-typing-dots span:nth-child(2) {
+  animation-delay: 0.16s;
+}
+
+.arkana-typing-dots span:nth-child(3) {
+  animation-delay: 0.32s;
+}
+
+@keyframes arkana-bounce {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Chat Input Area */
+.arkana-chat-input-area {
+  background: linear-gradient(0deg, rgba(251,249,245,1) 0%, rgba(251,249,245,0.95) 100%);
+  backdrop-filter: blur(12px);
+}
+
+.arkana-input-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 6px 6px 20px;
+  border-radius: 28px;
+  background: #f5f3ef;
+  border: 1.5px solid #d1c5b2;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.arkana-input-container:focus-within {
+  border-color: #8b6914;
+  box-shadow: 0 0 0 3px rgba(139, 105, 20, 0.1);
+}
+
+.arkana-input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  color: #1b1c1a;
+  padding: 10px 0;
+}
+
+.arkana-input::placeholder {
+  color: rgba(78, 70, 55, 0.4);
+}
+
+.arkana-send-btn {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  color: #fff0da;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(139, 105, 20, 0.2);
+}
+
+.arkana-send-btn:hover:not(:disabled) {
+  transform: scale(1.08);
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.35);
+}
+
+.arkana-send-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* API Key Input */
+.arkana-key-input {
+  flex-grow: 1;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid #d1c5b2;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #1b1c1a;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.arkana-key-input:focus {
+  border-color: #8b6914;
+}
+
+.arkana-key-submit {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  color: #fff0da;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.arkana-key-submit:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(139, 105, 20, 0.3);
+}
+
+/* Fade-in Animation */
+.arkana-fade-in {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: arkanaFadeIn 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes arkanaFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Chat scrollbar */
+#arkana-chat-messages::-webkit-scrollbar {
+  width: 5px;
+}
+#arkana-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#arkana-chat-messages::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 3px;
+}
+#arkana-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #8b6914;
+}
+
+/* ============================
+   ASK ARKANA — Map Styles
+   ============================ */
+
+/* Custom Map Marker */
+.arkana-marker {
+  background: none !important;
+  border: none !important;
+}
+
+.arkana-marker-pin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.arkana-marker-pin span {
+  transform: rotate(45deg);
+}
+
+.arkana-marker-pulse {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(139, 105, 20, 0.2);
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  z-index: 1;
+  animation: markerPulse 2s ease-out infinite;
+}
+
+@keyframes markerPulse {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* Map Popup */
+.arkana-popup-container .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(209, 197, 178, 0.4);
+  font-family: 'Inter', sans-serif;
+}
+
+.arkana-popup-container .leaflet-popup-content {
+  margin: 12px 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1b1c1a;
+}
+
+.arkana-popup-container .leaflet-popup-tip {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Map Badge */
+.arkana-map-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 100px;
+  background: rgba(251, 249, 245, 0.92);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(209, 197, 178, 0.5);
+  color: #4e4637;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Map Info Card */
+.arkana-map-info-card {
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(251, 249, 245, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(209, 197, 178, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Map Legend */
+.arkana-map-legend-card {
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(251, 249, 245, 0.95);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(209, 197, 178, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  max-width: 200px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.arkana-map-legend-card::-webkit-scrollbar {
+  width: 3px;
+}
+.arkana-map-legend-card::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 2px;
+}
+
+/* Fix Leaflet z-index conflicts with navbar */
+#arkana-map .leaflet-top,
+#arkana-map .leaflet-bottom {
+  z-index: 400 !important;
+}
+
+/* ============================
+   EXPLORE PAGE — Map + Chat
+   ============================ */
+
+/* Explore map Leaflet z-index fix */
+#explore-map .leaflet-top,
+#explore-map .leaflet-bottom {
+  z-index: 400 !important;
+}
+
+/* Quick-jump heritage chips (on map) */
+.explore-quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 100px;
+  background: rgba(251, 249, 245, 0.88);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(209, 197, 178, 0.6);
+  color: #4e4637;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.explore-quick-chip:hover {
+  background: #8b6914;
+  color: #fff0da;
+  border-color: #8b6914;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(139, 105, 20, 0.3);
+}
+
+.explore-quick-chip .material-symbols-outlined {
+  font-size: 14px !important;
+  line-height: 1;
+}
+
+/* Explore map legend interactive items */
+.explore-legend-item {
+  padding: 3px 4px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+.explore-legend-item:hover {
+  background: rgba(139, 105, 20, 0.08);
+}
+
+/* Numbered marker counter badge */
+.arkana-marker-pin-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(139, 105, 20, 0.4);
+  position: relative;
+  z-index: 2;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff0da;
+}
+
+/* Explore chat messages scrollbar */
+#explore-chat-messages::-webkit-scrollbar {
+  width: 5px;
+}
+#explore-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+#explore-chat-messages::-webkit-scrollbar-thumb {
+  background: #d1c5b2;
+  border-radius: 3px;
+}
+#explore-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: #8b6914;
+}
+
+/* Timeline container smooth transitions */
+#explore-timeline-container {
+  transition: opacity 0.5s ease, pointer-events 0s;
+}
+
+/* Timeline slider custom era colors */
+#explore-timeline-slider::-webkit-slider-thumb {
+  background: linear-gradient(135deg, #8b6914 0%, #6f5100 100%);
+  box-shadow: 0 2px 8px rgba(139, 105, 20, 0.4);
+}
+
+/* ============================
+   END EXPLORE PAGE STYLES
+   ============================ */

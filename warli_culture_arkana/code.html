@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Warli Culture | ARKANA.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Playfair+Display:ital,wght@0,500;0,600;1,500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#5f5e5e",
+                        "tertiary-fixed-dim": "#aac7ff",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e4e2de",
+                        "on-surface-variant": "#4e4637",
+                        "on-secondary-container": "#636262",
+                        "primary": "#6f5100",
+                        "surface-bright": "#fbf9f5",
+                        "tertiary": "#34568c",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f5f3ef",
+                        "on-primary-fixed-variant": "#5c4300",
+                        "primary-fixed-dim": "#ecc165",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-container": "#eff2ff",
+                        "surface-dim": "#dbdad6",
+                        "outline-variant": "#d1c5b2",
+                        "on-surface": "#1b1c1a",
+                        "outline": "#807665",
+                        "on-error-container": "#93000a",
+                        "background": "#fbf9f5",
+                        "surface-container-highest": "#e4e2de",
+                        "on-tertiary-fixed": "#001b3e",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-primary-fixed": "#261a00",
+                        "on-tertiary-fixed-variant": "#23477b",
+                        "secondary-container": "#e2dfde",
+                        "on-primary": "#ffffff",
+                        "surface-container": "#efeeea",
+                        "tertiary-container": "#4e6fa6",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1b1c1a",
+                        "inverse-surface": "#30312e",
+                        "tertiary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#e5e2e1",
+                        "primary-container": "#8b6914",
+                        "on-primary-container": "#fff0da",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#ffdfa0",
+                        "surface-tint": "#795900",
+                        "surface": "#fbf9f5",
+                        "surface-container-high": "#eae8e4",
+                        "inverse-primary": "#ecc165",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#f2f0ed",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "desktop_padding": "80px",
+                        "section_v_spacing": "120px",
+                        "max_width": "1280px",
+                        "mobile_padding": "20px",
+                        "tablet_padding": "40px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "section-label": ["Playfair Display"],
+                        "display-lg-mobile": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "section-label": ["14px", {"lineHeight": "1", "letterSpacing": "0.12em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Hide scrollbar for horizontal scrolling elements */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .heritage-link {
+            position: relative;
+            display: inline-block;
+            color: #8b6914; /* primary-container */
+        }
+        .heritage-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: #8b6914;
+            transition: width 0.3s ease-in-out;
+        }
+        .heritage-link:hover::after {
+            width: 100%;
+        }
+
+        .img-hover-scale {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .img-hover-scale {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/90 dark:bg-surface-dim/90 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center px-desktop_padding h-20 max-w-max_width mx-auto">
+<div class="font-section-label text-headline-md italic text-on-surface dark:text-on-surface-variant flex-shrink-0">
+            ARKANA.
+        </div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70" href="#">Explore</a>
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed-dim font-bold border-b-2 border-primary pb-1 transition-all duration-300 hover:opacity-70" href="#">Cultures</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70" href="#">Browse</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70" href="#">Identify</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim hover:text-primary transition-all duration-300 hover:opacity-70" href="#">Ask Arkana</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-primary dark:text-primary-fixed-dim transition-all duration-300 hover:opacity-70 scale-95 duration-200 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">search</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A small, elegant circular user profile avatar showing an abstract geometric form in muted beige and dark grey tones. It fits perfectly within a light mode, minimalist cultural heritage app interface. Clean, subtle lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKj3tJaKxu1McMQLxQY5uBQYk2p2Eqb661BK-Ysg09uvPNbOoz3zPgtW0ATjz3fI21yvUrToUR9bMhevqb0JaxteWz6gq19Pa98DA6potxDrbPcx_xwcQ7atYfoER12G3rDuJD-wNkxCKbnmy2eyx1Mnncr8rmU1ie5HyMRRH68g8Ql9ik_tV5-g3IyhwUAEx2v8OsLvCI9lPctRN-rpO9eGNPEb3PGklsDeUt8Ux2FGePUzX-oYa2mFDCwVsJQgo1ry60K8QsLA"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-section_v_spacing">
+<!-- Hero Section -->
+<section class="relative w-full h-[400px] md:h-[480px] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A breathtaking, wide horizontal composition of traditional Warli tribal art painted in stark white pigment on an earthy, mud-brown canvas. The intricate geometric figures, depicting communal dancing and nature, are subtly lit with soft, diffused gallery lighting. The image evokes a sense of ancient history preserved in a modern, pristine museum archive. High resolution, high contrast yet warm and inviting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBQcJj6OPcGErQ70_awi8ecdg_yPoPqJXrmA0WQ2j5-ZlZyPCfTqMape0CpngvKTUn6Sw8VTpDhKzbZ-svZv1O4_-kiwp3omF3vkweOebMgbRyIZgFVAODP6gNQM3DXRvzMkvf0PpH3thS8iqRUy7O-o-TKFgXDNGSz9LN3C3JJ_YM7SgE28cQ2QZ8hYOrxxIWW4blLdpd23mjWYrO5IA7TrfkN2q7_SDgIuGb_x4KV3n8ygymUpb8hFcJ1CXTH-Th4-11ywo7qNg')"></div>
+<!-- Gradient fade to background color -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+<div class="absolute inset-x-0 bottom-0 max-w-max_width mx-auto px-mobile_padding md:px-desktop_padding pb-12 reveal-up">
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface mb-2">Warli</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Maharashtra · 2500 BCE – Present</p>
+</div>
+</section>
+<!-- About Section -->
+<section class="max-w-max_width mx-auto px-mobile_padding md:px-desktop_padding py-16 md:py-section_v_spacing reveal-up">
+<div class="flex items-center w-full mb-12">
+<h2 class="font-section-label text-section-label text-on-surface uppercase pr-4 whitespace-nowrap">About</h2>
+<div class="h-px bg-outline-variant flex-grow"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-center">
+<div class="md:col-span-7 font-body-lg text-body-lg text-on-surface-variant space-y-6">
+<p>
+                        Warli painting is a form of tribal art mostly created by the tribal people from the North Sahyadri Range in Maharashtra, India. This traditional art form, characterized by its rudimentary graphic vocabulary, uses a circle, a triangle, and a square to represent the world. The circle and triangle come from their observation of nature, the circle representing the sun and the moon, the triangle derived from mountains and pointed trees.
+                    </p>
+<p>
+                        Unlike other Indian folk art forms, Warli paintings do not depict mythological characters or images of deities. Instead, they portray the social life of the tribal people. Scenes of human figures engaged in hunting, dancing, sowing, and harvesting are common, reflecting a profound harmony with nature. The pristine white pigment, traditionally made from a paste of rice flour and water, stands in stark, beautiful contrast to the austere mud and cow dung backgrounds.
+                    </p>
+</div>
+<!-- 3D Artifact Viewer Placeholder -->
+<div class="md:col-span-5 aspect-square bg-surface border border-outline-variant rounded flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-surface-container-low opacity-50"></div>
+<span class="material-symbols-outlined text-outline text-4xl mb-2 z-10" style="font-variation-settings: 'FILL' 0;">3d_rotation</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest z-10">Interactive Viewer</span>
+</div>
+</div>
+</section>
+<!-- Timeline Section -->
+<section class="max-w-max_width mx-auto px-mobile_padding md:px-desktop_padding py-16 md:py-section_v_spacing reveal-up">
+<div class="flex items-center w-full mb-12">
+<h2 class="font-section-label text-section-label text-on-surface uppercase pr-4 whitespace-nowrap">Timeline</h2>
+<div class="h-px bg-outline-variant flex-grow"></div>
+</div>
+<div class="relative border-l border-outline-variant ml-[5px] md:ml-[11px] space-y-12 pb-8">
+<!-- Entry 1 -->
+<div class="relative pl-8 md:pl-12 group">
+<div class="absolute w-3 h-3 bg-surface-bright border border-primary-container rounded-full -left-[6px] top-1.5 transition-colors group-hover:bg-primary-container"></div>
+<div class="font-label-sm text-label-sm text-primary-container mb-1">2500 BCE - 3000 BCE</div>
+<h3 class="font-headline-md text-[24px] text-on-surface mb-2">Origins in Antiquity</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Rooted in ancient traditions, early forms of Warli art are believed to have originated in the Sahyadri ranges. The geometric motifs parallel prehistoric cave paintings.</p>
+</div>
+<!-- Entry 2 -->
+<div class="relative pl-8 md:pl-12 group">
+<div class="absolute w-3 h-3 bg-surface-bright border border-primary-container rounded-full -left-[6px] top-1.5 transition-colors group-hover:bg-primary-container"></div>
+<div class="font-label-sm text-label-sm text-primary-container mb-1">10th Century CE</div>
+<h3 class="font-headline-md text-[24px] text-on-surface mb-2">Establishment of Ritual Practice</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">The art form solidifies as a vital component of marriage ceremonies and harvest festivals, painted exclusively by the women of the tribe (Savasinis).</p>
+</div>
+<!-- Entry 3 -->
+<div class="relative pl-8 md:pl-12 group">
+<div class="absolute w-3 h-3 bg-surface-bright border border-primary-container rounded-full -left-[6px] top-1.5 transition-colors group-hover:bg-primary-container"></div>
+<div class="font-label-sm text-label-sm text-primary-container mb-1">1970s</div>
+<h3 class="font-headline-md text-[24px] text-on-surface mb-2">Commercial Introduction</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Jivya Soma Mashe, an artist from the Warli tribe, diverges from tradition by painting on a daily basis for artistic expression rather than solely for rituals, bringing global recognition.</p>
+</div>
+<!-- Entry 4 -->
+<div class="relative pl-8 md:pl-12 group">
+<div class="absolute w-3 h-3 bg-surface-bright border border-primary-container rounded-full -left-[6px] top-1.5 transition-colors group-hover:bg-primary-container"></div>
+<div class="font-label-sm text-label-sm text-primary-container mb-1">Present Day</div>
+<h3 class="font-headline-md text-[24px] text-on-surface mb-2">Global Heritage</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Warli motifs adorn modern fashion, interiors, and digital spaces. Efforts continue to preserve the authentic techniques and intellectual property of the indigenous creators.</p>
+</div>
+</div>
+</section>
+<!-- Artifacts Section -->
+<section class="pl-mobile_padding md:pl-desktop_padding py-16 md:py-section_v_spacing reveal-up overflow-hidden">
+<div class="flex items-center w-full mb-12 pr-mobile_padding md:pr-desktop_padding">
+<h2 class="font-section-label text-section-label text-on-surface uppercase pr-4 whitespace-nowrap">Artifacts</h2>
+<div class="h-px bg-outline-variant flex-grow"></div>
+</div>
+<!-- Horizontal Scroll Container -->
+<div class="flex overflow-x-auto hide-scrollbar gap-6 pb-8 snap-x pr-mobile_padding md:pr-desktop_padding">
+<!-- Card 1 -->
+<div class="min-w-[280px] md:min-w-[320px] w-[280px] md:w-[320px] bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] snap-start group overflow-hidden flex flex-col">
+<div class="h-48 overflow-hidden bg-surface-container">
+<img alt="Warli Chauk Motif" class="w-full h-full object-cover img-hover-scale" data-alt="A close-up photograph of a traditional Warli painting showing a central 'Chauk' motif, representing the Mother Goddess, surrounded by delicate white geometric figures of villagers. The background is a rich, textured earthen brown mud wall. Shot in a pristine gallery environment with soft directional lighting highlighting the textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_yDeWLAcvi6ohD5DKoXlQHE98yb6Er0NWOGyoKkn0a6i0eZidCA1ztmuHNRedtszsnmWG1MMW_JEqTzNVRNpaoEL9RaE8weOORz3V13NDFn3viseOB7BERPFNRGD-eXBt1VJa4Dfaph_2ciB_RvGQuPVu9uCBZv0JFi3SXsIw3_5xIWYrULuX84l2AsUlqkRmjinrsaMH6x_h-IWmpFMyhWBr38mIyuBHB4YCrEmdUYcBAVwzzAElxbRH_LaD0V48Hp8A2Xb70g"/>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mb-1">Ritual Chauk</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Mud Wall Painting · 20th C.</p>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[280px] md:min-w-[320px] w-[280px] md:w-[320px] bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] snap-start group overflow-hidden flex flex-col">
+<div class="h-48 overflow-hidden bg-surface-container">
+<img alt="Warli Terracotta Pot" class="w-full h-full object-cover img-hover-scale" data-alt="An intricately painted terracotta pot featuring continuous bands of Warli stick figures dancing in a circle (Tarpa dance). The pot has a warm terracotta hue, and the figures are painted in crisp white. Displayed against a clean, minimalist white background under studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0n35YD_8_X8zY5-vw0aEf9-ZdAfarp-9V4rCwLaj2wD8QP6AnrUID7qcRiAsVRXiJrP-NUcGYKfouCTgWzeHGfulUb315lVBIxVEy-49GyP2rhiy76JsF6--U5ddn915z_LWV04FyJn-BgzLZZ-etgMOrFizhdC7PH-4x2fZXmst2MgQPj73X1Jlmrflv5LgAjoxd-qqB01VWCl8h5CokdfNRXsiC0rDNGGgy69agM6R0dBBcNu4nlcYAY3XLAlF0pKlsV3n03w"/>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mb-1">Tarpa Dance Vessel</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Terracotta &amp; Pigment · Mid 20th C.</p>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[280px] md:min-w-[320px] w-[280px] md:w-[320px] bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] snap-start group overflow-hidden flex flex-col">
+<div class="h-48 overflow-hidden bg-surface-container">
+<img alt="Warli Textile Segment" class="w-full h-full object-cover img-hover-scale" data-alt="A vintage piece of coarse homespun fabric adorned with a Warli hunting scene. The fabric has a natural, unbleached linen tone, and the figures are depicted in a dark earthy brown. The textile is laid flat, showing subtle weaves and imperfections, lit evenly to preserve an archival quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoy7_uPuiU9eEqlNenpmernTp1_7T_EjB9jFSQkRjG3WvibikbPjibD5MP2r9TAPRK-IyuymmXCEF0S9rR1CKY_w6HkKielgeoYgaxfh440Lgm9Pz5MeT8hzMQVuQCBivX3Aim8GL9pHT2D0qo8JAh7j3rXez-bPxjDfebvIeO86t3wLBMMYrFL7Hral4KP5tlrAyvKZbiLs1jJSl7lYfpUt-WWv2cBYw5Ta4AcdVWIQxV-an6eqdCHW1-jlUThcqe2DSsM2ySXg"/>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mb-1">Hunting Narrative Textile</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Woven Cotton · Late 19th C.</p>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="min-w-[280px] md:min-w-[320px] w-[280px] md:w-[320px] bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] snap-start group overflow-hidden flex flex-col">
+<div class="h-48 overflow-hidden bg-surface-container">
+<img alt="Modern Warli Canvas" class="w-full h-full object-cover img-hover-scale" data-alt="A contemporary canvas adapting traditional Warli techniques, created by Jivya Soma Mashe. It features a complex, mesmerizing swirl of white geometric figures representing a fishing net cast over a stylized river. The background is a stark, smooth earthy brown. Museum quality archival photograph." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxJONzMGzXHP5FSQLbwOswt0MJS5wr2XsRAolO7kViQU73s5kH5CiMHCpfZ1gqO4nTukHD1aKnYrnem9cpQCvpgtvtecZCp2dJoPf5XlD3gajFbze-PLb8rVEf6fO9D5MNkDC1GncGciCjNEJ9PGGXQCPNuH8cCZfIdV3SzcAeqTp_GBIQe10snS9nxRCqBQBny_Is-MYMWlBpFrU2JryRA-z6i6IGYIZaohncgnDyQs5_jRILQyPkCLMeUwA0sVnwzuBpwiGFVQ"/>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mb-1">The Fishing Net</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Canvas &amp; Rice Paste · 1980s</p>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="min-w-[280px] md:min-w-[320px] w-[280px] md:w-[320px] bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] snap-start group overflow-hidden flex flex-col">
+<div class="h-48 overflow-hidden bg-surface-container flex items-center justify-center p-8 bg-surface-variant">
+<span class="material-symbols-outlined text-outline text-4xl" style="font-variation-settings: 'FILL' 0;">history_edu</span>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<h3 class="font-body-lg text-body-lg text-on-surface font-semibold mb-1">Harvest Festival Scroll</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Paper Document · 1950s</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Related Art Forms Section -->
+<section class="max-w-max_width mx-auto px-mobile_padding md:px-desktop_padding py-16 md:py-section_v_spacing reveal-up">
+<div class="flex items-center w-full mb-12">
+<h2 class="font-section-label text-section-label text-on-surface uppercase pr-4 whitespace-nowrap">Related Art Forms</h2>
+<div class="h-px bg-outline-variant flex-grow"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Related 1 -->
+<a class="block group bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden" href="#">
+<div class="h-40 overflow-hidden bg-surface-container">
+<img alt="Gond Art" class="w-full h-full object-cover img-hover-scale" data-alt="A vibrant, detailed section of Gond tribal art characterized by intricate dot and dash patterns filling stylized silhouettes of wildlife, specifically a deer and birds. The color palette is rich and bright, featuring yellows, reds, and deep blues against a light background. Clean gallery lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxvhUt3As-VC_ACEOrPfG7EGcSYjLaCqrjFUFvKeKP-bKIsQgDoALOCyI14gveRe5hutO5Wd1pBiBfaa4K3l4nATwqTMjyvshc6HOYLq5Q3rt6UbQYPL-LmCcaaqw94lBuVu481i6M6dv6Q8C548ec_kP6Q3Ne0ACe5luIB4Cxi-MWeEJepg7hGcUd5vjpmTXHU5E1EGRX1v2c2bDAZzD2rdGoSE_Tt9_8zyD1jSKPwtalXWY3EZtB1F1_onHZC4K4BV2hL_DA-A"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-[20px] text-on-surface mb-1">Gond Art</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Madhya Pradesh · Known for intricate line and dot patterns depicting flora and fauna.</p>
+</div>
+</a>
+<!-- Related 2 -->
+<a class="block group bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden" href="#">
+<div class="h-40 overflow-hidden bg-surface-container">
+<img alt="Bhil Art" class="w-full h-full object-cover img-hover-scale" data-alt="A section of Bhil art painting displaying a large, stylized tree formed entirely by clusters of multi-colored dots on a muted tan canvas. The dots vary in size and create a textured, rhythmic visual effect. The aesthetic is contemporary folk art presented in a bright, minimalist setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFVJ-0xRpyELQse3BnuKagKy029zA6T0TYtTxvR7JR6CnwkLVQEAWoruAfi4Ex6sKxkpO5q9k9UndlmWRS2XSi0nq5RT1P2AQFioeh5oTGqwY-2lgUn_wnA2mCPj7KF0K-2AV2VMOpcffkaxi89sfdLaSfp5fBpxe55QaGGzsi9giBHzsk29WVkDAlPTwG_XlF3Ln6k7vyHnvJ4qeDLNcoKahoZJG56D49pTvyyBV-c3Q4g5ls6vw24c5WDdCkdWODFvCsAqGs9A"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-[20px] text-on-surface mb-1">Bhil Art</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Central India · Characterized by the extensive use of multi-colored dots to form distinct shapes.</p>
+</div>
+</a>
+<!-- Related 3 -->
+<a class="block group bg-surface-container-lowest border border-outline-variant rounded shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden" href="#">
+<div class="h-40 overflow-hidden bg-surface-container">
+<img alt="Pithora Art" class="w-full h-full object-cover img-hover-scale" data-alt="A lively, highly detailed Pithora ritual wall painting featuring a procession of stylized horses and riders. The figures are painted in bright, vibrant primary colors on a textured white plaster wall. Shot straightforwardly with archival precision, preserving the cultural vibrancy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJs9PxtHjquYBQCpnbzQKjdeMwYjvyf687zskC2TlYQzccX2RqECqCtHgFGlF_KwZd9HMVh-Lc1vdN_pPlaXDQB3Xpu9DHIdWXxLl-6UMXWnbEfnr0MM6if0P3d4W-h4b1bYBXZ3oMFrnizEdDB_WVDK24-feo1-6KJm3yMelmVdb47MvEv9P9fUIaZ44OVTOVaqN_ydG_M9XRQLSoxeDLQ2se6CHowFDbDiui2Uaa-Cpnxtt57zjirDV4YVtjtsNrbRVkwDGShQ"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-[20px] text-on-surface mb-1">Pithora Art</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Gujarat &amp; MP · Highly ritualistic wall paintings central to the Rathwa community.</p>
+</div>
+</a>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="max-w-max_width mx-auto px-mobile_padding md:px-desktop_padding py-16 reveal-up flex justify-center">
+<a class="inline-flex items-center gap-2 group cursor-pointer" href="#">
+<span class="font-headline-md italic text-[32px] md:text-[40px] heritage-link">Ask Arkana about Warli Art</span>
+<span class="material-symbols-outlined text-primary-container transition-transform duration-300 group-hover:translate-x-2" style="font-variation-settings: 'FILL' 0;">arrow_forward</span>
+</a>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section_v_spacing border-t border-outline-variant bg-surface-container-low dark:bg-surface-dim flex flex-col md:flex-row justify-between items-center px-desktop_padding max-w-max_width mx-auto">
+<div class="font-section-label text-headline-md italic text-on-surface dark:text-on-surface-variant mb-6 md:mb-0">
+            ARKANA.
+        </div>
+<div class="font-body-md text-body-md text-on-surface-variant dark:text-secondary-fixed-dim text-center md:text-left mb-6 md:mb-0">
+            © 2024 ARKANA. Preserving India's Cultural Legacy.
+        </div>
+<nav class="flex gap-6">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300 opacity-80 hover:opacity-100" href="#">About</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Privacy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors duration-300 opacity-80 hover:opacity-100" href="#">Contact</a>
+</nav>
+</footer>
+<script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal-up').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body></html>
