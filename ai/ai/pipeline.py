@@ -52,7 +52,7 @@ class PipelineConfig:
     min_relevance_score: float = -5.0
     
     # Generation
-    llm_model: str = "llama-3.1-8b-instant"
+    llm_model: str = "gemini-3.5-flash"
     llm_max_tokens: int = 1024
     llm_temperature: float = 0.1
     max_history_turns: int = 3

@@ -1,14 +1,16 @@
 """
-LLM Client for Arkana - Groq Integration
+LLM Client for Arkana - Gemini Integration
 Handles streaming generation with proper error handling.
 """
 
 import os
 import asyncio
 from typing import AsyncGenerator, List, Dict, Any, Optional
-from groq import AsyncGroq
+from google import genai
+from google.genai import types
 from dataclasses import dataclass
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +18,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class LLMConfig:
     """Configuration for LLM client"""
-    model: str = "llama-3.1-8b-instant"
+    model: str = "gemini-3.5-flash"
     max_tokens: int = 1024
     temperature: float = 0.1
     api_key: Optional[str] = None
@@ -24,18 +26,39 @@ class LLMConfig:
 
 class LLMClient:
     """
-    Groq client for streaming text generation.
+    Gemini client for streaming text generation.
     """
 
     def __init__(self, config: Optional[LLMConfig] = None):
         self.config = config or LLMConfig()
 
         # Get API key from config or environment
-        api_key = self.config.api_key or os.getenv("GROQ_API_KEY")
+        api_key = self.config.api_key or os.getenv("GEMINI_API_KEY")
         if not api_key:
-            raise ValueError("GROQ_API_KEY not found in config or environment")
+            raise ValueError("GEMINI_API_KEY not found in config or environment")
 
-        self.client = AsyncGroq(api_key=api_key)
+        # Initialize the synchronous client (google-genai provides async methods via .aio)
+        self.client = genai.Client(api_key=api_key)
+
+    def _convert_messages(self, messages: List[Dict[str, str]]) -> List[types.Content]:
+        """Convert OpenAI style messages to Gemini Content types."""
+        gemini_messages = []
+        for msg in messages:
+            role = msg.get("role", "user")
+            content = msg.get("content", "")
+            
+            # Map roles
+            gemini_role = "user"
+            if role == "assistant":
+                gemini_role = "model"
+            elif role == "system":
+                # System instructions are handled separately in generate methods
+                continue
+
+            gemini_messages.append(
+                types.Content(role=gemini_role, parts=[types.Part.from_text(text=content)])
+            )
+        return gemini_messages
 
     async def generate_streaming(
         self,
@@ -44,32 +67,38 @@ class LLMClient:
         temperature: Optional[float] = None
     ) -> AsyncGenerator[str, None]:
         """
-        Generate streaming response from Groq.
-
-        Args:
-            messages: List of message dicts with 'role' and 'content'
-            max_tokens: Override max tokens
-            temperature: Override temperature
-
-        Yields:
-            Text chunks as they stream
+        Generate streaming response from Gemini.
         """
         try:
-            stream = await self.client.chat.completions.create(
-                model=self.config.model,
-                max_tokens=max_tokens or self.config.max_tokens,
+            # Handle system prompt separation
+            system_instruction = None
+            if messages and messages[0].get("role") == "system":
+                system_instruction = messages[0].get("content")
+
+            contents = self._convert_messages(messages)
+            
+            config = types.GenerateContentConfig(
+                max_output_tokens=max_tokens or self.config.max_tokens,
                 temperature=temperature or self.config.temperature,
-                messages=messages,
-                stream=True
+            )
+            
+            if system_instruction:
+                config.system_instruction = system_instruction
+
+            # Use the async generator method
+            stream = await self.client.aio.models.generate_content_stream(
+                model=self.config.model,
+                contents=contents,
+                config=config
             )
 
             async for chunk in stream:
-                if chunk.choices[0].delta.content:
-                    yield chunk.choices[0].delta.content
+                if chunk.text:
+                    yield chunk.text
 
         except Exception as e:
-            logger.error(f"Groq streaming error: {e}")
-            yield "[Error: Failed to generate response]"
+            logger.error(f"Gemini streaming error: {e}")
+            yield f"[Error: Failed to generate response - {str(e)}]"
 
     async def generate_complete(
         self,
@@ -79,21 +108,30 @@ class LLMClient:
     ) -> str:
         """
         Generate complete (non-streaming) response.
-
-        Returns:
-            Full response text
         """
         try:
-            response = await self.client.chat.completions.create(
-                model=self.config.model,
-                max_tokens=max_tokens or self.config.max_tokens,
+            system_instruction = None
+            if messages and messages[0].get("role") == "system":
+                system_instruction = messages[0].get("content")
+
+            contents = self._convert_messages(messages)
+            
+            config = types.GenerateContentConfig(
+                max_output_tokens=max_tokens or self.config.max_tokens,
                 temperature=temperature or self.config.temperature,
-                messages=messages,
-                stream=False
             )
-            return response.choices[0].message.content
+            
+            if system_instruction:
+                config.system_instruction = system_instruction
+
+            response = await self.client.aio.models.generate_content(
+                model=self.config.model,
+                contents=contents,
+                config=config
+            )
+            return response.text
         except Exception as e:
-            logger.error(f"Groq generation error: {e}")
+            logger.error(f"Gemini generation error: {e}")
             return f"[Error: {str(e)}]"
 
     async def evaluate_faithfulness(
@@ -105,15 +143,6 @@ class LLMClient:
     ) -> Dict[str, Any]:
         """
         Use LLM-as-judge to evaluate faithfulness and relevance.
-
-        Args:
-            query: Original user query
-            response: AI response to evaluate
-            excerpts: Source excerpts used for generation
-            max_tokens: Max tokens for evaluation
-
-        Returns:
-            Dict with faithfulness, relevance scores and reasoning
         """
         judge_prompt = f"""You are evaluating whether an AI response is faithful to its source material.
 
@@ -145,9 +174,16 @@ Respond in JSON only:
         try:
             eval_response = await self.generate_complete(messages, max_tokens=max_tokens, temperature=0.0)
 
-            # Parse JSON response
-            import json
-            result = json.loads(eval_response)
+            # Clean markdown JSON blocks if present
+            eval_response = eval_response.strip()
+            if eval_response.startswith("```json"):
+                eval_response = eval_response[7:]
+            if eval_response.startswith("```"):
+                eval_response = eval_response[3:]
+            if eval_response.endswith("```"):
+                eval_response = eval_response[:-3]
+
+            result = json.loads(eval_response.strip())
 
             # Validate scores
             result["faithfulness"] = max(0.0, min(1.0, float(result.get("faithfulness", 0))))
@@ -173,7 +209,6 @@ def create_llm_client(config: Optional[LLMConfig] = None) -> LLMClient:
 async def complete(prompt: str, max_tokens: int = 200) -> str:
     """
     Standalone completion function for evaluation.
-    Creates a temporary client and returns the response string.
     """
     client = create_llm_client()
     messages = [{"role": "user", "content": prompt}]
@@ -181,9 +216,9 @@ async def complete(prompt: str, max_tokens: int = 200) -> str:
 
 
 if __name__ == "__main__":
-    # Test client (requires GROQ_API_KEY env var)
+    # Test client
     import os
-    if os.getenv("GROQ_API_KEY"):
+    if os.getenv("GEMINI_API_KEY"):
         async def test():
             client = create_llm_client()
             messages = [{"role": "user", "content": "Say hello in one sentence."}]
@@ -193,4 +228,4 @@ if __name__ == "__main__":
 
         asyncio.run(test())
     else:
-        print("Set GROQ_API_KEY to test")
+        print("Set GEMINI_API_KEY to test")
