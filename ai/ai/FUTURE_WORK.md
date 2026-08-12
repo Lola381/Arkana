@@ -11,6 +11,7 @@ The Backend API is fully operational. The immediate next step is mapping the fro
 ### API Consumption
 - **Map API**: The frontend Map component needs to fetch `GET /api/sites` to plot the `latitude` and `longitude` markers for historical sites.
 - **Chat UI**: The AI Chat interface must connect to `POST /api/chat` and handle **Server-Sent Events (SSE)** to stream the AI's response token-by-token.
+- **Visual UI (Option A)**: The frontend Image Upload component must connect to `POST /api/identify` to receive a `rag_query`. It must then *automatically and silently* pass that query to the Chat UI (`POST /api/chat`) to fetch and display the historical details directly on the image page.
 
 ### Citation Badge Mapping
 The AI backend currently returns JSON citations containing a `"chunk_source"` key. The frontend UI must map these strings to visual badges:

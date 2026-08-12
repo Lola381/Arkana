@@ -28,6 +28,7 @@ class CLIPConfig:
 
 # Art style labels for zero-shot classification
 STYLE_LABELS = [
+    # Paintings & Art
     "Warli tribal painting",
     "Gond art",
     "Madhubani painting",
@@ -41,14 +42,20 @@ STYLE_LABELS = [
     "Pattachitra painting",
     "Phad painting",
     "Cheriyal scroll painting",
-    "Kalamkari painting",
     "Mysore painting",
     "Rajput painting",
     "Deccan painting",
     "Company style painting",
-    "Modern Indian art",
-    "Contemporary Indian art",
-    "other Indian art"
+    # Architecture & Monuments
+    "Mughal architecture monument",
+    "Dravidian temple architecture",
+    "Nagara style temple architecture",
+    "Indo-Saracenic architecture",
+    "Ancient Indian rock-cut cave architecture",
+    "Indian stepwell architecture",
+    "Rajput fort architecture",
+    "Maratha military architecture",
+    "other Indian art or monument"
 ]
 
 # Tribe/style to region mapping for RAG context
